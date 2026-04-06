@@ -30,6 +30,7 @@
   <div class="tabs">
     <button class="tab active" data-target="ranking">Ranking</button>
     <button class="tab" data-target="partidos">Partidos</button>
+    <button class="tab" data-target="plus">Pronósticos Plus</button>
     <button class="tab" data-target="como">Cómo funciona</button>
   </div>
 
@@ -39,8 +40,8 @@
     <div class="section active" id="tab-ranking">
       <div class="section-label">Tabla de posiciones</div>
       <div class="legend">
-        <span><span class="ldot" style="background:#4caf7d"></span>Exacto (5 pts)</span>
-        <span><span class="ldot" style="background:#4a9eff"></span>Tendencia (3 pts)</span>
+        <span><span class="ldot" style="background:#4caf7d"></span>Marcador exacto (×mult)</span>
+        <span><span class="ldot" style="background:#4a9eff"></span>Tendencia (×mult)</span>
         <span><span class="ldot" style="background:#444"></span>Error (0 pts)</span>
       </div>
       <div class="ranking-wrap">
@@ -49,9 +50,9 @@
             <tr>
               <th style="width:36px">#</th>
               <th>Jugador</th>
-              <th class="r">Puntos</th>
-              <th class="r">Exactos</th>
-              <th class="r">Tendencia</th>
+              <th class="r">Total</th>
+              <th class="r" title="Puntos de partidos">Partidos</th>
+              <th class="r" title="Puntos Plus (grupos, top4, etc.)">Plus</th>
               <th class="r">Errores</th>
             </tr>
           </thead>
@@ -63,6 +64,11 @@
     <div class="section" id="tab-partidos">
       <div class="section-label">Historial y apuestas</div>
       <div id="matches-list"></div>
+    </div>
+
+    <div class="section" id="tab-plus">
+      <div class="section-label">Pronósticos Plus</div>
+      <div id="plus-content"></div>
     </div>
 
     <div class="section" id="tab-como">
@@ -105,17 +111,30 @@
       <div class="section-label" style="margin-top:28px">Sistema de puntos</div>
       <div class="pts-panel">
         <div class="pts-box">
-          <div class="pts-n" style="color:#4caf7d">5</div>
+          <div class="pts-n" style="color:#4caf7d">3</div>
           <div class="pts-lbl">Marcador exacto</div>
         </div>
         <div class="pts-box">
-          <div class="pts-n" style="color:#4a9eff">3</div>
+          <div class="pts-n" style="color:#4a9eff">1</div>
           <div class="pts-lbl">Tendencia correcta</div>
         </div>
         <div class="pts-box">
           <div class="pts-n" style="color:#555">0</div>
           <div class="pts-lbl">Error</div>
         </div>
+        <div class="pts-box">
+          <div class="pts-n" style="color:#f0a500">×1/2/3</div>
+          <div class="pts-lbl">Multiplicador Normal/Especial/Super</div>
+        </div>
+      </div>
+      <div class="section-label" style="margin-top:28px">Puntos Plus</div>
+      <div class="pts-panel">
+        <div class="pts-box"><div class="pts-n" style="color:#ffd700">8</div><div class="pts-lbl">Campeón</div></div>
+        <div class="pts-box"><div class="pts-n" style="color:#c0c0c0">5</div><div class="pts-lbl">Sub-Campeón</div></div>
+        <div class="pts-box"><div class="pts-n" style="color:#cd7f32">4</div><div class="pts-lbl">3er Puesto</div></div>
+        <div class="pts-box"><div class="pts-n" style="color:#888">3</div><div class="pts-lbl">4to Puesto</div></div>
+        <div class="pts-box"><div class="pts-n" style="color:#4a9eff">2</div><div class="pts-lbl">Posición de grupo</div></div>
+        <div class="pts-box"><div class="pts-n" style="color:#4caf7d">2</div><div class="pts-lbl">Equipo que avanza</div></div>
       </div>
     </div>
   </div>

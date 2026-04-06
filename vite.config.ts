@@ -8,6 +8,10 @@ export default defineConfig({
         {
           src: 'data',
           dest: ''
+        },
+        {
+          src: 'test_data',
+          dest: ''
         }
       ]
     })

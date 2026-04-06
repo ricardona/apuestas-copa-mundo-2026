@@ -1,0 +1,88 @@
+{
+  "posicionesGrupos": {
+    "A": [
+      "Mexico",
+      "Corea del Sur",
+      "Republica Checa",
+      "Sudafrica"
+    ],
+    "B": [
+      "Canada",
+      "Bosnia y H.",
+      "Qatar",
+      "Suiza"
+    ],
+    "C": [
+      "Brasil",
+      "Marruecos",
+      "Haiti",
+      "Escocia"
+    ],
+    "D": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "E": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "F": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "G": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "H": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "I": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "J": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "K": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "L": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  "top4": {
+    "campeon": "Brasil",
+    "subcampeon": "Francia",
+    "tercero": "Argentina",
+    "cuarto": "Alemania"
+  },
+  "goOn": [
+    {
+      "matchId": 73,
+      "equipo": "Mexico"
+    }
+  ]
+}
