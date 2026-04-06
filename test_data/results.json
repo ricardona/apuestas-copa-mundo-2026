@@ -1,0 +1,1010 @@
+[
+  {
+    "id": 1,
+    "local": "México",
+    "visita": "Corea del Sur",
+    "gL": 2,
+    "gV": 1,
+    "status": "finalizado",
+    "fase": "Grupos",
+    "grupo": "A"
+  },
+  {
+    "id": 2,
+    "local": "Sudáfrica",
+    "visita": "República Checa",
+    "gL": 0,
+    "gV": 0,
+    "status": "finalizado",
+    "fase": "Grupos",
+    "grupo": "A"
+  },
+  {
+    "id": 3,
+    "local": "México",
+    "visita": "Sudáfrica",
+    "gL": 3,
+    "gV": 0,
+    "status": "finalizado",
+    "fase": "Grupos",
+    "grupo": "A"
+  },
+  {
+    "id": 4,
+    "local": "República Checa",
+    "visita": "Corea del Sur",
+    "gL": 1,
+    "gV": 1,
+    "status": "finalizado",
+    "fase": "Grupos",
+    "grupo": "A"
+  },
+  {
+    "id": 5,
+    "local": "República Checa",
+    "visita": "México",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "A"
+  },
+  {
+    "id": 6,
+    "local": "Corea del Sur",
+    "visita": "Sudáfrica",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "A"
+  },
+  {
+    "id": 7,
+    "local": "Canadá",
+    "visita": "Suiza",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "B"
+  },
+  {
+    "id": 8,
+    "local": "Qatar",
+    "visita": "Bosnia y H.",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "B"
+  },
+  {
+    "id": 9,
+    "local": "Canadá",
+    "visita": "Qatar",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "B"
+  },
+  {
+    "id": 10,
+    "local": "Bosnia y H.",
+    "visita": "Suiza",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "B"
+  },
+  {
+    "id": 11,
+    "local": "Bosnia y H.",
+    "visita": "Canadá",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "B"
+  },
+  {
+    "id": 12,
+    "local": "Suiza",
+    "visita": "Qatar",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "B"
+  },
+  {
+    "id": 13,
+    "local": "Brasil",
+    "visita": "Marruecos",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "C"
+  },
+  {
+    "id": 14,
+    "local": "Escocia",
+    "visita": "Haití",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "C"
+  },
+  {
+    "id": 15,
+    "local": "Brasil",
+    "visita": "Escocia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "C"
+  },
+  {
+    "id": 16,
+    "local": "Haití",
+    "visita": "Marruecos",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "C"
+  },
+  {
+    "id": 17,
+    "local": "Haití",
+    "visita": "Brasil",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "C"
+  },
+  {
+    "id": 18,
+    "local": "Marruecos",
+    "visita": "Escocia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "C"
+  },
+  {
+    "id": 19,
+    "local": "Estados Unidos",
+    "visita": "Paraguay",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "D"
+  },
+  {
+    "id": 20,
+    "local": "Australia",
+    "visita": "Turquía",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "D"
+  },
+  {
+    "id": 21,
+    "local": "Estados Unidos",
+    "visita": "Australia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "D"
+  },
+  {
+    "id": 22,
+    "local": "Turquía",
+    "visita": "Paraguay",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "D"
+  },
+  {
+    "id": 23,
+    "local": "Turquía",
+    "visita": "Estados Unidos",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "D"
+  },
+  {
+    "id": 24,
+    "local": "Paraguay",
+    "visita": "Australia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "D"
+  },
+  {
+    "id": 25,
+    "local": "Alemania",
+    "visita": "Ecuador",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "E"
+  },
+  {
+    "id": 26,
+    "local": "Costa de Marfil",
+    "visita": "Curazao",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "E"
+  },
+  {
+    "id": 27,
+    "local": "Alemania",
+    "visita": "Costa de Marfil",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "E"
+  },
+  {
+    "id": 28,
+    "local": "Curazao",
+    "visita": "Ecuador",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "E"
+  },
+  {
+    "id": 29,
+    "local": "Curazao",
+    "visita": "Alemania",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "E"
+  },
+  {
+    "id": 30,
+    "local": "Ecuador",
+    "visita": "Costa de Marfil",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "E"
+  },
+  {
+    "id": 31,
+    "local": "Países Bajos",
+    "visita": "Japón",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "F"
+  },
+  {
+    "id": 32,
+    "local": "Túnez",
+    "visita": "Suecia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "F"
+  },
+  {
+    "id": 33,
+    "local": "Países Bajos",
+    "visita": "Túnez",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "F"
+  },
+  {
+    "id": 34,
+    "local": "Suecia",
+    "visita": "Japón",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "F"
+  },
+  {
+    "id": 35,
+    "local": "Suecia",
+    "visita": "Países Bajos",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "F"
+  },
+  {
+    "id": 36,
+    "local": "Japón",
+    "visita": "Túnez",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "F"
+  },
+  {
+    "id": 37,
+    "local": "Bélgica",
+    "visita": "Irán",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "G"
+  },
+  {
+    "id": 38,
+    "local": "Egipto",
+    "visita": "Nueva Zelanda",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "G"
+  },
+  {
+    "id": 39,
+    "local": "Bélgica",
+    "visita": "Egipto",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "G"
+  },
+  {
+    "id": 40,
+    "local": "Nueva Zelanda",
+    "visita": "Irán",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "G"
+  },
+  {
+    "id": 41,
+    "local": "Nueva Zelanda",
+    "visita": "Bélgica",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "G"
+  },
+  {
+    "id": 42,
+    "local": "Irán",
+    "visita": "Egipto",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "G"
+  },
+  {
+    "id": 43,
+    "local": "España",
+    "visita": "Uruguay",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H"
+  },
+  {
+    "id": 44,
+    "local": "Arabia Saudita",
+    "visita": "Cabo Verde",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H"
+  },
+  {
+    "id": 45,
+    "local": "España",
+    "visita": "Arabia Saudita",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H"
+  },
+  {
+    "id": 46,
+    "local": "Cabo Verde",
+    "visita": "Uruguay",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H"
+  },
+  {
+    "id": 47,
+    "local": "Cabo Verde",
+    "visita": "España",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H"
+  },
+  {
+    "id": 48,
+    "local": "Uruguay",
+    "visita": "Arabia Saudita",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H"
+  },
+  {
+    "id": 49,
+    "local": "Francia",
+    "visita": "Senegal",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "I"
+  },
+  {
+    "id": 50,
+    "local": "Noruega",
+    "visita": "Irak",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "I"
+  },
+  {
+    "id": 51,
+    "local": "Francia",
+    "visita": "Noruega",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "I"
+  },
+  {
+    "id": 52,
+    "local": "Irak",
+    "visita": "Senegal",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "I"
+  },
+  {
+    "id": 53,
+    "local": "Irak",
+    "visita": "Francia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "I"
+  },
+  {
+    "id": 54,
+    "local": "Senegal",
+    "visita": "Noruega",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "I"
+  },
+  {
+    "id": 55,
+    "local": "Argentina",
+    "visita": "Austria",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "J"
+  },
+  {
+    "id": 56,
+    "local": "Argelia",
+    "visita": "Jordania",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "J"
+  },
+  {
+    "id": 57,
+    "local": "Argentina",
+    "visita": "Argelia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "J"
+  },
+  {
+    "id": 58,
+    "local": "Jordania",
+    "visita": "Austria",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "J"
+  },
+  {
+    "id": 59,
+    "local": "Jordania",
+    "visita": "Argentina",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "J"
+  },
+  {
+    "id": 60,
+    "local": "Austria",
+    "visita": "Argelia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "J"
+  },
+  {
+    "id": 61,
+    "local": "Portugal",
+    "visita": "Colombia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "K"
+  },
+  {
+    "id": 62,
+    "local": "Uzbekistán",
+    "visita": "RD Congo",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "K"
+  },
+  {
+    "id": 63,
+    "local": "Portugal",
+    "visita": "Uzbekistán",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "K"
+  },
+  {
+    "id": 64,
+    "local": "RD Congo",
+    "visita": "Colombia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "K"
+  },
+  {
+    "id": 65,
+    "local": "RD Congo",
+    "visita": "Portugal",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "K"
+  },
+  {
+    "id": 66,
+    "local": "Colombia",
+    "visita": "Uzbekistán",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "K"
+  },
+  {
+    "id": 67,
+    "local": "Inglaterra",
+    "visita": "Croacia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "L"
+  },
+  {
+    "id": 68,
+    "local": "Ghana",
+    "visita": "Panamá",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "L"
+  },
+  {
+    "id": 69,
+    "local": "Inglaterra",
+    "visita": "Ghana",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "L"
+  },
+  {
+    "id": 70,
+    "local": "Panamá",
+    "visita": "Croacia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "L"
+  },
+  {
+    "id": 71,
+    "local": "Panamá",
+    "visita": "Inglaterra",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "L"
+  },
+  {
+    "id": 72,
+    "local": "Croacia",
+    "visita": "Ghana",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "L"
+  },
+  {
+    "id": 73,
+    "local": "Clasificado 1",
+    "visita": "Clasificado 2",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 74,
+    "local": "Clasificado 3",
+    "visita": "Clasificado 4",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 75,
+    "local": "Clasificado 5",
+    "visita": "Clasificado 6",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 76,
+    "local": "Clasificado 7",
+    "visita": "Clasificado 8",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 77,
+    "local": "Clasificado 9",
+    "visita": "Clasificado 10",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 78,
+    "local": "Clasificado 11",
+    "visita": "Clasificado 12",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 79,
+    "local": "Clasificado 13",
+    "visita": "Clasificado 14",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 80,
+    "local": "Clasificado 15",
+    "visita": "Clasificado 16",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 81,
+    "local": "Clasificado 17",
+    "visita": "Clasificado 18",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 82,
+    "local": "Clasificado 19",
+    "visita": "Clasificado 20",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 83,
+    "local": "Clasificado 21",
+    "visita": "Clasificado 22",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 84,
+    "local": "Clasificado 23",
+    "visita": "Clasificado 24",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 85,
+    "local": "Clasificado 25",
+    "visita": "Clasificado 26",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 86,
+    "local": "Clasificado 27",
+    "visita": "Clasificado 28",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 87,
+    "local": "Clasificado 29",
+    "visita": "Clasificado 30",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 88,
+    "local": "Clasificado 31",
+    "visita": "Clasificado 32",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final"
+  },
+  {
+    "id": 89,
+    "local": "Ganador 16avos 1",
+    "visita": "Ganador 16avos 2",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Octavos de final"
+  },
+  {
+    "id": 90,
+    "local": "Ganador 16avos 3",
+    "visita": "Ganador 16avos 4",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Octavos de final"
+  },
+  {
+    "id": 91,
+    "local": "Ganador 16avos 5",
+    "visita": "Ganador 16avos 6",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Octavos de final"
+  },
+  {
+    "id": 92,
+    "local": "Ganador 16avos 7",
+    "visita": "Ganador 16avos 8",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Octavos de final"
+  },
+  {
+    "id": 93,
+    "local": "Ganador 16avos 9",
+    "visita": "Ganador 16avos 10",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Octavos de final"
+  },
+  {
+    "id": 94,
+    "local": "Ganador 16avos 11",
+    "visita": "Ganador 16avos 12",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Octavos de final"
+  },
+  {
+    "id": 95,
+    "local": "Ganador 16avos 13",
+    "visita": "Ganador 16avos 14",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Octavos de final"
+  },
+  {
+    "id": 96,
+    "local": "Ganador 16avos 15",
+    "visita": "Ganador 16avos 16",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Octavos de final"
+  },
+  {
+    "id": 97,
+    "local": "Ganador Octavos 1",
+    "visita": "Ganador Octavos 2",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Cuartos de final"
+  },
+  {
+    "id": 98,
+    "local": "Ganador Octavos 3",
+    "visita": "Ganador Octavos 4",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Cuartos de final"
+  },
+  {
+    "id": 99,
+    "local": "Ganador Octavos 5",
+    "visita": "Ganador Octavos 6",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Cuartos de final"
+  },
+  {
+    "id": 100,
+    "local": "Ganador Octavos 7",
+    "visita": "Ganador Octavos 8",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Cuartos de final"
+  },
+  {
+    "id": 101,
+    "local": "Ganador Cuartos 1",
+    "visita": "Ganador Cuartos 2",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Semifinales"
+  },
+  {
+    "id": 102,
+    "local": "Ganador Cuartos 3",
+    "visita": "Ganador Cuartos 4",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Semifinales"
+  },
+  {
+    "id": 103,
+    "local": "Perdedor Semi 1",
+    "visita": "Perdedor Semi 2",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Tercer Puesto"
+  },
+  {
+    "id": 104,
+    "local": "Ganador Semi 1",
+    "visita": "Ganador Semi 2",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Final"
+  }
+]

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polla Mundialista</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link href="/src/style.css" rel="stylesheet" />
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">⚽</div>
+      <div>
+        <div class="logo-text">Polla Mundialista</div>
+        <div class="logo-sub">Sistema GitOps · Client-Side</div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div id="last-updated">Actualizado al cargar</div>
+      <div id="total-matches">... partidos registrados</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-target="ranking">Ranking</button>
+    <button class="tab" data-target="partidos">Partidos</button>
+    <button class="tab" data-target="como">Cómo funciona</button>
+  </div>
+
+  <div class="main">
+    <div class="metrics" id="metrics-row"></div>
+
+    <div class="section active" id="tab-ranking">
+      <div class="section-label">Tabla de posiciones</div>
+      <div class="legend">
+        <span><span class="ldot" style="background:#4caf7d"></span>Exacto (5 pts)</span>
+        <span><span class="ldot" style="background:#4a9eff"></span>Tendencia (3 pts)</span>
+        <span><span class="ldot" style="background:#444"></span>Error (0 pts)</span>
+      </div>
+      <div class="ranking-wrap">
+        <table class="r-table">
+          <thead>
+            <tr>
+              <th style="width:36px">#</th>
+              <th>Jugador</th>
+              <th class="r">Puntos</th>
+              <th class="r">Exactos</th>
+              <th class="r">Tendencia</th>
+              <th class="r">Errores</th>
+            </tr>
+          </thead>
+          <tbody id="ranking-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="tab-partidos">
+      <div class="section-label">Historial y apuestas</div>
+      <div id="matches-list"></div>
+    </div>
+
+    <div class="section" id="tab-como">
+      <div class="section-label">Cómo participar</div>
+      <div class="how-grid">
+        <div class="how-card">
+          <div class="step-num">1</div>
+          <div class="how-text">
+            <h3>Registra tu nombre</h3>
+            <p>Edita <code>data/players.json</code> y agrega tu nombre al array <code>"participantes"</code>. Haz commit
+              y push a GitHub.</p>
+          </div>
+        </div>
+        <div class="how-card">
+          <div class="step-num">2</div>
+          <div class="how-text">
+            <h3>Crea tu archivo de apuestas</h3>
+            <p>Crea <code>data/bets/tunombre.json</code> con tus marcadores para cada partido. Importante: Tu nombre
+              debe ser el mismo que en <code>data/players.json</code>.
+            </p>
+          </div>
+        </div>
+        <div class="how-card">
+          <div class="step-num">3</div>
+          <div class="how-text">
+            <h3>Haz commit antes del partido</h3>
+            <p>El historial de Git garantiza transparencia total. Nadie puede cambiar sus apuestas "en secreto" sin que
+              quede registro.</p>
+          </div>
+        </div>
+        <div class="how-card">
+          <div class="step-num">4</div>
+          <div class="how-text">
+            <h3>Sigue el ranking en tiempo real</h3>
+            <p>El administrador actualiza <code>data/results.json</code> y el dashboard recalcula todo automáticamente
+              en el navegador.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-label" style="margin-top:28px">Sistema de puntos</div>
+      <div class="pts-panel">
+        <div class="pts-box">
+          <div class="pts-n" style="color:#4caf7d">5</div>
+          <div class="pts-lbl">Marcador exacto</div>
+        </div>
+        <div class="pts-box">
+          <div class="pts-n" style="color:#4a9eff">3</div>
+          <div class="pts-lbl">Tendencia correcta</div>
+        </div>
+        <div class="pts-box">
+          <div class="pts-n" style="color:#555">0</div>
+          <div class="pts-lbl">Error</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
