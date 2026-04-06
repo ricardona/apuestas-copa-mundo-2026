@@ -123,3 +123,10 @@ code { font-family: var(--mono); font-size: 11px; background: var(--surface2); p
 /* Legend */
 .legend { display: flex; gap: 18px; font-size: 12px; color: var(--muted); margin-bottom: 16px; align-items: center; }
 .ldot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+
+/* Mobile */
+@media (max-width: 650px) {
+  .metrics { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .ranking-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .r-table th, .r-table td { padding: 12px; }
+}
