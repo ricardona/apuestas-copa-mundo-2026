@@ -153,3 +153,20 @@ code { font-family: var(--mono); font-size: 11px; background: var(--surface2); p
 .goOn-match { margin-bottom: 18px; }
 .goOn-label { font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 8px; padding-left: 2px; }
 
+/* Instrucciones link button */
+.instrucciones-link { background: none; border: none; cursor: pointer; font-family: var(--font); font-size: 12px; color: var(--gold); padding: 0; text-decoration: underline; text-underline-offset: 2px; transition: opacity .15s; }
+.instrucciones-link:hover { opacity: 0.75; }
+
+/* Modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .2s; padding: 20px; }
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal-box { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; width: 100%; max-width: 520px; max-height: 85vh; display: flex; flex-direction: column; transform: translateY(12px); transition: transform .2s; overflow: hidden; }
+.modal-overlay.open .modal-box { transform: translateY(0); }
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.modal-title { font-size: 16px; font-weight: 600; letter-spacing: -0.02em; }
+.modal-close { background: var(--surface2); border: none; color: var(--muted); font-size: 16px; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s; }
+.modal-close:hover { background: var(--border); color: var(--text); }
+.modal-body { overflow-y: auto; padding: 22px; flex: 1; }
+.modal-footer { padding: 14px 22px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.modal-back { background: none; border: 1px solid var(--border); color: var(--muted); font-family: var(--font); font-size: 13px; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: border-color .15s, color .15s; }
+.modal-back:hover { border-color: var(--gold); color: var(--gold); }

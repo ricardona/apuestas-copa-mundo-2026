@@ -18,7 +18,7 @@
       <div class="logo-icon">⚽</div>
       <div>
         <div class="logo-text">Polla Mundialista</div>
-        <div class="logo-sub">Sistema GitOps · Client-Side</div>
+        <button class="instrucciones-link" id="btn-instrucciones" onclick="document.getElementById('modal-instrucciones').classList.add('open')">Instrucciones</button>
       </div>
     </div>
     <div class="header-meta">
@@ -31,7 +31,6 @@
     <button class="tab active" data-target="ranking">Ranking</button>
     <button class="tab" data-target="partidos">Partidos</button>
     <button class="tab" data-target="plus">Pronósticos Plus</button>
-    <button class="tab" data-target="como">Cómo funciona</button>
   </div>
 
   <div class="main">
@@ -71,70 +70,66 @@
       <div id="plus-content"></div>
     </div>
 
-    <div class="section" id="tab-como">
-      <div class="section-label">Cómo participar</div>
-      <div class="how-grid">
-        <div class="how-card">
-          <div class="step-num">1</div>
-          <div class="how-text">
-            <h3>Registra tu nombre</h3>
-            <p>Edita <code>data/players.json</code> y agrega tu nombre al array <code>"participantes"</code>. Haz commit
-              y push a GitHub.</p>
+  </div>
+
+  <!-- Modal Instrucciones -->
+  <div class="modal-overlay" id="modal-instrucciones" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title">Instrucciones</span>
+        <button class="modal-close" onclick="document.getElementById('modal-instrucciones').classList.remove('open')" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="section-label">Cómo participar</div>
+        <div class="how-grid">
+          <div class="how-card">
+            <div class="step-num">1</div>
+            <div class="how-text">
+              <h3>Registra tu nombre</h3>
+              <p>Edita <code>data/players.json</code> y agrega tu nombre al array <code>"participantes"</code>. Haz commit y push a GitHub.</p>
+            </div>
+          </div>
+          <div class="how-card">
+            <div class="step-num">2</div>
+            <div class="how-text">
+              <h3>Crea tu archivo de apuestas</h3>
+              <p>Crea <code>data/bets/tunombre.json</code> con tus marcadores para cada partido. Importante: Tu nombre debe ser el mismo que en <code>data/players.json</code>.</p>
+            </div>
+          </div>
+          <div class="how-card">
+            <div class="step-num">3</div>
+            <div class="how-text">
+              <h3>Haz commit antes del partido</h3>
+              <p>El historial de Git garantiza transparencia total. Nadie puede cambiar sus apuestas "en secreto" sin que quede registro.</p>
+            </div>
+          </div>
+          <div class="how-card">
+            <div class="step-num">4</div>
+            <div class="how-text">
+              <h3>Sigue el ranking en tiempo real</h3>
+              <p>El administrador actualiza <code>data/results.json</code> y el dashboard recalcula todo automáticamente en el navegador.</p>
+            </div>
           </div>
         </div>
-        <div class="how-card">
-          <div class="step-num">2</div>
-          <div class="how-text">
-            <h3>Crea tu archivo de apuestas</h3>
-            <p>Crea <code>data/bets/tunombre.json</code> con tus marcadores para cada partido. Importante: Tu nombre
-              debe ser el mismo que en <code>data/players.json</code>.
-            </p>
-          </div>
+        <div class="section-label" style="margin-top:28px">Sistema de puntos</div>
+        <div class="pts-panel">
+          <div class="pts-box"><div class="pts-n" style="color:#4caf7d">3</div><div class="pts-lbl">Marcador exacto</div></div>
+          <div class="pts-box"><div class="pts-n" style="color:#4a9eff">1</div><div class="pts-lbl">Tendencia correcta</div></div>
+          <div class="pts-box"><div class="pts-n" style="color:#555">0</div><div class="pts-lbl">Error</div></div>
+          <div class="pts-box"><div class="pts-n" style="color:#f0a500">×1/2/3</div><div class="pts-lbl">Multiplicador Normal/Especial/Super</div></div>
         </div>
-        <div class="how-card">
-          <div class="step-num">3</div>
-          <div class="how-text">
-            <h3>Haz commit antes del partido</h3>
-            <p>El historial de Git garantiza transparencia total. Nadie puede cambiar sus apuestas "en secreto" sin que
-              quede registro.</p>
-          </div>
-        </div>
-        <div class="how-card">
-          <div class="step-num">4</div>
-          <div class="how-text">
-            <h3>Sigue el ranking en tiempo real</h3>
-            <p>El administrador actualiza <code>data/results.json</code> y el dashboard recalcula todo automáticamente
-              en el navegador.</p>
-          </div>
+        <div class="section-label" style="margin-top:28px">Puntos Plus</div>
+        <div class="pts-panel">
+          <div class="pts-box"><div class="pts-n" style="color:#ffd700">8</div><div class="pts-lbl">Campeón</div></div>
+          <div class="pts-box"><div class="pts-n" style="color:#c0c0c0">5</div><div class="pts-lbl">Sub-Campeón</div></div>
+          <div class="pts-box"><div class="pts-n" style="color:#cd7f32">4</div><div class="pts-lbl">3er Puesto</div></div>
+          <div class="pts-box"><div class="pts-n" style="color:#888">3</div><div class="pts-lbl">4to Puesto</div></div>
+          <div class="pts-box"><div class="pts-n" style="color:#4a9eff">2</div><div class="pts-lbl">Posición de grupo</div></div>
+          <div class="pts-box"><div class="pts-n" style="color:#4caf7d">2</div><div class="pts-lbl">Equipo que avanza</div></div>
         </div>
       </div>
-      <div class="section-label" style="margin-top:28px">Sistema de puntos</div>
-      <div class="pts-panel">
-        <div class="pts-box">
-          <div class="pts-n" style="color:#4caf7d">3</div>
-          <div class="pts-lbl">Marcador exacto</div>
-        </div>
-        <div class="pts-box">
-          <div class="pts-n" style="color:#4a9eff">1</div>
-          <div class="pts-lbl">Tendencia correcta</div>
-        </div>
-        <div class="pts-box">
-          <div class="pts-n" style="color:#555">0</div>
-          <div class="pts-lbl">Error</div>
-        </div>
-        <div class="pts-box">
-          <div class="pts-n" style="color:#f0a500">×1/2/3</div>
-          <div class="pts-lbl">Multiplicador Normal/Especial/Super</div>
-        </div>
-      </div>
-      <div class="section-label" style="margin-top:28px">Puntos Plus</div>
-      <div class="pts-panel">
-        <div class="pts-box"><div class="pts-n" style="color:#ffd700">8</div><div class="pts-lbl">Campeón</div></div>
-        <div class="pts-box"><div class="pts-n" style="color:#c0c0c0">5</div><div class="pts-lbl">Sub-Campeón</div></div>
-        <div class="pts-box"><div class="pts-n" style="color:#cd7f32">4</div><div class="pts-lbl">3er Puesto</div></div>
-        <div class="pts-box"><div class="pts-n" style="color:#888">3</div><div class="pts-lbl">4to Puesto</div></div>
-        <div class="pts-box"><div class="pts-n" style="color:#4a9eff">2</div><div class="pts-lbl">Posición de grupo</div></div>
-        <div class="pts-box"><div class="pts-n" style="color:#4caf7d">2</div><div class="pts-lbl">Equipo que avanza</div></div>
+      <div class="modal-footer">
+        <button class="modal-back" onclick="document.getElementById('modal-instrucciones').classList.remove('open')">← Atrás</button>
       </div>
     </div>
   </div>
