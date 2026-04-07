@@ -87,6 +87,15 @@
             <div class="how-text">
               <h3>Registra tu nombre</h3>
               <p>Edita <code>data/players.json</code> y agrega tu nombre al array <code>"participantes"</code>. Haz commit y push a GitHub.</p>
+              <details class="plus-example-details">
+                <summary>Ver ejemplo de players.json</summary>
+                <pre class="plus-example"><code>{
+  "participantes": [
+    "tunombre",
+    "otrojugador"
+  ]
+}</code></pre>
+              </details>
             </div>
           </div>
           <div class="how-card">
@@ -94,6 +103,14 @@
             <div class="how-text">
               <h3>Crea tu archivo de apuestas</h3>
               <p>Crea <code>data/bets/tunombre.json</code> con tus marcadores para cada partido. Importante: Tu nombre debe ser el mismo que en <code>data/players.json</code>.</p>
+              <details class="plus-example-details">
+                <summary>Ver ejemplo de tunombre.json</summary>
+                <pre class="plus-example"><code>[
+  { "matchId": 1, "gL": 2, "gV": 1 },
+  { "matchId": 2, "gL": 0, "gV": 0 },
+  { "matchId": 3, "gL": 1, "gV": 2 }
+]</code></pre>
+              </details>
             </div>
           </div>
           <div class="how-card">
@@ -108,6 +125,52 @@
             <div class="how-text">
               <h3>Sigue el ranking en tiempo real</h3>
               <p>El administrador actualiza <code>data/results.json</code> y el dashboard recalcula todo automáticamente en el navegador.</p>
+              <details class="plus-example-details">
+                <summary>Ver ejemplo de results.json</summary>
+                <pre class="plus-example"><code>[
+  {
+    "id": 1,
+    "local": "Argentina",
+    "visita": "Brasil",
+    "gL": 2,
+    "gV": 1,
+    "status": "finalizado",
+    "fase": "Grupos",
+    "grupo": "A",
+    "tipo": "N"
+  }
+]</code></pre>
+              </details>
+            </div>
+          </div>
+          <div class="how-card">
+            <div class="step-num">5</div>
+            <div class="how-text">
+              <h3>Pronósticos Plus</h3>
+              <p>Crea <code>data/bets/tunombre.plus.json</code> con tres tipos de predicciones de largo plazo y hacé commit <strong>antes de que inicien los partidos</strong>:</p>
+              <ul class="plus-instr-list">
+                <li><strong>posicionesGrupos</strong> — el orden final (1°→4°) de cada uno de los 12 grupos (A–L). Se otorgan <strong>2 pts</strong> por cada posición acertada.</li>
+                <li><strong>top4</strong> — el campeón, subcampeón, 3er y 4to puesto del torneo (8 / 5 / 4 / 3 pts).</li>
+                <li><strong>goOn</strong> — en cada partido de eliminatoria, el equipo que avanza (<code>matchId</code> del partido + nombre del <code>equipo</code>). <strong>2 pts</strong> c/u.</li>
+              </ul>
+              <details class="plus-example-details">
+                <summary>Ver ejemplo de archivo .plus.json</summary>
+                <pre class="plus-example"><code>{
+  "posicionesGrupos": {
+    "A": ["Brasil", "Argentina", "Uruguay", "Chile"],
+    "B": ["Francia", "España", ...]
+  },
+  "top4": {
+    "campeon": "Brasil",
+    "subcampeon": "Argentina",
+    "tercero": "Francia",
+    "cuarto": "España"
+  },
+  "goOn": [
+    { "matchId": 49, "equipo": "Argentina" }
+  ]
+}</code></pre>
+              </details>
             </div>
           </div>
         </div>
@@ -120,12 +183,14 @@
         </div>
         <div class="section-label" style="margin-top:28px">Puntos Plus</div>
         <div class="pts-panel">
+          <div class="pts-cat">Top 4 al final del torneo</div>
           <div class="pts-box"><div class="pts-n" style="color:#ffd700">8</div><div class="pts-lbl">Campeón</div></div>
           <div class="pts-box"><div class="pts-n" style="color:#c0c0c0">5</div><div class="pts-lbl">Sub-Campeón</div></div>
           <div class="pts-box"><div class="pts-n" style="color:#cd7f32">4</div><div class="pts-lbl">3er Puesto</div></div>
           <div class="pts-box"><div class="pts-n" style="color:#888">3</div><div class="pts-lbl">4to Puesto</div></div>
-          <div class="pts-box"><div class="pts-n" style="color:#4a9eff">2</div><div class="pts-lbl">Posición de grupo</div></div>
-          <div class="pts-box"><div class="pts-n" style="color:#4caf7d">2</div><div class="pts-lbl">Equipo que avanza</div></div>
+          <div class="pts-cat">Grupos &amp; Eliminatoria (c/u)</div>
+          <div class="pts-box"><div class="pts-n" style="color:#4a9eff">2</div><div class="pts-lbl">Posición de grupo (c/u)</div></div>
+          <div class="pts-box"><div class="pts-n" style="color:#4caf7d">2</div><div class="pts-lbl">Equipo que avanza (c/u)</div></div>
         </div>
       </div>
       <div class="modal-footer">
