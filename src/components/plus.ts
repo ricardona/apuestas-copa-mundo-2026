@@ -16,13 +16,17 @@ export function buildPlus() {
     const real = state.PLUS_RESULTS?.top4;
     const hit = (pred: string, real?: string) => real && pred === real ? '✓' : (real ? '✗' : '');
     const cls = (pred: string, real?: string) => real && pred === real ? 'plus-hit' : (real ? 'plus-miss' : '');
+    const showPred = (pred: string, isRealKnown: boolean) => {
+      if (isRealKnown) return pred || '–';
+      return pred ? '?' : '–';
+    };
     return `
       <tr>
         <td><div class="player-cell">${avatar(name, 24)} ${name}</div></td>
-        <td class="${cls(plus.top4.campeon, real?.campeon)}">${plus.top4.campeon || '–'} <span class="hit-icon">${hit(plus.top4.campeon, real?.campeon)}</span></td>
-        <td class="${cls(plus.top4.subcampeon, real?.subcampeon)}">${plus.top4.subcampeon || '–'} <span class="hit-icon">${hit(plus.top4.subcampeon, real?.subcampeon)}</span></td>
-        <td class="${cls(plus.top4.tercero, real?.tercero)}">${plus.top4.tercero || '–'} <span class="hit-icon">${hit(plus.top4.tercero, real?.tercero)}</span></td>
-        <td class="${cls(plus.top4.cuarto, real?.cuarto)}">${plus.top4.cuarto || '–'} <span class="hit-icon">${hit(plus.top4.cuarto, real?.cuarto)}</span></td>
+        <td class="${cls(plus.top4.campeon, real?.campeon)}">${showPred(plus.top4.campeon, !!real?.campeon)} <span class="hit-icon">${hit(plus.top4.campeon, real?.campeon)}</span></td>
+        <td class="${cls(plus.top4.subcampeon, real?.subcampeon)}">${showPred(plus.top4.subcampeon, !!real?.subcampeon)} <span class="hit-icon">${hit(plus.top4.subcampeon, real?.subcampeon)}</span></td>
+        <td class="${cls(plus.top4.tercero, real?.tercero)}">${showPred(plus.top4.tercero, !!real?.tercero)} <span class="hit-icon">${hit(plus.top4.tercero, real?.tercero)}</span></td>
+        <td class="${cls(plus.top4.cuarto, real?.cuarto)}">${showPred(plus.top4.cuarto, !!real?.cuarto)} <span class="hit-icon">${hit(plus.top4.cuarto, real?.cuarto)}</span></td>
       </tr>`;
   }).join('');
 
@@ -41,7 +45,9 @@ export function buildPlus() {
             const team = pred[i] || '–';
             const isHit = realPos && realPos[i] && realPos[i] === pred[i];
             const isMiss = realPos && realPos[i] && !isHit;
-            return `<td class="${isHit ? 'plus-hit' : isMiss ? 'plus-miss' : ''}">${team} ${isHit ? '<span class="hit-icon">✓</span>' : ''}</td>`;
+            const isRealKnown = !!(realPos && realPos[i]);
+            const displayTeam = isRealKnown ? team : (team !== '–' ? '?' : '–');
+            return `<td class="${isHit ? 'plus-hit' : isMiss ? 'plus-miss' : ''}">${displayTeam} ${isHit ? '<span class="hit-icon">✓</span>' : ''}</td>`;
           }).join('')}
         </tr>`;
     }).join('');
@@ -108,9 +114,11 @@ export function buildPlus() {
         const team = pred?.equipo || '–';
         const isHit = real.equipo && team === real.equipo;
         const isMiss = real.equipo && !isHit && team !== '–';
+        const isRealKnown = !!real.equipo;
+        const displayTeam = isRealKnown ? team : (team !== '–' ? '?' : '–');
         return `<tr>
           <td><div class="player-cell">${avatar(name, 20)} ${name}</div></td>
-          <td class="${isHit ? 'plus-hit' : isMiss ? 'plus-miss' : ''}">${team} ${isHit ? '<span class="hit-icon">✓</span>' : isMiss ? '<span class="hit-icon">✗</span>' : ''}</td>
+          <td class="${isHit ? 'plus-hit' : isMiss ? 'plus-miss' : ''}">${displayTeam} ${isHit ? '<span class="hit-icon">✓</span>' : isMiss ? '<span class="hit-icon">✗</span>' : ''}</td>
         </tr>`;
       }).join('');
 

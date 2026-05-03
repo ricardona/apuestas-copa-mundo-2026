@@ -38,10 +38,13 @@ export function buildMatches() {
       const finalPts = raw !== null ? raw.pts * mult : null;
       const ptsStr = finalPts === null ? '–' : `+${finalPts}`;
       const ptsC = raw === null ? 'bp0' : raw.type === 'score' ? 'bp5' : raw.type === 'result' ? 'bp3' : 'bp0';
+      const showBet = r.status === 'finalizado';
+      const betScoreTxt = showBet ? `${b.gL} – ${b.gV}` : `? – ?`;
+
       return `<div class="bet-row">
         <div class="bet-left">${avatar(b.player, 22)} ${b.player}</div>
         <div class="bet-right">
-          <span class="bet-score-txt">${b.gL} – ${b.gV}</span>
+          <span class="bet-score-txt">${betScoreTxt}</span>
           <span class="bet-pts ${ptsC}">${ptsStr}</span>
         </div>
       </div>`;
