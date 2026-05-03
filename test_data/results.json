@@ -30,7 +30,7 @@
     "status": "finalizado",
     "fase": "Grupos",
     "grupo": "A",
-    "tipo": "N"
+    "tipo": "E"
   },
   {
     "id": 4,
@@ -52,7 +52,7 @@
     "status": "finalizado",
     "fase": "Grupos",
     "grupo": "A",
-    "tipo": "N"
+    "tipo": "X"
   },
   {
     "id": 6,

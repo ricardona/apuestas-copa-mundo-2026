@@ -153,18 +153,18 @@ export function buildStats() {
   });
 
   // Calculate facts
-  let maxE = -1, vidente = '-';
-  let maxS = -1, racha = '-';
-  let maxC = -1, apostador = '-';
-  let maxM = -1, tronco = '-';
-  let maxP = -1, nostradamus = '-';
+  let maxE = 0, vidente = '-';
+  let maxS = 0, racha = '-';
+  let maxC = 0, apostador = '-';
+  let maxM = 0, tronco = '-';
+  let maxP = 0, nostradamus = '-';
   
-  let maxTend = -1, alPalo = '-';
-  let maxTies = -1, conservador = '-';
-  let maxArranque = -999, caballo = '-';
-  let maxTortuga = -999, tortuga = '-';
-  let maxTrans = -1, montana = '-';
-  let maxAlone = -1, oveja = '-';
+  let maxTend = 0, alPalo = '-';
+  let maxTies = 0, conservador = '-';
+  let maxArranque = 0, caballo = '-';
+  let maxTortuga = 0, tortuga = '-';
+  let maxTrans = 0, montana = '-';
+  let maxAlone = 0, oveja = '-';
 
   pStats.forEach(p => {
     if (p.exacts > maxE) { maxE = p.exacts; vidente = p.player; }
