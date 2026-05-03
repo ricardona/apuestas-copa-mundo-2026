@@ -10,7 +10,7 @@ export function buildMetrics() {
 
   const metricsEl = document.getElementById('metrics-row');
   if (metricsEl) {
-    const liderInfo = stats.length > 0 ? `${stats[0].name} · ${stats[0].pts} pts` : 'N/A';
+    const liderInfo = stats.length > 0 && stats[0].pts > 0 ? `${stats[0].name} · ${stats[0].pts} pts` : '-';
     metricsEl.innerHTML = `
       <div class="metric"><div class="metric-label">Partidos jugados</div><div class="metric-value">${fin}</div></div>
       <div class="metric"><div class="metric-label">Pendientes</div><div class="metric-value">${pen}</div></div>

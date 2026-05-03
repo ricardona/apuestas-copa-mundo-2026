@@ -64,9 +64,17 @@ async function startApp() {
     if (updatedEl) {
       updatedEl.textContent = 'Actualizado: ' + new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
     }
+
+    const loaderEl = document.getElementById('global-loader');
+    if (loaderEl) loaderEl.classList.add('hidden');
   } catch (error) {
     console.error('Error al iniciar la aplicación:', error);
     if (updatedEl) updatedEl.textContent = 'Error al cargar';
+
+    const loaderEl = document.getElementById('global-loader');
+    if (loaderEl) {
+      loaderEl.innerHTML = '<div class="loader-text" style="color: var(--red);">Error al cargar datos.</div>';
+    }
   }
 }
 
