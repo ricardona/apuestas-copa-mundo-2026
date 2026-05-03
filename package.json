@@ -17,5 +17,8 @@
     "typescript": "^6.0.2",
     "vite": "^8.0.5",
     "vite-plugin-static-copy": "^4.0.1"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.1"
   }
 }

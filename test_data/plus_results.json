@@ -74,13 +74,19 @@
     ]
   },
   "top4": {
-    "campeon": "Brasil",
-    "subcampeon": "",
-    "tercero": "",
-    "cuarto": ""
+    "campeon": "Francia",
+    "subcampeon": "Brasil",
+    "tercero": "Alemania",
+    "cuarto": "Argentina"
   },
   "goOn": [
-    { "matchId": 73, "equipo": "Mexico" },
-    { "matchId": 74, "equipo": "Canada" }
+    {
+      "matchId": 73,
+      "equipo": "Mexico"
+    },
+    {
+      "matchId": 74,
+      "equipo": "Canada"
+    }
   ]
 }

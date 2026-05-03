@@ -4,6 +4,7 @@ import { buildMetrics } from './components/metrics';
 import { buildRanking } from './components/ranking';
 import { buildMatches } from './components/matches';
 import { buildPlus } from './components/plus';
+import { buildStats } from './components/stats';
 import { initTabs } from './tabs';
 
 // ─── Bootstrap ────────────────────────────────────────────────────────────────
@@ -57,6 +58,7 @@ async function startApp() {
     buildRanking();
     buildMatches();
     buildPlus();
+    buildStats();
     initTabs();
 
     if (updatedEl) {

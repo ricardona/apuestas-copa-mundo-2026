@@ -31,6 +31,7 @@
     <button class="tab active" data-target="ranking">Ranking</button>
     <button class="tab" data-target="partidos">Partidos</button>
     <button class="tab" data-target="plus">Pronósticos Plus</button>
+    <button class="tab" data-target="estadisticas">Estadísticas</button>
   </div>
 
   <div class="main">
@@ -68,6 +69,18 @@
     <div class="section" id="tab-plus">
       <div class="section-label">Pronósticos Plus</div>
       <div id="plus-content"></div>
+    </div>
+
+    <div class="section" id="tab-estadisticas">
+      <div class="section-label">Estadísticas y Tendencias</div>
+      
+      <div class="chart-container" style="position: relative; height:400px; width:100%; margin-bottom:28px;">
+        <canvas id="pointsChart"></canvas>
+      </div>
+
+      <div class="stats-grid" id="stats-grid">
+        <!-- Rendered via JS -->
+      </div>
     </div>
 
   </div>
