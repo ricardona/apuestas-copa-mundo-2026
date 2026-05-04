@@ -152,34 +152,66 @@ export function buildStats() {
     };
   });
 
-  // Calculate facts
-  let maxE = 0, vidente = '-';
-  let maxS = 0, racha = '-';
-  let maxC = 0, apostador = '-';
-  let maxM = 0, tronco = '-';
-  let maxP = 0, nostradamus = '-';
-  
-  let maxTend = 0, alPalo = '-';
-  let maxTies = 0, conservador = '-';
-  let maxArranque = 0, caballo = '-';
-  let maxTortuga = 0, tortuga = '-';
-  let maxTrans = 0, montana = '-';
-  let maxAlone = 0, oveja = '-';
-
-  pStats.forEach(p => {
-    if (p.exacts > maxE) { maxE = p.exacts; vidente = p.player; }
-    if (p.maxStreak > maxS) { maxS = p.maxStreak; racha = p.player; }
-    if (p.comodinPts > maxC) { maxC = p.comodinPts; apostador = p.player; }
-    if (p.miss > maxM) { maxM = p.miss; tronco = p.player; }
-    if (p.plusPts > maxP) { maxP = p.plusPts; nostradamus = p.player; }
+  // Helper to find players tied for a maximum metric
+  const getMaxPlayers = (metric: (p: any) => number, minThreshold: number = 0) => {
+    let maxVal = -Infinity;
+    let players: string[] = [];
     
-    if (p.tend > maxTend) { maxTend = p.tend; alPalo = p.player; }
-    if (p.tiesBet > maxTies) { maxTies = p.tiesBet; conservador = p.player; }
-    if (p.arranqueScore > maxArranque) { maxArranque = p.arranqueScore; caballo = p.player; }
-    if (p.tortugaScore > maxTortuga) { maxTortuga = p.tortugaScore; tortuga = p.player; }
-    if (p.transitions > maxTrans) { maxTrans = p.transitions; montana = p.player; }
-    if (p.aloneHits > maxAlone) { maxAlone = p.aloneHits; oveja = p.player; }
-  });
+    pStats.forEach(p => {
+      const val = metric(p);
+      if (val > maxVal) {
+        maxVal = val;
+        players = [p.player];
+      } else if (val === maxVal) {
+        players.push(p.player);
+      }
+    });
+
+    if (maxVal <= minThreshold && minThreshold !== -Infinity) return { val: maxVal, str: '-' };
+    return { val: maxVal, str: players.join(', ') };
+  };
+
+  const videnteData = getMaxPlayers(p => p.exacts);
+  const vidente = videnteData.str;
+  const maxE = videnteData.val;
+
+  const rachaData = getMaxPlayers(p => p.maxStreak);
+  const racha = rachaData.str;
+  const maxS = rachaData.val;
+
+  const apostadorData = getMaxPlayers(p => p.comodinPts);
+  const apostador = apostadorData.str;
+  const maxC = apostadorData.val;
+
+  const troncoData = getMaxPlayers(p => p.miss);
+  const tronco = troncoData.str;
+  const maxM = troncoData.val;
+
+  const nostradamusData = getMaxPlayers(p => p.plusPts);
+  const nostradamus = nostradamusData.str;
+  const maxP = nostradamusData.val;
+
+  const alPaloData = getMaxPlayers(p => p.tend);
+  const alPalo = alPaloData.str;
+  const maxTend = alPaloData.val;
+
+  const conservadorData = getMaxPlayers(p => p.tiesBet);
+  const conservador = conservadorData.str;
+  const maxTies = conservadorData.val;
+
+  const caballoData = getMaxPlayers(p => p.arranqueScore, -Infinity);
+  const caballo = caballoData.str;
+
+  const tortugaData = getMaxPlayers(p => p.tortugaScore, -Infinity);
+  const tortuga = tortugaData.str;
+
+  const montanaData = getMaxPlayers(p => p.transitions);
+  const montana = montanaData.str;
+  const maxTrans = montanaData.val;
+
+  const ovejaData = getMaxPlayers(p => p.aloneHits);
+  const oveja = ovejaData.str;
+  const maxAlone = ovejaData.val;
 
   statsGrid.innerHTML = `
     <div class="stat-card">
