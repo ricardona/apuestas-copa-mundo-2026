@@ -12,6 +12,10 @@ export default defineConfig({
         {
           src: 'test_data',
           dest: ''
+        },
+        {
+          src: 'img',
+          dest: ''
         }
       ]
     })
