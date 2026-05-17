@@ -140,6 +140,11 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); min-
 .detail-plus-table th { font-size: 10px; font-weight: 500; color: var(--muted); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
 .detail-plus-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
 .detail-plus-table tr:last-child td { border-bottom: none; }
+.detail-collapsible { margin-bottom: 10px; }
+.detail-collapsible summary { cursor: pointer; font-size: 12px; color: var(--muted); user-select: none; list-style: none; display: inline-flex; align-items: center; gap: 6px; }
+.detail-collapsible summary::before { content: '▶'; font-size: 9px; transition: transform 0.15s; }
+.detail-collapsible[open] summary::before { transform: rotate(90deg); }
+.detail-convocatoria-table { margin-top: 8px; }
 
 /* Matches */
 .fase-section { margin-bottom: 32px; }
@@ -225,6 +230,11 @@ pre.plus-example code { background: none; padding: 0; font-size: 11.5px; color: 
 .pts-panel { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; margin-top: 20px; }
 .goOn-match { margin-bottom: 18px; }
 .goOn-label { font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 8px; padding-left: 2px; }
+.convocatoria-player { margin-bottom: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.convocatoria-title { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 14px; font-size: 13px; color: var(--muted); user-select: none; }
+.convocatoria-title::before { content: '▶'; font-size: 9px; transition: transform 0.15s; }
+.convocatoria-player[open] .convocatoria-title::before { transform: rotate(90deg); }
+.convocatoria-table { border-left: 0; border-right: 0; border-bottom: 0; border-radius: 0; }
 
 /* Instrucciones link button */
 .instrucciones-link { background: none; border: none; cursor: pointer; font-family: var(--font); font-size: 12px; color: var(--gold); padding: 0; text-decoration: underline; text-underline-offset: 2px; transition: opacity .15s; }

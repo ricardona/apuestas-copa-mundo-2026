@@ -54,6 +54,11 @@ async function startApp() {
       if (prRes.ok) state.PLUS_RESULTS = await prRes.json();
     } catch { /* optional file */ }
 
+    try {
+      const colombiaRes = await fetch(`${basePath}/colombia_final.json`);
+      if (colombiaRes.ok) state.COLOMBIA_FINAL = await colombiaRes.json();
+    } catch { /* optional file */ }
+
     buildMetrics();
     buildRanking();
     buildMatches();

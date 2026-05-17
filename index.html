@@ -184,8 +184,9 @@
             <div class="step-num">5</div>
             <div class="how-text">
               <h3>Plus</h3>
-              <p>Crea <code>data/bets/tunombre.plus.json</code> con tres tipos de predicciones de largo plazo y hacé commit <strong>antes de que inicien los partidos</strong>:</p>
+              <p>Crea <code>data/bets/tunombre.plus.json</code> con tus predicciones de largo plazo y hacé commit <strong>antes de que inicien los partidos</strong>:</p>
               <ul class="plus-instr-list">
+                <li><strong>convocatoriaColombia</strong> — los 26 jugadores de Colombia que creés que irán al Mundial. Se otorga <strong>1 pt</strong> por cada acierto y es el puntaje base inicial.</li>
                 <li><strong>posicionesGrupos</strong> — el orden final (1°→4°) de cada uno de los 12 grupos (A–L). Se otorgan <strong>2 pts</strong> por cada posición acertada.</li>
                 <li><strong>top4</strong> — el campeón, subcampeón, 3er y 4to puesto del torneo (8 / 5 / 4 / 3 pts).</li>
                 <li><strong>goOn</strong> — en cada partido de eliminatoria, el equipo que avanza (<code>matchId</code> del partido + nombre del <code>equipo</code>). <strong>2 pts</strong> c/u.</li>
@@ -205,6 +206,10 @@
   },
   "goOn": [
     { "matchId": 49, "equipo": "Argentina" }
+  ],
+  "convocatoriaColombia": [
+    "Jugador 1",
+    "Jugador 2"
   ]
 }</code></pre>
               </details>
@@ -226,6 +231,7 @@
           <div class="pts-box"><div class="pts-n" style="color:#cd7f32">4</div><div class="pts-lbl">3er Puesto</div></div>
           <div class="pts-box"><div class="pts-n" style="color:#888">3</div><div class="pts-lbl">4to Puesto</div></div>
           <div class="pts-cat">Grupos &amp; Eliminatoria (c/u)</div>
+          <div class="pts-box"><div class="pts-n" style="color:#f5c518">1</div><div class="pts-lbl">Convocatoria Colombia (c/u)</div></div>
           <div class="pts-box"><div class="pts-n" style="color:#4a9eff">2</div><div class="pts-lbl">Posición de grupo (c/u)</div></div>
           <div class="pts-box"><div class="pts-n" style="color:#4caf7d">2</div><div class="pts-lbl">Equipo que avanza (c/u)</div></div>
         </div>

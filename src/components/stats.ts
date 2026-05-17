@@ -1,6 +1,6 @@
 import Chart from 'chart.js/auto';
 import { state } from '../state';
-import { calcMatchScore, getMultiplier } from '../scoring';
+import { calcularPuntosConvocatoria, calcMatchScore, getMultiplier } from '../scoring';
 
 // ─── Stats and Trends ────────────────────────────────────────────────────────
 
@@ -10,13 +10,14 @@ export function buildStats() {
   if (!chartCanvas || !statsGrid) return;
 
   const matches = state.RESULTS.filter(r => r.status === 'finalizado').sort((a,b) => a.id - b.id);
-  if (matches.length === 0) {
+  const hasConvocatoria = state.COLOMBIA_FINAL?.jugadoresOficiales.length === 26;
+  if (matches.length === 0 && !hasConvocatoria) {
     statsGrid.innerHTML = '<div style="color:#888;">No hay suficientes datos aún.</div>';
     return;
   }
 
-  const maxId = matches[matches.length - 1].id;
-  const labels = matches.map(m => `P${m.id}`);
+  const maxId = matches[matches.length - 1]?.id ?? -1;
+  const labels = hasConvocatoria ? ['Base', ...matches.map(m => `P${m.id}`)] : matches.map(m => `P${m.id}`);
 
   // Determine the ID of the last finalized group match so we know when to add group points
   const finalizedGroupMatches = matches.filter(m => m.fase === 'Grupos');
@@ -44,6 +45,7 @@ export function buildStats() {
     
     const plusBet = state.PLUS_BETS[player];
     const pSettings = state.SETTINGS.puntos;
+    const convocatoriaPoints = calcularPuntosConvocatoria(plusBet, state.COLOMBIA_FINAL?.jugadoresOficiales);
 
     let groupPoints = 0;
     if (plusBet && plusBet.posicionesGrupos && state.PLUS_RESULTS && state.PLUS_RESULTS.posicionesGrupos) {
@@ -65,6 +67,8 @@ export function buildStats() {
     }
 
     const data: number[] = [];
+    if (hasConvocatoria) data.push(convocatoriaPoints);
+
     let exacts = 0;
     let tend = 0;
     let comodinPts = 0;
@@ -138,13 +142,14 @@ export function buildStats() {
         knockoutPts += (cumulativeGoOn + top4Points);
       }
 
-      let stepTotal = cumulativeMatch + cumulativeGoOn + cumulativeGroup + cumulativeTop4;
+      let stepTotal = convocatoriaPoints + cumulativeMatch + cumulativeGoOn + cumulativeGroup + cumulativeTop4;
       data.push(stepTotal);
     });
 
     return { 
       player, data, exacts, tend, comodinPts, maxStreak, miss, 
-      plusPts: cumulativeGoOn + cumulativeGroup + cumulativeTop4, 
+      convocatoriaPoints,
+      plusPts: convocatoriaPoints + cumulativeGoOn + cumulativeGroup + cumulativeTop4, 
       total: data[data.length-1],
       tiesBet, transitions, aloneHits,
       arranqueScore: groupsPts - knockoutPts,
@@ -190,6 +195,10 @@ export function buildStats() {
   const nostradamusData = getMaxPlayers(p => p.plusPts);
   const nostradamus = nostradamusData.str;
   const maxP = nostradamusData.val;
+
+  const convocatoriaData = getMaxPlayers(p => p.convocatoriaPoints);
+  const convocatoria = convocatoriaData.str;
+  const maxConvocatoria = convocatoriaData.val;
 
   const alPaloData = getMaxPlayers(p => p.tend);
   const alPalo = alPaloData.str;
@@ -243,6 +252,12 @@ export function buildStats() {
       <div class="stat-title">Nostradamus</div>
       <div class="stat-value">${nostradamus}</div>
       <div class="stat-desc">Más puntos en fase Plus (${maxP})</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🇨🇴</div>
+      <div class="stat-title">Convocatoria Colombia</div>
+      <div class="stat-value">${convocatoria}</div>
+      <div class="stat-desc">Más aciertos en la lista final (${maxConvocatoria})</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon">🥅</div>

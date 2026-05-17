@@ -1,4 +1,4 @@
-import type { Bet, Result, PlayerStats } from './types';
+import type { Bet, Result, PlayerStats, PlusBet } from './types';
 import { state } from './state';
 
 // ─── Scoring ──────────────────────────────────────────────────────────────────
@@ -17,6 +17,29 @@ export function calcMatchScore(bet: Bet, result: Result): { pts: number; type: '
   const bT = bet.gL > bet.gV ? 1 : bet.gL < bet.gV ? -1 : 0;
   if (rT === bT) return { pts: state.SETTINGS.puntos.result, type: 'result' };
   return { pts: 0, type: 'miss' };
+}
+
+export function normalizePlayerName(name: string): string {
+  return name.trim().replace(/\s+/g, ' ').toLocaleLowerCase('es-CO');
+}
+
+export function calcularPuntosConvocatoria(userPlusData: PlusBet | undefined, listaOficial: string[] | undefined): number {
+  if (
+    !userPlusData?.convocatoriaColombia ||
+    userPlusData.convocatoriaColombia.length !== 26 ||
+    !listaOficial ||
+    listaOficial.length !== 26
+  ) return 0;
+
+  const oficiales = new Set(listaOficial.map(normalizePlayerName).filter(Boolean));
+  const predichos = new Set(userPlusData.convocatoriaColombia.map(normalizePlayerName).filter(Boolean));
+
+  let aciertos = 0;
+  predichos.forEach(jugador => {
+    if (oficiales.has(jugador)) aciertos += 1;
+  });
+
+  return aciertos;
 }
 
 /** Points earned from Plus predictions */
@@ -53,6 +76,10 @@ export function calcPlusScore(name: string): number {
 }
 
 export function getStats(name: string): PlayerStats {
+  const ptsConvocatoria = calcularPuntosConvocatoria(
+    state.PLUS_BETS[name],
+    state.COLOMBIA_FINAL?.jugadoresOficiales
+  );
   let ptsMatch = 0, tend = 0, miss = 0;
   const streak: string[] = [];
 
@@ -71,5 +98,5 @@ export function getStats(name: string): PlayerStats {
   });
 
   const ptsPlus = calcPlusScore(name);
-  return { name, pts: ptsMatch + ptsPlus, ptsMatch, ptsPlus, tend, miss, streak };
+  return { name, pts: ptsConvocatoria + ptsMatch + ptsPlus, ptsMatch, ptsPlus, ptsConvocatoria, tend, miss, streak };
 }

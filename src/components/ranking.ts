@@ -1,5 +1,5 @@
 import { state } from '../state';
-import { calcMatchScore, getMultiplier, getStats } from '../scoring';
+import { calcularPuntosConvocatoria, calcMatchScore, getMultiplier, getStats, normalizePlayerName } from '../scoring';
 import { avatar } from '../avatar';
 
 // ─── Ranking ──────────────────────────────────────────────────────────────────
@@ -8,6 +8,12 @@ export function buildPlayerDetail(name: string): string {
   const bets = state.BETS[name] || [];
   const plus = state.PLUS_BETS[name];
   const p = state.SETTINGS.puntos;
+  const convocatoria = plus?.convocatoriaColombia ?? [];
+  const oficiales = state.COLOMBIA_FINAL?.jugadoresOficiales ?? [];
+  const oficialesNormalizados = new Set(oficiales.map(normalizePlayerName).filter(Boolean));
+  const puntosConvocatoria = calcularPuntosConvocatoria(plus, oficiales);
+  const convocatoriaValida = convocatoria.length === 26;
+  const convocatoriaEvaluada = convocatoriaValida && oficiales.length === 26;
 
   // ── Matches section ──
   const finishedWithBet = state.RESULTS.filter(r =>
@@ -43,6 +49,26 @@ export function buildPlayerDetail(name: string): string {
   // ── Plus section ──
   let plusHtml = '';
   if (plus) {
+    const convocatoriaRows = convocatoria.map(jugador => {
+      const isHit = convocatoriaEvaluada && oficialesNormalizados.has(normalizePlayerName(jugador));
+      const isMiss = convocatoriaEvaluada && !isHit;
+      const cls = isHit ? 'plus-hit' : isMiss ? 'plus-miss' : '';
+      const pts = isHit ? '<span class="bet-pts bp5">+1</span>' : isMiss ? '<span class="bet-pts bp0">+0</span>' : '';
+      return `<tr>
+        <td class="${cls}">${jugador || '–'}${isHit ? ' <span class="hit-icon">✓</span>' : isMiss ? ' <span class="hit-icon">✗</span>' : ''}</td>
+        <td>${convocatoriaEvaluada ? pts : ''}</td>
+      </tr>`;
+    }).join('');
+    const convocatoriaHtml = convocatoria.length
+      ? `<details class="detail-collapsible">
+          <summary>Convocatoria Colombia: ${!convocatoriaValida ? 'lista inválida, deben ser 26 jugadores' : convocatoriaEvaluada ? `${puntosConvocatoria}/26 aciertos · +${puntosConvocatoria} pts` : 'pendiente de lista oficial'}</summary>
+          <table class="detail-plus-table detail-convocatoria-table">
+            <thead><tr><th>Jugador apostado</th><th>Pts</th></tr></thead>
+            <tbody>${convocatoriaRows}</tbody>
+          </table>
+        </details>`
+      : '';
+
     const top4Rows = [
       { label: `Campeón (${p.firstPlus}pts)`, pred: plus.top4.campeon, real: state.PLUS_RESULTS?.top4.campeon, pts: p.firstPlus },
       { label: `Sub-Campeón (${p.secondPlus}pts)`, pred: plus.top4.subcampeon, real: state.PLUS_RESULTS?.top4.subcampeon, pts: p.secondPlus },
@@ -100,11 +126,11 @@ export function buildPlayerDetail(name: string): string {
     }).join('');
 
     const allPlusRows = top4Rows + groupRows + goOnRows;
-    if (allPlusRows) {
-      plusHtml = `<table class="detail-plus-table">
+    if (convocatoriaHtml || allPlusRows) {
+      plusHtml = `${convocatoriaHtml}${allPlusRows ? `<table class="detail-plus-table">
         <thead><tr><th>Predicción</th><th>Tu apuesta</th><th>Real</th><th>Pts</th></tr></thead>
         <tbody>${allPlusRows}</tbody>
-      </table>`;
+      </table>` : ''}`;
     }
   }
 
@@ -118,7 +144,9 @@ export function buildPlayerDetail(name: string): string {
 }
 
 export function buildRanking() {
-  const stats = state.PLAYERS.map(getStats).sort((a, b) => b.pts - a.pts || b.ptsPlus - a.ptsPlus);
+  const stats = state.PLAYERS.map(getStats).sort((a, b) =>
+    b.pts - a.pts || (b.ptsConvocatoria + b.ptsPlus) - (a.ptsConvocatoria + a.ptsPlus)
+  );
   const posClass = (i: number) => i === 0 ? 'g' : i === 1 ? 's' : i === 2 ? 'b' : '';
 
   const bodyEl = document.getElementById('ranking-body');
@@ -137,7 +165,7 @@ export function buildRanking() {
         </td>
         <td class="r"><span class="pts-big">${p.pts}</span></td>
         <td class="r"><span class="badge be" title="Pts partidos">${p.ptsMatch}</span></td>
-        <td class="r"><span class="badge bt" title="Pts plus">${p.ptsPlus > 0 ? '+' + p.ptsPlus : p.ptsPlus}</span></td>
+        <td class="r"><span class="badge bt" title="Pts convocatoria + plus">${p.ptsConvocatoria + p.ptsPlus > 0 ? '+' + (p.ptsConvocatoria + p.ptsPlus) : p.ptsConvocatoria + p.ptsPlus}</span></td>
         <td class="r"><span class="badge bx">${p.miss}</span> <span class="row-chevron">▾</span></td>
       </tr>
       <tr class="detail-row" data-for="${p.name}">

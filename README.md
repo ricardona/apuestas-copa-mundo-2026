@@ -6,7 +6,7 @@ Bienvenido al repositorio de la **Polla Mundialista**. Esta es una aplicación w
 
 - **Transparencia Total (GitOps):** Los pronósticos se registran mediante commits en este repositorio antes de los partidos. ¡Nadie puede cambiar sus apuestas "en secreto"!
 - **Ranking en Tiempo Real:** Cálculo automático de puntos y actualización de la tabla de posiciones tras cada partido.
-- **Pronósticos Plus:** Soporte para predicciones a largo plazo (posiciones exactas de grupos, equipos que avanzan en eliminatorias y el Top 4 del torneo).
+- **Pronósticos Plus:** Soporte para predicciones a largo plazo (convocatoria final de Colombia, posiciones exactas de grupos, equipos que avanzan en eliminatorias y el Top 4 del torneo).
 - **Dashboard Estadístico:** Gráficas de rendimiento interactivo, tendencias y métricas divertidas para los jugadores (mejor racha, más exactos, especialista, etc.).
 - **Diseño Responsivo:** Interfaz moderna y adaptable a dispositivos móviles.
 
@@ -53,6 +53,10 @@ Para unirte a la polla, necesitas acceso a este repositorio y seguir estos pasos
      },
      "goOn": [
        { "matchId": 49, "equipo": "Argentina" }
+     ],
+     "convocatoriaColombia": [
+       "Jugador 1",
+       "Jugador 2"
      ]
    }
    ```
@@ -69,6 +73,7 @@ Para unirte a la polla, necesitas acceso a este repositorio y seguir estos pasos
 - *Nota: Existen multiplicadores especiales de partido (x2, x3) configurables desde `data/settings.json`.*
 
 ### Puntos Plus
+- **Convocatoria final de Colombia:** 1 punto por cada jugador acertado. Estos son los primeros puntos que computa el sistema y funcionan como puntaje base antes de partidos, grupos o eliminatorias. La lista oficial se carga en `data/colombia_final.json` bajo la clave `"jugadoresOficiales"`.
 - **Top 4 del Torneo:** Campeón (8 pts), Subcampeón (5 pts), 3er Puesto (4 pts), 4to Puesto (3 pts).
 - **Posición de Grupo:** 2 puntos por cada equipo ubicado en su posición final exacta.
 - **Avanzan de fase:** 2 puntos por cada equipo que acertés que avanza en las llaves de eliminación directa.

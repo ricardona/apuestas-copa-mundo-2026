@@ -28,6 +28,7 @@ export interface PlusBet {
     cuarto: string;
   };
   goOn: Array<{ matchId: number; equipo: string }>;
+  convocatoriaColombia?: string[];
 }
 
 export interface Settings {
@@ -56,11 +57,16 @@ export interface PlusResults {
   goOn: Array<{ matchId: number; equipo: string }>;
 }
 
+export interface ColombiaFinal {
+  jugadoresOficiales: string[];
+}
+
 export interface PlayerStats {
   name: string;
   pts: number;
   ptsMatch: number;
   ptsPlus: number;
+  ptsConvocatoria: number;
   tend: number;
   miss: number;
   streak: string[];

@@ -1,5 +1,6 @@
 import { state } from '../state';
 import { avatar } from '../avatar';
+import { calcularPuntosConvocatoria, normalizePlayerName } from '../scoring';
 
 // ─── Plus Tab ─────────────────────────────────────────────────────────────────
 
@@ -8,6 +9,46 @@ export function buildPlus() {
   if (!container) return;
 
   const p = state.SETTINGS.puntos;
+  const oficiales = state.COLOMBIA_FINAL?.jugadoresOficiales ?? [];
+  const oficialesNormalizados = new Set(oficiales.map(normalizePlayerName).filter(Boolean));
+  const convocatoriaEvaluada = oficiales.length === 26;
+
+  const convocatoriaHtml = state.PLAYERS.map(name => {
+    const plus = state.PLUS_BETS[name];
+    const convocatoria = plus?.convocatoriaColombia ?? [];
+    const convocatoriaValida = convocatoria.length === 26;
+    const puntos = calcularPuntosConvocatoria(plus, oficiales);
+    const summary = !convocatoria.length
+      ? 'sin predicción'
+      : !convocatoriaValida
+        ? 'lista inválida'
+        : convocatoriaEvaluada
+          ? `${puntos}/26 aciertos · +${puntos} pts`
+          : 'pendiente de lista oficial';
+
+    const rows = convocatoria.map(jugador => {
+      const isHit = convocatoriaEvaluada && oficialesNormalizados.has(normalizePlayerName(jugador));
+      const isMiss = convocatoriaEvaluada && !isHit;
+      const displayName = convocatoriaEvaluada ? jugador : (jugador ? '?' : '–');
+      return `<tr>
+        <td class="${isHit ? 'plus-hit' : isMiss ? 'plus-miss' : ''}">${displayName}${isHit ? ' <span class="hit-icon">✓</span>' : isMiss ? ' <span class="hit-icon">✗</span>' : ''}</td>
+        <td>${isHit ? '<span class="bet-pts bp5">+1</span>' : isMiss ? '<span class="bet-pts bp0">+0</span>' : ''}</td>
+      </tr>`;
+    }).join('');
+
+    return `<details class="convocatoria-player">
+      <summary class="convocatoria-title">
+        <span class="player-cell">${avatar(name, 20)} ${name}</span>
+        <span>${summary}</span>
+      </summary>
+      ${convocatoria.length ? `<div class="plus-table-wrap">
+        <table class="plus-table convocatoria-table">
+          <thead><tr><th>Jugador apostado</th><th>Pts</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>` : '<div class="detail-empty">No registró convocatoria.</div>'}
+    </details>`;
+  }).join('');
 
   // ── Top 4 section ──
   const top4Html = state.PLAYERS.map(name => {
@@ -69,6 +110,17 @@ export function buildPlus() {
   }).join('');
 
   container.innerHTML = `
+    <div class="plus-section">
+      <h3 class="plus-title">Convocatoria Colombia</h3>
+      ${convocatoriaEvaluada ? `<div class="plus-table-wrap">
+        <table class="plus-table">
+          <thead><tr><th>Lista oficial</th></tr></thead>
+          <tbody><tr class="plus-real-row"><td>${oficiales.join(', ')}</td></tr></tbody>
+        </table>
+      </div>` : ''}
+      ${convocatoriaHtml}
+    </div>
+
     <div class="plus-section">
       <h3 class="plus-title">🏆 Cuadro de Honor</h3>
       <div class="plus-table-wrap">
