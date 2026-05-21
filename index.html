@@ -5,13 +5,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Polla Mundialista 2026</title>
-  <meta name="description" content="Sigue el ranking, apuestas y estadísticas de la polla mundialista Copa del Mundo 2026." />
+  <meta name="description" content="Sigue las posiciones, apuestas y estadísticas de la polla mundialista Copa del Mundo 2026." />
 
   <!-- Open Graph / WhatsApp / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ricardona.github.io/apuestas-copa-mundo-2026/" />
   <meta property="og:title" content="Polla Mundialista 2026 ⚽" />
-  <meta property="og:description" content="Sigue el ranking, apuestas y estadísticas de la polla mundialista Copa del Mundo 2026." />
+  <meta property="og:description" content="Sigue las posiciones, apuestas y estadísticas de la polla mundialista Copa del Mundo 2026." />
   <meta property="og:image" content="https://ricardona.github.io/apuestas-copa-mundo-2026/img/banner.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -21,7 +21,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Polla Mundialista 2026 ⚽" />
-  <meta name="twitter:description" content="Sigue el ranking, apuestas y estadísticas de la polla mundialista Copa del Mundo 2026." />
+  <meta name="twitter:description" content="Sigue las posiciones, apuestas y estadísticas de la polla mundialista Copa del Mundo 2026." />
   <meta name="twitter:image" content="https://ricardona.github.io/apuestas-copa-mundo-2026/img/banner.png" />
 
   <link
@@ -34,10 +34,15 @@
 
   <div class="header">
     <div class="logo">
-      <div class="logo-icon">⚽</div>
-      <div>
-        <div class="logo-text">Polla Mundialista</div>
-        <button class="instrucciones-link" id="btn-instrucciones" onclick="document.getElementById('modal-instrucciones').classList.add('open')">Instrucciones</button>
+      <button class="logo-home logo-icon-button" data-target="ranking" aria-label="Volver a posiciones">
+        <div class="logo-icon">⚽</div>
+      </button>
+      <div class="logo-copy">
+        <button class="logo-home logo-text" data-target="ranking">Polla Mundialista</button>
+        <div class="header-actions">
+          <button class="instrucciones-link" id="btn-instrucciones" onclick="document.getElementById('modal-instrucciones').classList.add('open')">Instrucciones</button>
+          <button class="header-action-link" data-target="mis-apuestas">✏️ Mis Apuestas</button>
+        </div>
       </div>
     </div>
     <div class="header-meta">
@@ -52,7 +57,7 @@
   </div>
 
   <div class="tabs">
-    <button class="tab active" data-target="ranking">Ranking</button>
+    <button class="tab active" data-target="ranking">Posiciones</button>
     <button class="tab" data-target="partidos">Partidos</button>
     <button class="tab" data-target="plus">Plus</button>
     <button class="tab" data-target="estadisticas">Estadísticas</button>
@@ -105,6 +110,11 @@
       <div class="stats-grid" id="stats-grid">
         <!-- Rendered via JS -->
       </div>
+    </div>
+
+    <div class="section" id="tab-mis-apuestas">
+      <div class="section-label">Editar mis apuestas</div>
+      <div id="mis-apuestas-content"></div>
     </div>
 
   </div>
@@ -160,7 +170,7 @@
           <div class="how-card">
             <div class="step-num">4</div>
             <div class="how-text">
-              <h3>Sigue el ranking en tiempo real</h3>
+              <h3>Sigue las posiciones en tiempo real</h3>
               <p>El administrador actualiza <code>data/results.json</code> y el dashboard recalcula todo automáticamente en el navegador.</p>
               <details class="plus-example-details">
                 <summary>Ver ejemplo de results.json</summary>

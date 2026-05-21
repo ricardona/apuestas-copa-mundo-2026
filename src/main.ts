@@ -5,6 +5,7 @@ import { buildRanking } from './components/ranking';
 import { buildMatches } from './components/matches';
 import { buildPlus } from './components/plus';
 import { buildStats } from './components/stats';
+import { buildMisApuestas } from './components/mis-apuestas';
 import { initTabs } from './tabs';
 
 // ─── Bootstrap ────────────────────────────────────────────────────────────────
@@ -64,6 +65,7 @@ async function startApp() {
     buildMatches();
     buildPlus();
     buildStats();
+    buildMisApuestas(basePath);
     initTabs();
 
     if (updatedEl) {

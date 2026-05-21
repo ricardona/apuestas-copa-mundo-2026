@@ -1,0 +1,467 @@
+import { state } from '../state';
+import type { Bet, PlusBet, Result } from '../types';
+import { activateTab } from '../tabs';
+
+const COLOMBIA_PRESELECCIONADOS = [
+  'Álvaro Montero', 'Camilo Vargas', 'David Ospina', 'Kevin Mier', 'Andrés Mosquera Marmolejo',
+  'Carlos Cuesta', 'Cristian Borja', 'Daniel Muñoz', 'Dávinson Sánchez', 'Déiver Machado',
+  'Jhon Lucumí', 'Johan Mojica', 'Juan David Cabal', 'Santiago Arias', 'Yerry Mina',
+  'Andrés Román', 'Jhon Janer Lucumí', 'Kevin Mantilla', 'Willier Ditta', 'Yerson Mosquera',
+  'James Rodríguez', 'Jefferson Lerma', 'Jhon Arias', 'Jorge Carrascal', 'Juan Fernando Quintero',
+  'Juan Guillermo Cuadrado', 'Kevin Castaño', 'Matheus Uribe', 'Nelson Deossa', 'Richard Ríos',
+  'Sebastián Gómez', 'Wílmar Barrios', 'Yáser Asprilla', 'Gustavo Puerta', 'Jorman Campuzano',
+  'Jhon Córdoba', 'Jhon Jáder Durán', 'Luis Díaz', 'Luis Sinisterra', 'Rafael Santos Borré',
+  'Cucho Hernández', 'Duván Zapata', 'Jaminton Campaz', 'Johan Carbonero', 'Juan Camilo Hernández',
+  'Juan Camilo Portilla', 'Juan David Mosquera', 'Kevin Serna', 'Mateo Cassierra', 'Óscar Cortés',
+  'Roger Martínez', 'Santiago Moreno', 'Yaser Asprilla', 'Edwin Cardona', 'Miguel Borja'
+];
+
+const GROUPS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
+const TOP4_KEYS: Array<keyof PlusBet['top4']> = ['campeon', 'subcampeon', 'tercero', 'cuarto'];
+const TOP4_LABELS: Record<keyof PlusBet['top4'], string> = {
+  campeon: 'Campeón',
+  subcampeon: 'Subcampeón',
+  tercero: 'Tercero',
+  cuarto: 'Cuarto'
+};
+
+type EditorData = {
+  player: string;
+  bets: Bet[];
+  plus: PlusBet;
+  basePath: string;
+};
+
+let editor: EditorData | null = null;
+
+export function buildMisApuestas(basePath = './data') {
+  const container = document.getElementById('mis-apuestas-content');
+  if (!container) return;
+  renderStart(container, basePath);
+}
+
+function renderStart(container: HTMLElement, basePath: string) {
+  const playerOptions = state.PLAYERS.map(p => `<option value="${esc(p)}">${esc(p)}</option>`).join('');
+  container.innerHTML = `
+    <div class="mis-shell">
+      ${homeButton()}
+      <div class="mis-hero">
+        <div>
+          <div class="section-label">Editar mis apuestas</div>
+          <h2>Mis Apuestas</h2>
+          <p>Selecciona tu participante para abrir el editor con los datos publicados.</p>
+        </div>
+      </div>
+      <div class="mis-card">
+        <label class="mis-field">
+          <span>Participante existente</span>
+          <select id="mis-player-select">
+            <option value="">Seleccionar jugador</option>
+            ${playerOptions}
+          </select>
+        </label>
+        <label class="mis-field">
+          <span>Nuevo participante</span>
+          <input id="mis-player-new" type="text" placeholder="tu-nombre" />
+        </label>
+        <div class="mis-actions">
+          <button class="mis-primary" id="mis-start">Abrir editor</button>
+          <span class="mis-note" id="mis-start-note">Se cargarán las apuestas disponibles en la aplicación.</span>
+        </div>
+      </div>
+    </div>`;
+
+  container.querySelector('.mis-home')?.addEventListener('click', goHome);
+  container.querySelector('#mis-start')?.addEventListener('click', () => startEditor(container, basePath));
+}
+
+async function startEditor(container: HTMLElement, basePath: string) {
+  const selected = (container.querySelector('#mis-player-select') as HTMLSelectElement | null)?.value.trim() ?? '';
+  const typed = (container.querySelector('#mis-player-new') as HTMLInputElement | null)?.value.trim() ?? '';
+  const player = typed || selected;
+  const note = container.querySelector('#mis-start-note');
+
+  if (!player) {
+    if (note) note.textContent = 'Escribe o selecciona un participante.';
+    return;
+  }
+
+  try {
+    const [bets, plus] = await Promise.all([
+      loadBets(player, basePath),
+      loadPlus(player, basePath)
+    ]);
+    editor = { player, bets: normalizeBets(bets), plus: normalizePlus(plus), basePath };
+    renderEditor(container);
+  } catch (error) {
+    if (note) note.textContent = error instanceof Error ? error.message : 'No se pudieron cargar las apuestas.';
+  }
+}
+
+async function loadBets(player: string, basePath: string): Promise<Bet[]> {
+  if (state.BETS[player]) return structuredClone(state.BETS[player]);
+  const res = await fetch(`${basePath}/bets/${encodeURIComponent(player)}.json`);
+  return fetchJsonOrDefault(res, defaultBets());
+}
+
+async function loadPlus(player: string, basePath: string): Promise<PlusBet> {
+  if (state.PLUS_BETS[player]) return structuredClone(state.PLUS_BETS[player]);
+  const res = await fetch(`${basePath}/bets/${encodeURIComponent(player)}.plus.json`);
+  return fetchJsonOrDefault(res, defaultPlus());
+}
+
+async function fetchJsonOrDefault<T>(res: Response, fallback: T): Promise<T> {
+  if (!res.ok) return fallback;
+
+  const contentType = res.headers.get('content-type') ?? '';
+  if (!contentType.includes('application/json')) return fallback;
+
+  try {
+    return await res.json() as T;
+  } catch {
+    return fallback;
+  }
+}
+
+function renderEditor(container: HTMLElement) {
+  if (!editor) return;
+  const pending = state.RESULTS.filter(match => match.status !== 'finalizado');
+  const hiddenCount = state.RESULTS.length - pending.length;
+  const tournamentStarted = state.RESULTS.some(match => match.status === 'finalizado');
+  const showConvocatoria = !tournamentStarted;
+  const top4Locked = tournamentStarted;
+  const firstPanel = showConvocatoria ? 'convocatoria' : 'top4';
+
+  container.innerHTML = `
+    <div class="mis-shell">
+      <div class="mis-editor-head">
+        ${homeButton()}
+        <div>
+          <div class="section-label">Participante</div>
+          <h2>${esc(editor.player)}</h2>
+        </div>
+        <div class="mis-editor-actions">
+          <button class="mis-reset" id="mis-reset" type="button">Reiniciar</button>
+          <button class="mis-download" id="mis-download-bets" type="button">Descargar partidos</button>
+          <button class="mis-download" id="mis-download-plus" type="button">Descargar plus</button>
+        </div>
+      </div>
+      <div class="mis-tabs" role="tablist">
+        ${showConvocatoria ? `<button class="mis-subtab ${firstPanel === 'convocatoria' ? 'active' : ''}" data-panel="convocatoria">Convocatoria</button>` : ''}
+        <button class="mis-subtab ${firstPanel === 'top4' ? 'active' : ''}" data-panel="top4">Top 4</button>
+        <button class="mis-subtab" data-panel="grupos">Grupos</button>
+        <button class="mis-subtab" data-panel="partidos">Partidos</button>
+        <button class="mis-subtab" data-panel="goon">Eliminatorias</button>
+      </div>
+      ${showConvocatoria ? `<div class="mis-panel ${firstPanel === 'convocatoria' ? 'active' : ''}" id="mis-panel-convocatoria">${renderConvocatoria()}</div>` : ''}
+      <div class="mis-panel ${firstPanel === 'top4' ? 'active' : ''}" id="mis-panel-top4">${renderTop4(top4Locked)}</div>
+      <div class="mis-panel" id="mis-panel-grupos">${renderGroups()}</div>
+      <div class="mis-panel" id="mis-panel-partidos">${renderMatches(pending, hiddenCount)}</div>
+      <div class="mis-panel" id="mis-panel-goon">${renderGoOn()}</div>
+    </div>`;
+
+  container.querySelector('.mis-home')?.addEventListener('click', goHome);
+  container.querySelector('#mis-reset')?.addEventListener('click', () => resetEditor(container));
+  container.querySelector('#mis-download-bets')?.addEventListener('click', downloadBets);
+  container.querySelector('#mis-download-plus')?.addEventListener('click', downloadPlus);
+  container.querySelectorAll('.mis-subtab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = (btn as HTMLElement).dataset.panel;
+      container.querySelectorAll('.mis-subtab').forEach(item => item.classList.remove('active'));
+      container.querySelectorAll('.mis-panel').forEach(item => item.classList.remove('active'));
+      btn.classList.add('active');
+      container.querySelector(`#mis-panel-${panel}`)?.classList.add('active');
+    });
+  });
+
+  bindEditorInputs(container);
+}
+
+function renderMatches(matches: Result[], hiddenCount: number) {
+  const rows = matches.map(match => {
+    const bet = ensureBet(match.id);
+    return `<div class="mis-match-row">
+      <div class="mis-match-info">
+        <span class="mis-match-id">#${match.id}</span>
+        <strong>${esc(match.local)}</strong>
+        <span>vs</span>
+        <strong>${esc(match.visita)}</strong>
+        <small>${esc(match.fase ?? '')}${match.grupo ? ` · Grupo ${esc(match.grupo)}` : ''}</small>
+      </div>
+      <div class="mis-score-inputs">
+        <input type="number" min="0" max="30" value="${bet.gL}" data-bet="${match.id}" data-side="gL" aria-label="Goles ${esc(match.local)}" />
+        <span>-</span>
+        <input type="number" min="0" max="30" value="${bet.gV}" data-bet="${match.id}" data-side="gV" aria-label="Goles ${esc(match.visita)}" />
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="mis-status">Se muestran ${matches.length} partidos pendientes. ${hiddenCount} finalizados quedan ocultos y preservados.</div>
+    <div class="mis-list">${rows || '<div class="mis-empty">No hay partidos pendientes para editar.</div>'}</div>`;
+}
+
+function renderConvocatoria() {
+  if (!editor) return '';
+  const selected = new Set(editor.plus.convocatoriaColombia ?? []);
+  const limitReached = selected.size >= 26;
+  const items = COLOMBIA_PRESELECCIONADOS.map(name => `<label class="mis-check ${selected.has(name) ? 'selected' : ''}">
+    <input type="checkbox" data-convocatoria="${esc(name)}" ${selected.has(name) ? 'checked' : ''} ${limitReached && !selected.has(name) ? 'disabled' : ''} />
+    <span>${esc(name)}</span>
+  </label>`).join('');
+  return `
+    <div class="mis-status" id="mis-convocatoria-status">${selected.size} / 26 seleccionados</div>
+    <div class="mis-check-grid">${items}</div>`;
+}
+
+function renderGroups() {
+  return GROUPS.map(group => {
+    const teams = groupTeams(group);
+    const values = editor?.plus.posicionesGrupos[group] ?? ['', '', '', ''];
+    return `<div class="mis-group-card">
+      <h3>Grupo ${group}</h3>
+      <div class="mis-select-grid">
+        ${[0, 1, 2, 3].map(i => selectHtml(`data-group="${group}" data-pos="${i}"`, `${i + 1}º`, teams, values[i] ?? '')).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTop4(locked: boolean) {
+  if (locked) return lockedBox('Oculto y bloqueado por inicio del torneo');
+  const teams = allTeams();
+  return `<div class="mis-select-grid top4">
+    ${TOP4_KEYS.map(key => selectHtml(`data-top4="${key}"`, TOP4_LABELS[key], teams, editor?.plus.top4[key] ?? '')).join('')}
+  </div>`;
+}
+
+function renderGoOn() {
+  const matches = state.RESULTS.filter(match => match.fase && match.fase !== 'Grupos');
+  const rows = matches.map(match => {
+    const value = editor?.plus.goOn.find(item => item.matchId === match.id)?.equipo ?? '';
+    const teams = [match.local, match.visita].filter(team => !/^Clasificado|^Ganador|^Perdedor/.test(team));
+    return `<div class="mis-match-row">
+      <div class="mis-match-info">
+        <span class="mis-match-id">#${match.id}</span>
+        <strong>${esc(match.local)}</strong><span>vs</span><strong>${esc(match.visita)}</strong>
+        <small>${esc(match.fase ?? '')}</small>
+      </div>
+      ${selectHtml(`data-goon="${match.id}"`, 'Avanza', teams, value)}
+    </div>`;
+  }).join('');
+  return `<div class="mis-list">${rows || '<div class="mis-empty">No hay partidos de eliminación directa.</div>'}</div>`;
+}
+
+function bindEditorInputs(container: HTMLElement) {
+  container.querySelectorAll<HTMLInputElement>('input[data-bet]').forEach(input => {
+    input.addEventListener('input', () => {
+      const bet = ensureBet(Number(input.dataset.bet));
+      const side = input.dataset.side as 'gL' | 'gV';
+      bet[side] = Math.max(0, Number(input.value || 0));
+    });
+  });
+
+  container.querySelectorAll<HTMLInputElement>('input[data-convocatoria]').forEach(input => {
+    input.addEventListener('change', () => toggleConvocatoria(input, container));
+  });
+
+  container.querySelectorAll<HTMLSelectElement>('select[data-group]').forEach(select => {
+    select.addEventListener('change', () => updateGroup(select, container));
+  });
+
+  container.querySelectorAll<HTMLSelectElement>('select[data-top4]').forEach(select => {
+    select.addEventListener('change', () => {
+      if (!editor) return;
+      const key = select.dataset.top4 as keyof PlusBet['top4'];
+      editor.plus.top4[key] = select.value;
+      refreshDuplicateOptions(container, `select[data-top4]`);
+    });
+  });
+
+  container.querySelectorAll<HTMLSelectElement>('select[data-goon]').forEach(select => {
+    select.addEventListener('change', () => updateGoOn(select));
+  });
+
+  GROUPS.forEach(group => refreshDuplicateOptions(container, `select[data-group="${group}"]`));
+  refreshDuplicateOptions(container, `select[data-top4]`);
+}
+
+function toggleConvocatoria(input: HTMLInputElement, container: HTMLElement) {
+  if (!editor) return;
+  const name = input.dataset.convocatoria ?? '';
+  const selected = new Set(editor.plus.convocatoriaColombia ?? []);
+  if (input.checked && selected.size >= 26 && !selected.has(name)) {
+    input.checked = false;
+    const status = container.querySelector('#mis-convocatoria-status');
+    if (status) status.textContent = 'Máximo 26 jugadores. Desmarca uno para cambiar.';
+    return;
+  }
+  input.checked ? selected.add(name) : selected.delete(name);
+  editor.plus.convocatoriaColombia = [...selected];
+  input.closest('.mis-check')?.classList.toggle('selected', input.checked);
+  refreshConvocatoriaLimit(container);
+  const status = container.querySelector('#mis-convocatoria-status');
+  if (status) status.textContent = `${selected.size} / 26 seleccionados`;
+}
+
+function refreshConvocatoriaLimit(container: HTMLElement) {
+  if (!editor) return;
+  const selected = new Set(editor.plus.convocatoriaColombia ?? []);
+  const limitReached = selected.size >= 26;
+
+  container.querySelectorAll<HTMLInputElement>('input[data-convocatoria]').forEach(input => {
+    const name = input.dataset.convocatoria ?? '';
+    input.disabled = limitReached && !selected.has(name);
+  });
+}
+
+function updateGroup(select: HTMLSelectElement, container: HTMLElement) {
+  if (!editor) return;
+  const group = select.dataset.group ?? '';
+  const pos = Number(select.dataset.pos);
+  const current = editor.plus.posicionesGrupos[group] ?? ['', '', '', ''];
+  current[pos] = select.value;
+  if (pos <= 2) autoFillFourthGroupPosition(group, current, container);
+  editor.plus.posicionesGrupos[group] = current;
+  refreshDuplicateOptions(container, `select[data-group="${group}"]`);
+}
+
+function autoFillFourthGroupPosition(group: string, current: string[], container: HTMLElement) {
+  if (!current[2]) {
+    current[3] = '';
+  } else {
+    const usedTopThree = new Set(current.slice(0, 3).filter(Boolean));
+    const remaining = groupTeams(group).filter(team => !usedTopThree.has(team));
+    if (remaining.length === 1) current[3] = remaining[0];
+  }
+
+  const fourthSelect = container.querySelector<HTMLSelectElement>(`select[data-group="${group}"][data-pos="3"]`);
+  if (fourthSelect) fourthSelect.value = current[3] ?? '';
+}
+
+function updateGoOn(select: HTMLSelectElement) {
+  if (!editor) return;
+  const matchId = Number(select.dataset.goon);
+  editor.plus.goOn = editor.plus.goOn.filter(item => item.matchId !== matchId);
+  if (select.value) editor.plus.goOn.push({ matchId, equipo: select.value });
+}
+
+function refreshDuplicateOptions(container: HTMLElement, selector: string) {
+  const selects = [...container.querySelectorAll<HTMLSelectElement>(selector)];
+  const chosen = new Set(selects.map(select => select.value).filter(Boolean));
+  selects.forEach(select => {
+    [...select.options].forEach(option => {
+      option.disabled = !!option.value && option.value !== select.value && chosen.has(option.value);
+    });
+  });
+}
+
+function ensureBet(matchId: number) {
+  if (!editor) throw new Error('Editor no inicializado');
+  let bet = editor.bets.find(item => item.matchId === matchId);
+  if (!bet) {
+    bet = { matchId, gL: 0, gV: 0 };
+    editor.bets.push(bet);
+  }
+  return bet;
+}
+
+function defaultBets(): Bet[] {
+  return state.RESULTS.map(match => ({ matchId: match.id, gL: 0, gV: 0 }));
+}
+
+function defaultPlus(): PlusBet {
+  return {
+    convocatoriaColombia: [],
+    posicionesGrupos: Object.fromEntries(GROUPS.map(group => [group, ['', '', '', '']])) as Record<string, string[]>,
+    top4: { campeon: '', subcampeon: '', tercero: '', cuarto: '' },
+    goOn: []
+  };
+}
+
+function normalizeBets(data: Bet[]) {
+  if (!Array.isArray(data)) throw new Error('El archivo de partidos debe ser un array JSON.');
+  const byId = new Map<number, Bet>(data.map(item => [Number(item.matchId), { matchId: Number(item.matchId), gL: Number(item.gL ?? 0), gV: Number(item.gV ?? 0), goOn: item.goOn }]));
+  state.RESULTS.forEach(match => {
+    if (!byId.has(match.id)) byId.set(match.id, { matchId: match.id, gL: 0, gV: 0 });
+  });
+  return [...byId.values()].sort((a, b) => a.matchId - b.matchId);
+}
+
+function normalizePlus(data: Partial<PlusBet>) {
+  const base = defaultPlus();
+  return {
+    convocatoriaColombia: Array.isArray(data.convocatoriaColombia) ? data.convocatoriaColombia : [],
+    posicionesGrupos: { ...base.posicionesGrupos, ...(data.posicionesGrupos ?? {}) },
+    top4: { ...base.top4, ...(data.top4 ?? {}) },
+    goOn: Array.isArray(data.goOn) ? data.goOn : []
+  };
+}
+
+function groupTeams(group: string) {
+  return [...new Set(state.RESULTS.filter(match => match.grupo === group).flatMap(match => [match.local, match.visita]))].sort();
+}
+
+function allTeams() {
+  return [...new Set(state.RESULTS.filter(match => match.grupo).flatMap(match => [match.local, match.visita]))].sort();
+}
+
+function selectHtml(attrs: string, label: string, options: string[], value: string) {
+  const opts = options.map(option => `<option value="${esc(option)}" ${option === value ? 'selected' : ''}>${esc(option)}</option>`).join('');
+  return `<label class="mis-field compact"><span>${esc(label)}</span><select ${attrs}><option value="">Sin seleccionar</option>${opts}</select></label>`;
+}
+
+function lockedBox(message: string) {
+  return `<div class="mis-locked"><div class="mis-lock-icon">🔒</div><strong>${esc(message)}</strong><p>Los datos cargados quedan preservados íntegramente en la descarga.</p></div>`;
+}
+
+function homeButton() {
+  return `<button class="mis-home" type="button">← Regresar</button>`;
+}
+
+function goHome() {
+  activateTab('ranking', true);
+}
+
+function resetEditor(container: HTMLElement) {
+  if (!editor) return;
+  const confirmed = window.confirm('Se perderán los cambios que no hayas descargado. ¿Quieres reiniciar y escoger otro participante?');
+  if (!confirmed) return;
+  const basePath = editor.basePath;
+  editor = null;
+  renderStart(container, basePath);
+}
+
+function downloadBets() {
+  if (!editor) return;
+  downloadJson(`${editor.player}.json`, editor.bets);
+}
+
+function downloadPlus() {
+  if (!editor) return;
+  downloadJson(`${editor.player}.plus.json`, editor.plus);
+}
+
+function downloadJson(filename: string, data: unknown) {
+  // Simplificamos el type a 'application/json' puro
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  
+  link.href = url;
+  link.download = filename.endsWith('.json') ? filename : `${filename}.json`; // Asegura la extensión
+  
+  // Medida de seguridad extra para el navegador
+  link.rel = 'noopener'; 
+  
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  
+  // 5 segundos es perfecto, aseguramos que se limpie
+  window.setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+function esc(value: string | number) {
+  return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char] ?? char);
+}
