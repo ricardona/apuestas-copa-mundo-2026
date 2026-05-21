@@ -23,20 +23,6 @@ export function buildStats() {
   const finalizedGroupMatches = matches.filter(m => m.fase === 'Grupos');
   const lastFinalizedGroupMatchId = finalizedGroupMatches.length > 0 ? finalizedGroupMatches[finalizedGroupMatches.length - 1].id : -1;
 
-  // Pre-calculate Oveja Negra (players who were the ONLY ones to score in a match)
-  const matchScorers = matches.map(m => {
-    let scorers = 0;
-    let scorerName = '';
-    state.PLAYERS.forEach(p => {
-      const b = state.BETS[p]?.find(x => x.matchId === m.id);
-      if (b) {
-        const raw = calcMatchScore(b, m);
-        if (raw && raw.pts > 0) { scorers++; scorerName = p; }
-      }
-    });
-    return { matchId: m.id, scorers, scorerName };
-  });
-
   const pStats = state.PLAYERS.map(player => {
     let cumulativeMatch = 0;
     let cumulativeGoOn = 0;
@@ -80,7 +66,6 @@ export function buildStats() {
     let knockoutPts = 0;
     let transitions = 0;
     let lastWasZero = true; // start assuming 0
-    let aloneHits = matchScorers.filter(ms => ms.scorers === 1 && ms.scorerName === player).length;
 
     matches.forEach((m, idx) => {
       const bet = state.BETS[player]?.find(b => b.matchId === m.id);
@@ -151,7 +136,7 @@ export function buildStats() {
       convocatoriaPoints,
       plusPts: convocatoriaPoints + cumulativeGoOn + cumulativeGroup + cumulativeTop4, 
       total: data[data.length-1],
-      tiesBet, transitions, aloneHits,
+      tiesBet, transitions, matchPts: cumulativeMatch,
       arranqueScore: groupsPts - knockoutPts,
       tortugaScore: knockoutPts - groupsPts
     };
@@ -174,6 +159,25 @@ export function buildStats() {
 
     if (maxVal <= minThreshold && minThreshold !== -Infinity) return { val: maxVal, str: '-' };
     return { val: maxVal, str: players.join(', ') };
+  };
+
+  // Helper to find players tied for a minimum metric
+  const getMinPlayers = (metric: (p: any) => number, maxThreshold: number = Infinity) => {
+    let minVal = Infinity;
+    let players: string[] = [];
+    
+    pStats.forEach(p => {
+      const val = metric(p);
+      if (val < minVal) {
+        minVal = val;
+        players = [p.player];
+      } else if (val === minVal) {
+        players.push(p.player);
+      }
+    });
+
+    if (minVal >= maxThreshold && maxThreshold !== Infinity) return { val: minVal, str: '-' };
+    return { val: minVal, str: players.join(', ') };
   };
 
   const videnteData = getMaxPlayers(p => p.exacts);
@@ -218,9 +222,9 @@ export function buildStats() {
   const montana = montanaData.str;
   const maxTrans = montanaData.val;
 
-  const ovejaData = getMaxPlayers(p => p.aloneHits);
+  const ovejaData = getMinPlayers(p => p.matchPts);
   const oveja = ovejaData.str;
-  const maxAlone = ovejaData.val;
+  const minMatch = ovejaData.val;
 
   statsGrid.innerHTML = `
     <div class="stat-card">
@@ -293,7 +297,7 @@ export function buildStats() {
       <div class="stat-icon">🐑</div>
       <div class="stat-title">La Oveja Negra</div>
       <div class="stat-value">${oveja}</div>
-      <div class="stat-desc">Único en puntuar en un partido (${maxAlone})</div>
+      <div class="stat-desc">Menos puntos en partidos (${minMatch} pts)</div>
     </div>
   `;
 

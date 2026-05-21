@@ -78,6 +78,23 @@ Para unirte a la polla, necesitas acceso a este repositorio y seguir estos pasos
 - **Posición de Grupo:** 2 puntos por cada equipo ubicado en su posición final exacta.
 - **Avanzan de fase:** 2 puntos por cada equipo que acertés que avanza en las llaves de eliminación directa.
 
+### 🏆 Logros y Medallas (Dashboard de Estadísticas)
+
+Para hacer la competencia más emocionante, el sistema calcula automáticamente las siguientes medallas y reconocimientos a lo largo del torneo:
+
+- **🎯 El Vidente:** El participante con más marcadores exactos acertados.
+- **🔥 Racha de Fuego:** El participante con la mayor racha de aciertos exactos de forma consecutiva.
+- **🤑 El Apostador:** Quien ha conseguido la mayor cantidad de puntos en partidos especiales (con multiplicador).
+- **🪵 El Tronco:** El participante con más partidos en los que obtuvo 0 puntos.
+- **🔮 Nostradamus:** Quien ha sumado más puntos en la fase de pronósticos Plus (lista de convocados, grupos, llaves y top 4).
+- **🇨🇴 Convocatoria Colombia:** El participante que acertó la mayor cantidad de jugadores en la lista final de 26 convocados de Colombia.
+- **🥅 El "Al Palo":** El participante que acertó más tendencias de juego (quién gana o si hay empate) pero sin dar en el marcador exacto.
+- **🥱 El Conservador:** Quien apostó al empate más veces.
+- **🐴 Caballo de Arranque:** El participante con mejor desempeño relativo en la fase de grupos en comparación con la fase de eliminación directa.
+- **🐢 Tortuga Ninja:** El participante con mejor desempeño relativo en la fase de eliminación directa en comparación con la fase de grupos (el rey de las remontadas).
+- **🎢 Montaña Rusa:** El participante más inconstante del torneo (con la mayor cantidad de transiciones entre sumar y no sumar puntos).
+- **🐑 La Oveja Negra:** El participante que ha sumado la **menor cantidad de puntos** en los partidos.
+
 ## 🚀 Desarrollo Local
 
 Si deseas ejecutar o modificar el proyecto en tu entorno local:
