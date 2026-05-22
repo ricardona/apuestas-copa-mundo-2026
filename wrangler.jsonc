@@ -10,5 +10,20 @@
       "database_name": "mundial2026db",
       "database_id": "d42ce1f0-1666-41ba-bb20-1b88ad4ce89a"
     }
-  ]
+  ],
+    "observability": {
+    "enabled": false,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": false,
+      "persist": true,
+      "head_sampling_rate": 1
+    }
+  }
 }
