@@ -6,7 +6,7 @@
   },
   "d1_databases": [
     {
-      "binding": "DB",
+      "binding": "mundial2026db",
       "database_name": "mundial2026db",
       "database_id": "d42ce1f0-1666-41ba-bb20-1b88ad4ce89a"
     }

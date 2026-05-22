@@ -45,7 +45,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       return json({ error: 'Forbidden' }, 403);
     }
 
-    await env.DB.prepare(
+    await env.mundial2026db.prepare(
       `INSERT INTO players (id, username, email, avatar_url, updated_at)
        VALUES (?1, ?2, ?3, ?4, CURRENT_TIMESTAMP)
        ON CONFLICT(id) DO UPDATE SET
