@@ -6,7 +6,8 @@ import {
   UserButton,
   useUser,
 } from '@clerk/clerk-react';
-import type { UserResource } from '@clerk/types';
+
+type UserResource = NonNullable<ReturnType<typeof useUser>['user']>;
 import { startApp } from './main';
 
 // ─── Data mapping ─────────────────────────────────────────────────────────────
