@@ -19,8 +19,6 @@ import { initTabs } from './tabs';
  */
 export async function startApp(currentPlayer?: string) {
   state.CURRENT_PLAYER = currentPlayer ?? null;
-  const updatedEl = document.getElementById('last-updated');
-  if (updatedEl) updatedEl.textContent = 'Cargando datos...';
 
   try {
     const urlParams = new URLSearchParams(window.location.search);
@@ -76,15 +74,10 @@ export async function startApp(currentPlayer?: string) {
     buildMisApuestas(basePath);
     initTabs();
 
-    if (updatedEl) {
-      updatedEl.textContent = 'Actualizado: ' + new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-    }
-
     const loaderEl = document.getElementById('global-loader');
     if (loaderEl) loaderEl.classList.add('hidden');
   } catch (error) {
     console.error('Error al iniciar la aplicación:', error);
-    if (updatedEl) updatedEl.textContent = 'Error al cargar';
 
     const loaderEl = document.getElementById('global-loader');
     if (loaderEl) {
