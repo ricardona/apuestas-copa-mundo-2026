@@ -4,11 +4,13 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
+  useAuth,
   useUser,
 } from '@clerk/clerk-react';
 
 type UserResource = NonNullable<ReturnType<typeof useUser>['user']>;
 import { startApp } from './main';
+import { syncUser } from './syncUser';
 
 // ─── Data mapping ─────────────────────────────────────────────────────────────
 //
@@ -68,6 +70,7 @@ const ClerkBar: React.FC = () => {
 
 const AuthenticatedApp: React.FC = () => {
   const { user } = useUser();
+  const { getToken } = useAuth();
   const initialized = useRef(false);
 
   useEffect(() => {
@@ -75,6 +78,7 @@ const AuthenticatedApp: React.FC = () => {
     if (initialized.current || !user) return;
     initialized.current = true;
 
+    syncUser(user, getToken); // fire-and-forget; never blocks app startup
     const identifier = resolvePlayerIdentifier(user);
     startApp(identifier);
   }, [user?.id]); // re-initialise only if the logged-in identity actually changes

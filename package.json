@@ -14,6 +14,7 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260522.1",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
@@ -22,6 +23,7 @@
     "vite-plugin-static-copy": "^4.0.1"
   },
   "dependencies": {
+    "@clerk/backend": "^3.4.12",
     "@clerk/clerk-react": "^5.61.6",
     "chart.js": "^4.5.1",
     "react": "^19.2.6",

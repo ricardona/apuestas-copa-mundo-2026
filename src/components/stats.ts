@@ -259,7 +259,7 @@ export function buildStats() {
     </div>
     <div class="stat-card">
       <div class="stat-icon">🇨🇴</div>
-      <div class="stat-title">Convocatoria Colombia</div>
+      <div class="stat-title">Maturana</div>
       <div class="stat-value">${convocatoria}</div>
       <div class="stat-desc">Más aciertos en la lista final (${maxConvocatoria})</div>
     </div>
