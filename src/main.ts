@@ -10,7 +10,15 @@ import { initTabs } from './tabs';
 
 // ─── Bootstrap ────────────────────────────────────────────────────────────────
 
-async function startApp() {
+/**
+ * Initialise the vanilla app.
+ * Called by the React auth layer once the user is confirmed signed-in.
+ * @param currentPlayer - Clerk username (or email local-part) matched against
+ *   data/players.json. Stored in state.CURRENT_PLAYER for use by components
+ *   such as mis-apuestas to pre-select the logged-in player.
+ */
+export async function startApp(currentPlayer?: string) {
+  state.CURRENT_PLAYER = currentPlayer ?? null;
   const updatedEl = document.getElementById('last-updated');
   if (updatedEl) updatedEl.textContent = 'Cargando datos...';
 
@@ -85,4 +93,3 @@ async function startApp() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', startApp);

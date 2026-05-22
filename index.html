@@ -32,6 +32,9 @@
 
 <body>
 
+  <!-- React auth layer mounts here (landing overlay or clerk-bar) -->
+  <div id="clerk-root"></div>
+
   <div class="header">
     <div class="logo">
       <button class="logo-home logo-icon-button" data-target="ranking" aria-label="Volver a posiciones">
@@ -252,7 +255,7 @@
     </div>
   </div>
 
-  <script type="module" src="/src/main.ts"></script>
+  <script type="module" src="/src/main.tsx"></script>
 </body>
 
 </html>

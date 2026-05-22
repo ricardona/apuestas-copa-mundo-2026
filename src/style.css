@@ -342,3 +342,92 @@ pre.plus-example code { background: none; padding: 0; font-size: 11.5px; color: 
   .mis-editor-actions, .mis-download { width: 100%; }
   .mis-reset { flex: 1; }
 }
+
+/* ─── Clerk auth layer ─────────────────────────────────────────────────────── */
+
+/* Full-screen landing shown when signed out (sits above the app shell) */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000; /* above global-loader (2000) */
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.auth-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 40px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.auth-card__icon {
+  width: 64px;
+  height: 64px;
+  background: var(--gold);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.auth-card__title {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.auth-card__subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+.auth-card__btn {
+  margin-top: 8px;
+  padding: 12px 32px;
+  background: var(--gold);
+  color: #000;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.auth-card__btn:hover { opacity: 0.88; }
+
+/* Slim bar rendered inside #clerk-root when signed in */
+.clerk-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 8px 32px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.clerk-bar__greeting { color: var(--muted); }
+.clerk-bar__greeting strong { color: var(--text); }
+
+@media (max-width: 650px) {
+  .auth-card { padding: 36px 24px; }
+  .clerk-bar { padding: 8px 16px; }
+}
