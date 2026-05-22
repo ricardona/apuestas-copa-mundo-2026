@@ -5,6 +5,7 @@ Bienvenido al repositorio de la **Polla Mundialista**. Esta es una aplicación w
 ## ✨ Características
 
 - **Transparencia Total (GitOps):** Los pronósticos se registran mediante commits en este repositorio antes de los partidos. ¡Nadie puede cambiar sus apuestas "en secreto"!
+- **Autenticación Segura:** Acceso protegido mediante [Clerk](https://clerk.com/), con soporte para inicio de sesión social y gestión de usuarios.
 - **Ranking en Tiempo Real:** Cálculo automático de puntos y actualización de la tabla de posiciones tras cada partido.
 - **Pronósticos Plus:** Soporte para predicciones a largo plazo (convocatoria final de Colombia, posiciones exactas de grupos, equipos que avanzan en eliminatorias y el Top 4 del torneo).
 - **Dashboard Estadístico:** Gráficas de rendimiento interactivo, tendencias y métricas divertidas para los jugadores (mejor racha, más exactos, especialista, etc.).
@@ -13,6 +14,7 @@ Bienvenido al repositorio de la **Polla Mundialista**. Esta es una aplicación w
 ## 🛠️ Tecnologías
 
 - **Frontend:** HTML5, CSS3 (Vanilla), TypeScript
+- **Autenticación:** [Clerk](https://clerk.com/) para gestión de usuarios e inicio de sesión
 - **Librerías:** [Chart.js](https://www.chartjs.org/) para visualización de datos
 - **Herramientas de Construcción:** [Vite](https://vitejs.dev/)
 - **Infraestructura:** GitHub Actions y flujos de despliegue automatizado.
