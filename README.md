@@ -97,6 +97,39 @@ Para hacer la competencia más emocionante, el sistema calcula automáticamente 
 - **🎢 Montaña Rusa:** El participante más inconstante del torneo (con la mayor cantidad de transiciones entre sumar y no sumar puntos).
 - **🐑 La Oveja Negra:** El participante que ha sumado la **menor cantidad de puntos** en los partidos.
 
+## 🗄️ Base de Datos (Cloudflare D1)
+
+El proyecto usa una base de datos D1 para sincronizar usuarios autenticados con Clerk.
+
+### Aplicar el esquema
+
+```bash
+# En producción (D1 remoto)
+npx wrangler d1 execute mundial2026db --file=sql/schema.sql --remote
+
+# En desarrollo local
+npx wrangler d1 execute mundial2026db --file=sql/schema.sql --local
+```
+
+### Modificar el esquema
+
+Si necesitas cambiar la estructura de la tabla, edita `sql/schema.sql` y ejecuta el comando anterior. Para migraciones destructivas (e.g. renombrar columnas) usa `ALTER TABLE` directamente:
+
+```bash
+npx wrangler d1 execute mundial2026db --command="ALTER TABLE players ADD COLUMN nueva_columna TEXT"
+```
+
+### Variables de entorno requeridas (Cloudflare Pages)
+
+| Variable            | Descripción                          |
+|---------------------|--------------------------------------|
+| `CLERK_SECRET_KEY`  | Clave secreta de Clerk (Backend API) |
+| `CLERK_PUBLISHABLE_KEY` | Clave pública de Clerk           |
+
+Configúralas en el dashboard de Cloudflare → Pages → tu proyecto → Settings → Environment variables.
+
+---
+
 ## 🚀 Desarrollo Local
 
 Si deseas ejecutar o modificar el proyecto en tu entorno local:
