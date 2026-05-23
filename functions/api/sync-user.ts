@@ -3,6 +3,7 @@ import { createClerkClient } from '@clerk/backend';
 interface Env {
   mundial2026db: D1Database;
   CLERK_SECRET_KEY: string;
+  CLERK_PUBLISHABLE_KEY: string;
 }
 
 interface SyncUserBody {
@@ -42,7 +43,7 @@ export default {
     }
 
     try {
-      const clerk = createClerkClient({ secretKey: env.CLERK_SECRET_KEY });
+      const clerk = createClerkClient({ secretKey: env.CLERK_SECRET_KEY, publishableKey: env.CLERK_PUBLISHABLE_KEY });
       const state = await clerk.authenticateRequest(request);
 
       if (!state.isAuthenticated) {
