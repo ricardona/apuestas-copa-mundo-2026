@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   SignInButton,
   SignedIn,
@@ -7,6 +7,7 @@ import {
   useAuth,
   useUser,
 } from '@clerk/clerk-react';
+import InstruccionesModal from './components/InstruccionesModal';
 
 type UserResource = NonNullable<ReturnType<typeof useUser>['user']>;
 import { startApp } from './main';
@@ -35,7 +36,11 @@ function resolvePlayerIdentifier(user: UserResource): string | undefined {
 
 // ─── Landing (signed-out) ─────────────────────────────────────────────────────
 
-const LandingPage: React.FC = () => (
+interface LandingPageProps {
+  onOpenInstrucciones: () => void;
+}
+
+const LandingPage: React.FC<LandingPageProps> = ({ onOpenInstrucciones }) => (
   <div className="auth-overlay">
     <div className="auth-card">
       <div className="auth-card__icon">⚽</div>
@@ -46,6 +51,9 @@ const LandingPage: React.FC = () => (
       <SignInButton mode="modal">
         <button className="auth-card__btn">Iniciar sesión</button>
       </SignInButton>
+      <button className="auth-card__instrucciones" onClick={onOpenInstrucciones}>
+        Instrucciones
+      </button>
     </div>
   </div>
 );
@@ -88,15 +96,29 @@ const AuthenticatedApp: React.FC = () => {
 
 // ─── Root ─────────────────────────────────────────────────────────────────────
 
-const App: React.FC = () => (
-  <>
-    <SignedOut>
-      <LandingPage />
-    </SignedOut>
-    <SignedIn>
-      <AuthenticatedApp />
-    </SignedIn>
-  </>
-);
+declare global {
+  interface Window { openInstrucciones?: () => void; }
+}
+
+const App: React.FC = () => {
+  const [instrOpen, setInstrOpen] = useState(false);
+
+  useEffect(() => {
+    window.openInstrucciones = () => setInstrOpen(true);
+    return () => { delete window.openInstrucciones; };
+  }, []);
+
+  return (
+    <>
+      <InstruccionesModal isOpen={instrOpen} onClose={() => setInstrOpen(false)} />
+      <SignedOut>
+        <LandingPage onOpenInstrucciones={() => setInstrOpen(true)} />
+      </SignedOut>
+      <SignedIn>
+        <AuthenticatedApp />
+      </SignedIn>
+    </>
+  );
+};
 
 export default App;
