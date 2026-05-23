@@ -19,7 +19,7 @@ const COLOMBIA_PRESELECCIONADOS = [
 
   // --- DELANTEROS (14) ---
   'Rafael Santos Borré', 'Jaminton Campaz', 'Johan Carbonero', 'Edwuin Cetré', 'Jhon Córdoba', 'Jhon Durán', 
-  'Andrés Gómez', 'Juan Camilo Hernández', 'Stiven Mendoza', 'Luis Suárez', 'Sebastián Villa', 'Neiser Villarreal', 
+  'Carlos Andrés Gómez', 'Juan Camilo Hernández', 'Stiven Mendoza', 'Luis Suárez', 'Sebastián Villa', 'Neiser Villarreal', 
   'Kevin Viveros', 'Luis Díaz'
 ];
 
