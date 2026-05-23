@@ -38,7 +38,7 @@ export function buildPlus() {
 
     return `<details class="convocatoria-player">
       <summary class="convocatoria-title">
-        <span class="player-cell">${avatar(name, 20)} ${name}</span>
+        <span class="player-cell">${avatar(name, 20, state.AVATARS[name])} ${name}</span>
         <span>${summary}</span>
       </summary>
       ${!convocatoriaEvaluada
@@ -65,7 +65,7 @@ export function buildPlus() {
     };
     return `
       <tr>
-        <td><div class="player-cell">${avatar(name, 24)} ${name}</div></td>
+        <td><div class="player-cell">${avatar(name, 24, state.AVATARS[name])} ${name}</div></td>
         <td class="${cls(plus.top4.campeon, real?.campeon)}">${showPred(plus.top4.campeon, !!real?.campeon)} <span class="hit-icon">${hit(plus.top4.campeon, real?.campeon)}</span></td>
         <td class="${cls(plus.top4.subcampeon, real?.subcampeon)}">${showPred(plus.top4.subcampeon, !!real?.subcampeon)} <span class="hit-icon">${hit(plus.top4.subcampeon, real?.subcampeon)}</span></td>
         <td class="${cls(plus.top4.tercero, real?.tercero)}">${showPred(plus.top4.tercero, !!real?.tercero)} <span class="hit-icon">${hit(plus.top4.tercero, real?.tercero)}</span></td>
@@ -83,7 +83,7 @@ export function buildPlus() {
       const pred = plus.posicionesGrupos[grp] || ['','','',''];
       return `
         <tr>
-          <td><div class="player-cell">${avatar(name, 20)} ${name}</div></td>
+          <td><div class="player-cell">${avatar(name, 20, state.AVATARS[name])} ${name}</div></td>
           ${[0,1,2,3].map(i => {
             const team = pred[i] || '–';
             const isHit = realPos && realPos[i] && realPos[i] === pred[i];
@@ -171,7 +171,7 @@ export function buildPlus() {
         const isRealKnown = !!real.equipo;
         const displayTeam = isRealKnown ? team : (team !== '–' ? '?' : '–');
         return `<tr>
-          <td><div class="player-cell">${avatar(name, 20)} ${name}</div></td>
+          <td><div class="player-cell">${avatar(name, 20, state.AVATARS[name])} ${name}</div></td>
           <td class="${isHit ? 'plus-hit' : isMiss ? 'plus-miss' : ''}">${displayTeam} ${isHit ? '<span class="hit-icon">✓</span>' : isMiss ? '<span class="hit-icon">✗</span>' : ''}</td>
         </tr>`;
       }).join('');

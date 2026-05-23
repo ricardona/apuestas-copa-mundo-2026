@@ -5,6 +5,7 @@ import type { Result, Bet, PlusBet, Settings, PlusResults, ColombiaFinal } from 
 export const state: {
   RESULTS: Result[];
   PLAYERS: string[];
+  AVATARS: Record<string, string>;
   BETS: Record<string, Bet[]>;
   PLUS_BETS: Record<string, PlusBet>;
   PLUS_RESULTS: PlusResults | null;
@@ -15,6 +16,7 @@ export const state: {
 } = {
   RESULTS: [],
   PLAYERS: [],
+  AVATARS: {},
   BETS: {},
   PLUS_BETS: {},
   PLUS_RESULTS: null,

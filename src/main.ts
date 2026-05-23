@@ -32,8 +32,9 @@ export async function startApp(currentPlayer?: string, getToken?: () => Promise<
     ]);
 
     if (!playersRes.ok) throw new Error('No se pudieron cargar los jugadores.');
-    const playersData = await playersRes.json() as { participantes: string[] };
+    const playersData = await playersRes.json() as { participantes: string[]; avatars?: Record<string, string> };
     state.PLAYERS = playersData.participantes;
+    state.AVATARS = playersData.avatars ?? {};
     state.RESULTS = await resultsRes.json();
     if (settingsRes.ok) state.SETTINGS = await settingsRes.json();
 

@@ -17,9 +17,13 @@ function json(data: unknown, status = 200): Response {
 
 export async function handleGetPlayers(_request: Request, env: Env): Promise<Response> {
   const rows = await env.mundial2026db
-    .prepare(`SELECT username FROM players ORDER BY username`)
-    .all<{ username: string }>();
-  return json({ participantes: rows.results.map(r => r.username) });
+    .prepare(`SELECT username, avatar_url FROM players ORDER BY username`)
+    .all<{ username: string; avatar_url: string | null }>();
+  const avatars: Record<string, string> = {};
+  for (const r of rows.results) {
+    if (r.avatar_url) avatars[r.username] = r.avatar_url;
+  }
+  return json({ participantes: rows.results.map(r => r.username), avatars });
 }
 
 export async function handleGetBets(_request: Request, env: Env): Promise<Response> {

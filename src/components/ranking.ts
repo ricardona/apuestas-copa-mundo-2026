@@ -161,7 +161,7 @@ export function buildRanking() {
         <td><span class="pos-num ${posClass(i)}">${i + 1}</span></td>
         <td>
           <div class="player-cell">
-            ${avatar(p.name)}
+            ${avatar(p.name, 32, state.AVATARS[p.name])}
             <div class="player-info">
               <div class="player-name">${p.name}</div>
               <div class="streak">${p.streak.slice(-5).map(s => `<div class="sc sc-${s}"></div>`).join('')}</div>

@@ -42,7 +42,7 @@ export function buildMatches() {
       const betScoreTxt = showBet ? `${b.gL} – ${b.gV}` : `? – ?`;
 
       return `<div class="bet-row">
-        <div class="bet-left">${avatar(b.player, 22)} ${b.player}</div>
+        <div class="bet-left">${avatar(b.player, 22, state.AVATARS[b.player])} ${b.player}</div>
         <div class="bet-right">
           <span class="bet-score-txt">${betScoreTxt}</span>
           <span class="bet-pts ${ptsC}">${ptsStr}</span>
