@@ -38,7 +38,7 @@ export default {
       const authState = await clerk.authenticateRequest(request);
 
       if (!authState.isAuthenticated) {
-        return json({ error: 'Unauthorized' }, 401);
+        return json({ error: 'Unauthorized', details: authState }, 401);
       }
 
       const { userId } = authState.toAuth();
