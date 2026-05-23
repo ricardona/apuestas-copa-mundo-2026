@@ -1,9 +1,5 @@
-import { createClerkClient } from '@clerk/backend';
-
 interface Env {
   mundial2026db: D1Database;
-  CLERK_SECRET_KEY: string;
-  CLERK_PUBLISHABLE_KEY: string;
 }
 
 const CORS = {
@@ -46,16 +42,8 @@ export async function handleGetBets(_request: Request, env: Env): Promise<Respon
   }
 }
 
-export async function handlePostBets(request: Request, env: Env): Promise<Response> {
+export async function handlePostBets(request: Request, env: Env, userId: string): Promise<Response> {
   try {
-    const clerk = createClerkClient({ secretKey: env.CLERK_SECRET_KEY, publishableKey: env.CLERK_PUBLISHABLE_KEY });
-    const authState = await clerk.authenticateRequest(request);
-
-    if (!authState.isAuthenticated) {
-      return json({ error: 'Unauthorized' }, 401);
-    }
-
-    const { userId } = authState.toAuth();
     const body = (await request.json()) as { bets?: unknown; plus_bets?: unknown };
 
     await env.mundial2026db
@@ -80,5 +68,3 @@ export async function handlePostBets(request: Request, env: Env): Promise<Respon
     return json({ error: 'Internal server error', details: err instanceof Error ? err.message : String(err) }, 500);
   }
 }
-
-export { CORS };
