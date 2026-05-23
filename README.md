@@ -1,11 +1,11 @@
 # ⚽ Polla Mundialista
 
-Bienvenido al repositorio de la **Polla Mundialista**. Esta es una aplicación web interactiva y transparente basada en Git para llevar el registro de pronósticos, posiciones y estadísticas durante el Mundial.
+Aplicación web para llevar el registro de pronósticos, posiciones y estadísticas durante el Mundial. Construida como SPA sobre **Cloudflare Workers + D1**, con autenticación vía [Clerk](https://clerk.com/).
 
 ## ✨ Características
 
-- **Transparencia Total (GitOps):** Los pronósticos se registran mediante commits en este repositorio antes de los partidos. ¡Nadie puede cambiar sus apuestas "en secreto"!
-- **Autenticación Segura:** Acceso protegido mediante [Clerk](https://clerk.com/), con soporte para inicio de sesión social y gestión de usuarios.
+- **Apuestas en línea:** Cada participante ingresa y edita sus pronósticos directamente desde la página web (pestaña **Mis Apuestas**), antes del pitazo inicial de cada partido. No se requiere conocimiento técnico.
+- **Autenticación Segura:** Acceso protegido mediante [Clerk](https://clerk.com/), con lista de espera para nuevos participantes y soporte para inicio de sesión social.
 - **Ranking en Tiempo Real:** Cálculo automático de puntos y actualización de la tabla de posiciones tras cada partido.
 - **Pronósticos Plus:** Soporte para predicciones a largo plazo (convocatoria final de Colombia, posiciones exactas de grupos, equipos que avanzan en eliminatorias y el Top 4 del torneo).
 - **Dashboard Estadístico:** Gráficas de rendimiento interactivo, tendencias y métricas divertidas para los jugadores (mejor racha, más exactos, especialista, etc.).
@@ -13,58 +13,32 @@ Bienvenido al repositorio de la **Polla Mundialista**. Esta es una aplicación w
 
 ## 🛠️ Tecnologías
 
-- **Frontend:** HTML5, CSS3 (Vanilla), TypeScript
-- **Autenticación:** [Clerk](https://clerk.com/) para gestión de usuarios e inicio de sesión
+- **Frontend:** HTML5, CSS3 (Vanilla), TypeScript, [React](https://react.dev/) (capa de autenticación)
+- **Backend:** [Cloudflare Workers](https://workers.cloudflare.com/) — API REST con validación de JWT de Clerk
+- **Base de Datos:** [Cloudflare D1](https://developers.cloudflare.com/d1/) — SQLite en el edge; almacena jugadores y apuestas
+- **Autenticación:** [Clerk](https://clerk.com/) para gestión de usuarios, lista de espera e inicio de sesión
 - **Librerías:** [Chart.js](https://www.chartjs.org/) para visualización de datos
 - **Herramientas de Construcción:** [Vite](https://vitejs.dev/)
-- **Infraestructura:** GitHub Actions y flujos de despliegue automatizado.
 
 ## 🎮 Cómo Participar
 
-Para unirte a la polla, necesitas acceso a este repositorio y seguir estos pasos:
+1. **Solicitar acceso:** Entra a la página y registrate en la lista de espera.
 
-1. **Registra tu nombre:**
-   Edita el archivo `data/players.json` y agrega tu usuario al array `"participantes"`.
-   ```json
-   {
-     "participantes": ["tu_usuario"]
-   }
-   ```
+2. **Esperar aprobación:** El administrador aprobará tu solicitud desde el dashboard de Clerk. Recibirás una notificación cuando estés habilitado.
 
-2. **Crea tu archivo de apuestas:**
-   Crea `data/bets/tu_usuario.json` con tus marcadores exactos para cada partido.
-   ```json
-   [
-     { "matchId": 1, "gL": 2, "gV": 1 },
-     { "matchId": 2, "gL": 0, "gV": 0 }
-   ]
-   ```
+3. **Iniciar sesión:** Una vez aprobado, ingresa con tu cuenta (Google, Facebook o GitHub).
 
-3. **Pronósticos Plus (Opcional pero recomendado):**
-   Crea `data/bets/tu_usuario.plus.json` con tus predicciones a largo plazo. **Importante: debes hacerlo antes de que inicie el torneo.**
-   ```json
-   {
-     "posicionesGrupos": {
-       "A": ["Brasil", "Argentina", "Uruguay", "Chile"]
-     },
-     "top4": {
-       "campeon": "Brasil",
-       "subcampeon": "Argentina",
-       "tercero": "Francia",
-       "cuarto": "España"
-     },
-     "goOn": [
-       { "matchId": 49, "equipo": "Argentina" }
-     ],
-     "convocatoriaColombia": [
-       "Jugador 1",
-       "Jugador 2"
-     ]
-   }
-   ```
+4. **Ir a "Mis Apuestas":** Desde el menú principal, abre la pestaña **Mis Apuestas** y completa tus pronósticos:
+   - **Partidos:** Marcador exacto para cada partido pendiente
+   - **Convocatoria Colombia:** Selecciona los 26 jugadores que crees que irán al Mundial
+   - **Top 4:** Campeón, subcampeón, tercer y cuarto puesto
+   - **Posiciones de Grupo:** Orden final de cada grupo
+   - **Partidos**: Resultado del próximo encuentro.
+   - **Eliminatorias:** Equipo que avanza en cada llave
 
-4. **Haz commit y push:**
-   Sube tus cambios al repositorio oficial **antes del pitazo inicial de los respectivos partidos**. El historial de Git (Timestamp) actúa como juez de transparencia.
+5. **Guardar:** Presiona **Guardar apuestas**. Tus pronósticos quedan almacenados en Cloudflare D1.
+
+6. **Editar cuando quieras:** Puedes volver a editar antes del inicio de cada partido. Los partidos ya disputados quedan bloqueados y sus pronósticos se preservan.
 
 ## 📊 Sistema de Puntuación
 
@@ -89,7 +63,7 @@ Para hacer la competencia más emocionante, el sistema calcula automáticamente 
 - **🤑 El Apostador:** Quien ha conseguido la mayor cantidad de puntos en partidos especiales (con multiplicador).
 - **🪵 El Tronco:** El participante con más partidos en los que obtuvo 0 puntos.
 - **🔮 Nostradamus:** Quien ha sumado más puntos en la fase de pronósticos Plus (lista de convocados, grupos, llaves y top 4).
-- **🇨🇴 Convocatoria Colombia:** El participante que acertó la mayor cantidad de jugadores en la lista final de 26 convocados de Colombia.
+- **Maturana:** El participante que acertó la mayor cantidad de jugadores en la lista final de 26 convocados de Colombia.
 - **🥅 El "Al Palo":** El participante que acertó más tendencias de juego (quién gana o si hay empate) pero sin dar en el marcador exacto.
 - **🥱 El Conservador:** Quien apostó al empate más veces.
 - **🐴 Caballo de Arranque:** El participante con mejor desempeño relativo en la fase de grupos en comparación con la fase de eliminación directa.
@@ -99,7 +73,9 @@ Para hacer la competencia más emocionante, el sistema calcula automáticamente 
 
 ## 🗄️ Base de Datos (Cloudflare D1)
 
-El proyecto usa una base de datos D1 para sincronizar usuarios autenticados con Clerk.
+El proyecto usa **Cloudflare D1** como base de datos principal. Almacena dos tablas:
+- `players` — usuarios registrados (id de Clerk, username, email, avatar)
+- `player_bets` — apuestas de cada jugador (partidos y pronósticos Plus)
 
 ### Aplicar el esquema
 
@@ -119,20 +95,18 @@ Si necesitas cambiar la estructura de la tabla, edita `sql/schema.sql` y ejecuta
 npx wrangler d1 execute mundial2026db --command="ALTER TABLE players ADD COLUMN nueva_columna TEXT"
 ```
 
-### Variables de entorno requeridas (Cloudflare Pages)
+### Variables de entorno requeridas (Cloudflare Workers)
 
 | Variable            | Descripción                          |
 |---------------------|--------------------------------------|
 | `CLERK_SECRET_KEY`  | Clave secreta de Clerk (Backend API) |
 | `CLERK_PUBLISHABLE_KEY` | Clave pública de Clerk           |
 
-Configúralas en el dashboard de Cloudflare → Pages → tu proyecto → Settings → Environment variables.
+Configúralas en el dashboard de Cloudflare → Workers & Pages → tu proyecto → Settings → Variables and Secrets.
 
 ---
 
 ## 🚀 Desarrollo Local
-
-Si deseas ejecutar o modificar el proyecto en tu entorno local:
 
 1. Clona el repositorio:
    ```bash
@@ -145,7 +119,7 @@ Si deseas ejecutar o modificar el proyecto en tu entorno local:
    npm install
    ```
 
-3. Inicia el servidor de desarrollo:
+3. Inicia el servidor de desarrollo (solo frontend):
    ```bash
    npm run dev
    ```
@@ -154,6 +128,15 @@ Si deseas ejecutar o modificar el proyecto en tu entorno local:
    ```bash
    npm run build
    ```
+
+5. Ejecuta el entorno completo localmente (Worker + assets):
+   ```bash
+   npm run build
+   npx wrangler dev
+   ```
+   Abre http://localhost:8787. Las rutas `/api/*` son manejadas por el Worker y el resto sirve el SPA desde `dist/`.
+
+   > **Nota:** Usa `npx wrangler dev` (no `wrangler pages dev`). El proyecto usa el modelo **Workers + Assets** de Cloudflare con un único punto de entrada en `functions/api/sync-user.ts`. El comando `wrangler pages dev` espera rutas basadas en archivos (Pages Functions) y lanzará un error de "No routes found".
 
 ---
 *Hecho con pasión por el fútbol ⚽*

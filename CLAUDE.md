@@ -4,317 +4,192 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Quick Start
 
-**Install dependencies:**
 ```bash
 npm install
+npm run dev        # Vite dev server → http://localhost:5173
+npm run build      # tsc type-check then Vite build → dist/
+npm run preview    # Preview production build
 ```
 
-**Development server:**
-```bash
-npm run dev
-```
-Runs Vite dev server on http://localhost:5173.
-
-**Build for production:**
-```bash
-npm run build
-```
-Runs TypeScript type-check (`tsc`) then Vite build. Output goes to `dist/`.
-
-**Preview production build:**
-```bash
-npm run preview
-```
+There are no automated tests (`npm test` exits 1). Verification is manual via the dev server.
 
 ## Project Overview
 
-**Polla Mundialista** is a transparent, Git-based betting pool for World Cup predictions. It combines a Vite + React frontend (with vanilla TypeScript components) with Clerk authentication and a Cloudflare D1 database backend.
+**Polla Mundialista** is a World Cup betting pool. Players submit predictions through the web UI; scores are calculated client-side in real time. The frontend is React (auth shell only) + vanilla TypeScript components; bets and player data live in Cloudflare D1.
 
-### Key Concept: GitOps for Bets
+### Key Concept
 
-- Players commit their predictions (match scores, group standings, knockout outcomes) to `data/bets/{name}.json` and `data/bets/{name}.plus.json` **before** each match kick-off.
-- Git history serves as immutable proof: no one can claim they bet differently after results are known.
-- Results are managed in `data/results.json` and `data/plus_results.json`, with the dashboard recalculating scores in real-time.
+Bets are stored in D1 (`player_bets` table) and locked by tournament logic — once a match status changes from `siguiente` to `finalizado`, the frontend hides and preserves those scores. The dashboard recalculates all scores on every page load from data fetched via API.
 
 ## Architecture
 
 ### Tech Stack
 
-- **Frontend:** React 19 + Vite 8 + vanilla TypeScript (vanilla JS components, not JSX for game logic)
-- **Styling:** Vanilla CSS (no frameworks) with dark theme and semantic color variables in `:root`
-- **Authentication:** Clerk (OAuth + managed user sessions)
-- **Backend:** Cloudflare Workers (Pages Functions) + D1 SQLite
-- **Deployment:** GitHub Actions → GitHub Pages (frontend assets) + Wrangler (Workers)
-- **Visualization:** Chart.js for stats dashboard
+- **Frontend:** React 19 + Vite 8 + vanilla TypeScript (only `App.tsx`/`main.tsx` use React/JSX; all game-logic components are plain TS DOM builders)
+- **Styling:** Vanilla CSS — dark theme, semantic color variables in `:root`, BEM naming for component styles
+- **Authentication:** Clerk (OAuth + JWT)
+- **Backend:** Cloudflare Worker (single `functions/api/sync-user.ts` entry point) + D1 SQLite
+- **Deployment:** GitHub Actions → GitHub Pages (frontend) + Wrangler (Worker)
 
 ### Directory Structure
 
 ```
-├── src/
-│   ├── App.tsx              # Clerk auth shell (SignedIn/SignedOut)
-│   ├── main.ts              # App bootstrap: loads data, initializes components
-│   ├── main.tsx             # React entry point
-│   ├── state.ts             # Global state (PLAYERS, BETS, RESULTS, etc.)
-│   ├── types.ts             # TypeScript interfaces (Bet, Result, PlusBet, etc.)
-│   ├── scoring.ts           # Points calculation logic
-│   ├── syncUser.ts          # Client → Worker: sync Clerk user to D1
-│   ├── avatar.ts            # Avatar rendering utilities
-│   ├── tabs.ts              # Tab navigation and routing
-│   ├── style.css            # Main stylesheet
-│   └── components/
-│       ├── ranking.ts       # Build ranking table + player detail popups
-│       ├── matches.ts       # Build match history and bet cards
-│       ├── plus.ts          # Build Plus predictions section (groups, top4, etc.)
-│       ├── stats.ts         # Build stats dashboard with Chart.js
-│       ├── metrics.ts       # Build top KPIs row
-│       └── mis-apuestas.ts  # Build "My Bets" editor (player selection + JSON UI)
-│
-├── functions/
-│   ├── api/sync-user.ts     # POST /api/sync-user: Clerk-authenticated endpoint
-│   └── tsconfig.json
-│
-├── sql/
-│   └── schema.sql           # D1 schema: players table
-│
-├── data/
-│   ├── players.json         # List of participant names
-│   ├── results.json         # Match results (id, teams, scores, status, phase)
-│   ├── settings.json        # Scoring rules (punto values, multipliers)
-│   ├── plus_results.json    # Actual top4, group standings, advancing teams
-│   ├── colombia_final.json  # Official 26-player Colombia squad
-│   └── bets/
-│       ├── {name}.json      # Player''s match predictions
-│       └── {name}.plus.json # Player''s group/top4/knockout predictions
-│
-├── test_data/               # Parallel structure for testing without live data
-├── wrangler.jsonc           # Cloudflare Workers config (D1 binding, compatibility_date)
-├── vite.config.ts           # Vite: React plugin + static copy (data/, img/)
-├── tsconfig.json            # Frontend TypeScript config
-├── index.html               # Single-page app shell with Clerk root + tab structure
-└── .github/workflows/
-    └── deploy.yml           # Build + deploy dist/ to GitHub Pages
+src/
+  App.tsx              # Clerk auth shell — resolves current player, calls startApp()
+  main.ts              # Bootstrap: fetch data via APIs, call component builders
+  main.tsx             # React entry point
+  state.ts             # Shared mutable app state (RESULTS, PLAYERS, BETS, etc.)
+  types.ts             # TypeScript interfaces
+  scoring.ts           # All points calculation
+  syncUser.ts          # POST /api/sync-user on sign-in
+  avatar.ts            # Avatar HTML helpers (img or initials fallback)
+  tabs.ts              # Hash-based tab routing
+  style.css
+  components/
+    ranking.ts         # Leaderboard + player detail popups → #ranking-body
+    matches.ts         # Match history and bet cards → #matches-list
+    plus.ts            # Group standings, top4, knockout bets → #plus-content
+    stats.ts           # Chart.js graph + achievement cards → #stats-grid
+    metrics.ts         # Top KPIs row → #metrics-row
+    mis-apuestas.ts    # Live bet editor — loads/saves via API → #mis-apuestas-content
+
+functions/
+  api/
+    sync-user.ts       # Cloudflare Worker entry: routes all /api/* requests
+    bets.ts            # Handler functions for players/bets endpoints
+
+sql/
+  schema.sql           # D1 schema: players + player_bets tables
+
+data/
+  results.json         # Match results (static, Git-managed)
+  settings.json        # Scoring rules and display flags
+  plus_results.json    # Actual top4/group standings (optional)
+  colombia_final.json  # Official Colombia squad (optional)
+
+test_data/             # Parallel data/ structure; loaded via ?test or ?data=test_data
+wrangler.jsonc         # Worker config: D1 binding, SPA asset serving, run_worker_first
 ```
 
 ### Data Flow
 
-1. **Player Data Load (Startup)**
-   - `main.ts` fetches `data/players.json`, `data/results.json`, `data/settings.json`
-   - Loads all player bets from `data/bets/{name}.json` and `.plus.json` in parallel
-   - Loads optional `data/colombia_final.json`, `data/plus_results.json`
-   - Stores in global `state` object
+1. **Bootstrap** (`main.ts → startApp()`):
+   - Fetches `results.json` and `settings.json` (static files, path controlled by `?data=` param)
+   - Fetches `/api/players` → D1 `players` table → `state.PLAYERS` + `state.AVATARS`
+   - Fetches `/api/bets` → D1 `player_bets` table → `state.BETS` + `state.PLUS_BETS`
+   - Fetches optional `plus_results.json` and `colombia_final.json`
+   - Calls all component builder functions in sequence
 
-2. **User Authentication**
-   - `App.tsx` wraps app in Clerk''s `<ClerkProvider>` (configured in `index.html`)
-   - On sign-in, `AuthenticatedApp` calls `syncUser()` → POST to `/api/sync-user`
-   - Backend validates JWT, upserts player record to D1
-   - Sync failures are non-fatal; app continues offline
+2. **Authentication** (`App.tsx`):
+   - Wraps app in Clerk `<ClerkProvider>`
+   - On sign-in, calls `syncUser()` → POST `/api/sync-user` (non-fatal if fails)
+   - Resolves player identifier from Clerk username → email local-part → undefined
+   - Passes `currentPlayer` and `getToken` to `startApp()`
 
-3. **Player Identification**
-   - `App.tsx` resolves logged-in user to a player name (identifier) in order:
-     1. Clerk username (set in Clerk dashboard)
-     2. Email local-part (e.g., `john@example.com` → `john`)
-     3. Undefined (shows all players, none pre-selected in "Mis Apuestas")
-   - Passed to `startApp(identifier)` → stored in `state.CURRENT_PLAYER`
+3. **Bet Editing** (`mis-apuestas.ts`):
+   - Loads current user's bets from `GET /api/bets/me` (JWT-authenticated)
+   - Saves to `POST /api/bets` with `updated_at` for optimistic conflict detection (409 on stale write)
+   - Display flags in `Settings` control which panels appear: `mostrarConvocados`, `mostrarCuadrodeHonor`, `mostrarPosicionesGrupos`
+   - Top4 panel is locked once any match is `finalizado`
 
-4. **Component Rendering**
-   - `main.ts` calls builder functions: `buildRanking()`, `buildMatches()`, `buildPlus()`, `buildStats()`, `buildMisApuestas()`
-   - Each reads from `state` and renders into its container (e.g., `#ranking-body`, `#matches-list`)
-   - All scoring and aggregation happens client-side (vanilla JS, no re-renders)
-
-5. **Routing**
-   - `tabs.ts` handles tab clicks and hash-based routing (`#/ranking`, `#/partidos`, `#/plus`, `#/estadisticas`, `#/mis-apuestas`)
-   - No framework routing; simple DOM manipulation and URL hash updates
-
-### Scoring Logic (`scoring.ts`)
-
-**Match Points:**
-- **Exact score:** 3 pts (e.g., bet 2–1, result 2–1)
-- **Trend correct:** 1 pt (e.g., bet 2–0, result 3–0 — both wins)
-- **Miss:** 0 pts
-
-**Multipliers** (applied per match type `tipo: ''N'' | ''E'' | ''X''`):
-- `N` (Normal): ×1
-- `E` (Special): ×2
-- `X` (Super): ×3
-
-**Plus Points** (one-time, long-term predictions):
-- **Colombia squad:** 1 pt per correct player (max 26)
-- **Group standings:** 2 pts per team in correct position (4 teams/group × 12 groups = up to 96 pts)
-- **Top 4:** Champion (8), Runner-up (5), 3rd (4), 4th (3) pts
-- **Knockout advancing teams:** 2 pts per correct prediction
-
-**Key Functions:**
-- `calcMatchScore(bet, result)` → `{ pts, type }` or `null` if match not finished
-- `calcPlusScore(playerName)` → total Plus points for player
-- `calcularPuntosConvocatoria()` → Colombia squad points using normalized player names
-- `getStats(playerName)` → aggregated `PlayerStats` (total, match, plus, convocatoria, trend, misses, streak)
+4. **Routing**: `tabs.ts` handles hash-based routing (`#/ranking`, `#/partidos`, `#/plus`, `#/estadisticas`, `#/mis-apuestas`) — plain DOM, no framework router.
 
 ### State Shape (`state.ts`)
 
 ```typescript
 {
-  RESULTS: Result[],         // All matches (id, teams, scores, status, phase, type)
-  PLAYERS: string[],         // Participant names
-  BETS: { [name]: Bet[] },   // Player → match predictions
-  PLUS_BETS: { [name]: PlusBet },  // Player → long-term predictions
-  PLUS_RESULTS: PlusResults | null,    // Actual top4/groups/advances
-  COLOMBIA_FINAL: ColombiaFinal | null,  // Official Colombia squad
-  SETTINGS: Settings,        // Point values, multipliers, match types
-  CURRENT_PLAYER: string | null  // Clerk-authenticated player identifier
+  RESULTS: Result[];          // Matches with id, teams, scores, status, phase, type
+  PLAYERS: string[];          // Participant names from D1
+  AVATARS: Record<string, string>;  // name → Clerk avatar URL (may be empty)
+  BETS: Record<string, Bet[]>;
+  PLUS_BETS: Record<string, PlusBet>;
+  PLUS_RESULTS: PlusResults | null;
+  COLOMBIA_FINAL: ColombiaFinal | null;
+  SETTINGS: Settings;         // Includes display flags: mostrarConvocados, mostrarCuadrodeHonor, mostrarPosicionesGrupos
+  CURRENT_PLAYER: string | null;
 }
 ```
 
-### Component Responsibilities
+### Scoring Logic (`scoring.ts`)
 
-| Component | Purpose | Inputs | Output |
-|-----------|---------|--------|--------|
-| `ranking.ts` | Leaderboard + player detail popups | `state.*` | HTML → `#ranking-body` |
-| `matches.ts` | Match history, bets, results | `state.RESULTS`, `state.BETS` | HTML → `#matches-list` |
-| `plus.ts` | Group standings, top4, knockout bets | `state.PLUS_BETS`, `state.PLUS_RESULTS` | HTML → `#plus-content` |
-| `stats.ts` | Chart.js graph + achievement cards | `state.*` | Canvas + HTML → `#stats-grid` |
-| `metrics.ts` | Top KPIs (matches played, total points) | `state.*` | HTML → `#metrics-row` |
-| `mis-apuestas.ts` | Player selector + bet JSON editor | `state.CURRENT_PLAYER`, basePath | HTML → `#mis-apuestas-content` |
+**Match Points** (per `tipo` multiplier: N=×1, E=×2, X=×3):
+- Exact score: 3 pts × multiplier
+- Correct trend (win/draw/loss): 1 pt × multiplier
 
-## Backend (Cloudflare Workers)
+**Plus Points** (long-term predictions, one-time):
+- Colombia squad: 1 pt/correct player (max 26)
+- Group standings: 2 pts/team in correct position
+- Top 4: Campeon 8 / Subcampeon 5 / Tercero 4 / Cuarto 3 pts
+- Knockout advancing: 2 pts/correct
 
-### POST `/api/sync-user`
+Key functions: `calcMatchScore(bet, result)`, `calcPlusScore(playerName)`, `getStats(playerName)`.
 
-**Purpose:** Upsert Clerk user to D1 database.
+## Backend API
 
-**Request:**
-```json
-{
-  "id": "user_xxx",
-  "username": "santiago",
-  "email": "santiago@example.com",
-  "avatar_url": "https://..."
-}
+All routes are handled by a single Cloudflare Worker (`functions/api/sync-user.ts`). All routes require a valid Clerk JWT in `Authorization: Bearer <token>`.
+
+| Method | Path | Auth Required | Description |
+|--------|------|---------------|-------------|
+| GET | `/api/players` | Yes | Returns `{ participantes, avatars }` from D1 `players` |
+| GET | `/api/bets` | Yes | Returns `{ bets, plus }` for all players from D1 |
+| GET | `/api/bets/me` | Yes | Returns `{ bets, plus_bets, updated_at }` for current user |
+| POST | `/api/bets` | Yes | Saves `{ bets, plus_bets, updated_at }` — returns 409 on stale write |
+| POST | `/api/sync-user` | Yes | Upserts `{ id, username, email, avatar_url }` to `players` |
+
+### D1 Schema
+
+```sql
+CREATE TABLE players (
+  id TEXT PRIMARY KEY, username TEXT, email TEXT, avatar_url TEXT, updated_at TIMESTAMP
+);
+CREATE TABLE player_bets (
+  player_id TEXT PRIMARY KEY REFERENCES players(id),
+  bets TEXT NOT NULL DEFAULT '[]',   -- JSON: Bet[]
+  plus_bets TEXT,                    -- JSON: PlusBet
+  updated_at TIMESTAMP
+);
 ```
-
-**Auth:** Clerk JWT in `Authorization: Bearer <token>` header.
-
-**Response:** `{ ok: true }` (200) or `{ error: "..." }` (401/403/500).
-
-**Implementation:** `functions/api/sync-user.ts`
-- Validates token using `@clerk/backend` client
-- Verifies `body.id` matches JWT subject (prevents user spoofing)
-- Upserts to `players` table (id, username, email, avatar_url, updated_at)
 
 ## Deployment
 
-### Frontend (GitHub Pages)
+**Frontend** — push to `main` triggers GitHub Actions: `npm ci && npm run build` → GitHub Pages.
 
-Trigger: Push to `main` branch.
-
-**Workflow** (`.github/workflows/deploy.yml`):
-1. Checkout repo
-2. Install Node 20
-3. Run `npm ci` (clean install)
-4. Run `npm run build` (TypeScript → Vite → dist/)
-5. Upload `dist/` to GitHub Pages artifact
-6. Deploy to GitHub Pages (auto-published)
-
-### Backend (Cloudflare Workers)
-
-Deployment is manual or via `wrangler deploy`:
+**Backend** — manual:
 ```bash
 wrangler deploy --name polla-mundial
 ```
-Deploys `functions/api/*.ts` to Cloudflare edge.
-
-**Config** (`wrangler.jsonc`):
-- `d1_databases`: D1 binding name `DB`, database ID `mundial2026db`
-- `assets.directory`: `./dist` (served static files)
-- `compatibility_date`: `2026-05-22`
+Worker config: `run_worker_first: ["/api/*"]`, assets served as SPA, D1 binding `mundial2026db`.
 
 ## Data File Formats
 
-### `data/players.json`
+`data/results.json` — match results (static):
+```json
+[{ "id": 1, "local": "Argentina", "visita": "Brasil", "gL": 2, "gV": 1, "status": "finalizado", "fase": "Grupos", "grupo": "A", "tipo": "N" }]
+```
+
+Status values: `"finalizado"` | `"pendiente"` | `"siguiente"` (upcoming, shown in editor).
+
+`data/settings.json`:
 ```json
 {
-  "participantes": ["santiago", "mauro", "juan"]
-}
-```
-
-### `data/results.json`
-```json
-[
-  {
-    "id": 1,
-    "local": "Argentina",
-    "visita": "Brasil",
-    "gL": 2,
-    "gV": 1,
-    "status": "finalizado",
-    "fase": "Grupos",
-    "grupo": "A",
-    "tipo": "N"
-  }
-]
-```
-
-### `data/bets/{name}.json`
-```json
-[
-  { "matchId": 1, "gL": 2, "gV": 0 },
-  { "matchId": 2, "gL": 1, "gV": 1 }
-]
-```
-
-### `data/bets/{name}.plus.json`
-```json
-{
-  "posicionesGrupos": {
-    "A": ["Brasil", "Argentina", "Uruguay", "Chile"]
-  },
-  "top4": {
-    "campeon": "Brasil",
-    "subcampeon": "Argentina",
-    "tercero": "Francia",
-    "cuarto": "España"
-  },
-  "goOn": [
-    { "matchId": 49, "equipo": "Argentina" }
-  ],
-  "convocatoriaColombia": [
-    "Jugador 1",
-    "Jugador 2",
-    "..."
-  ]
+  "puntos": { "score": 3, "result": 1, "groupPlus": 2, "firstPlus": 8, "secondPlus": 5, "thirdPlus": 4, "fourthPlus": 3, "goOnPlus": 2 },
+  "multiplicadores": { "N": 1, "E": 2, "X": 3 },
+  "tiposPartido": { "N": "Normal", "E": "Especial", "X": "Super Especial" },
+  "mostrarConvocados": true,
+  "mostrarCuadrodeHonor": true,
+  "mostrarPosicionesGrupos": true
 }
 ```
 
 ## Important Conventions
 
-1. **Player name normalization:** Scoring uses `normalizePlayerName()` to handle case and whitespace in Colombia squad matching.
-2. **Match status check:** Always verify `result.status === ''finalizado''` before scoring.
-3. **Multiplier application:** Applied **after** calculating base points (exact or trend).
-4. **Plus predictions immutability:** Once submitted (committed to Git), they cannot be edited mid-tournament.
-5. **Component isolation:** Components read from global `state` and render to their own DOM containers. No inter-component messaging.
-6. **Error resilience:** Failed data loads (e.g., missing `.plus.json` files) default to empty arrays/objects; app doesn''t crash.
+- **Match status:** Always check `result.status === 'finalizado'` before scoring.
+- **Player name normalization:** `normalizePlayerName()` in `scoring.ts` handles case/whitespace for Colombia squad matching.
+- **Component isolation:** Each component reads from global `state` and writes to its own DOM container. No inter-component communication.
+- **Error resilience:** Missing optional data (plus_results, colombia_final) defaults to `null`; app never crashes on fetch failure.
+- **Test data:** `?test` or `?data=test_data` in URL loads from `test_data/` instead of `data/` for static files.
+- **XSS hygiene:** All user-visible strings go through `esc()` in `mis-apuestas.ts` before insertion into innerHTML.
 
-## Development Tips
+## Scoring Achievements (`stats.ts`)
 
-- **Run with test data:** `?test` query param in URL or `?data=test_data` loads from `test_data/` folder instead of `data/`.
-- **Component updates:** Edit component function and refresh page; Vite HMR will reload.
-- **Styling:** CSS variables in `:root` are theme-wide (colors, fonts); component-specific styles use BEM naming.
-- **Clerk config:** Users without a set username will fall back to email local-part; verify in Clerk dashboard if routing to wrong player.
-
-## Scoring Achievements
-
-The dashboard auto-calculates and displays achievement badges based on player statistics:
-
-- **El Vidente:** Most exact scores
-- **Racha de Fuego:** Longest streak of exact predictions
-- **El Apostador:** Most points from special matches
-- **El Tronco:** Most 0-point matches
-- **Nostradamus:** Most Plus points
-- **Convocatoria Colombia:** Most correct Colombia squad players
-- **Al Palo:** Most trend-correct predictions (without exact score)
-- **El Conservador:** Most tie predictions
-- **Caballo de Arranque:** Best relative performance in group stage vs. knockout stage
-- **Tortuga Ninja:** Best relative performance in knockout stage vs. group stage
-- **Montaña Rusa:** Most inconsistent (highest transitions between scoring/not scoring)
-- **La Oveja Negra:** Lowest total points
-
-These are computed dynamically in `stats.ts` and `scoring.ts` based on match data and player bets.
+El Vidente (most exact), Racha de Fuego (longest exact streak), El Apostador (most pts from special matches), El Tronco (most 0-pt matches), Nostradamus (most Plus pts), Convocatoria Colombia, Al Palo (most trend-correct without exact), El Conservador (most tie predictions), Caballo de Arranque (best group-stage relative performance), Tortuga Ninja (best knockout relative performance), Montaña Rusa (most inconsistent), La Oveja Negra (lowest total pts).
