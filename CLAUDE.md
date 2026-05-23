@@ -29,7 +29,7 @@ Bets are stored in D1 (`player_bets` table) and locked by tournament logic — o
 - **Styling:** Vanilla CSS — dark theme, semantic color variables in `:root`, BEM naming for component styles
 - **Authentication:** Clerk (OAuth + JWT)
 - **Backend:** Cloudflare Worker (single `functions/api/sync-user.ts` entry point) + D1 SQLite
-- **Deployment:** GitHub Actions → GitHub Pages (frontend) + Wrangler (Worker)
+- **Deployment:** Cloudfare (frontend) + (Workers) + D1 db
 
 ### Directory Structure
 
