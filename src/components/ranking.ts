@@ -49,6 +49,7 @@ export function buildPlayerDetail(name: string): string {
   // ── Plus section ──
   let plusHtml = '';
   if (plus) {
+    const isOwnPlayer = name === state.CURRENT_PLAYER;
     const convocatoriaRows = convocatoria.map(jugador => {
       const isHit = convocatoriaEvaluada && oficialesNormalizados.has(normalizePlayerName(jugador));
       const isMiss = convocatoriaEvaluada && !isHit;
@@ -77,7 +78,7 @@ export function buildPlayerDetail(name: string): string {
       { label: `3er Puesto (${p.thirdPlus}pts)`, pred: plus.top4.tercero, real: state.PLUS_RESULTS?.top4.tercero, pts: p.thirdPlus },
       { label: `4to Puesto (${p.fourthPlus}pts)`, pred: plus.top4.cuarto, real: state.PLUS_RESULTS?.top4.cuarto, pts: p.fourthPlus },
     ].map(row => {
-      const pred = row.pred || '–';
+      const pred = (isOwnPlayer || !!row.real) ? (row.pred || '–') : (row.pred ? '?' : '–');
       const realStr = row.real || '?';
       const isHit = row.real && row.pred === row.real;
       const isMiss = row.real && !isHit;
@@ -96,7 +97,8 @@ export function buildPlayerDetail(name: string): string {
       const realPos = state.PLUS_RESULTS?.posicionesGrupos[grp];
       if (!pred || pred.every(t => !t)) return [];
       return [0,1,2,3].map(i => {
-        const team = pred[i] || '–';
+        const rawTeam = pred[i] || '–';
+        const team = (isOwnPlayer || !!realPos?.[i]) ? rawTeam : (pred[i] ? '?' : '–');
         const realTeam = realPos?.[i] || '?';
         const isHit = realPos?.[i] && pred[i] === realPos[i];
         const isMiss = realPos?.[i] && !isHit;
@@ -119,9 +121,10 @@ export function buildPlayerDetail(name: string): string {
       const isMiss = real?.equipo && !isHit;
       const cls = isHit ? 'plus-hit' : isMiss ? 'plus-miss' : '';
       const pts = isHit ? `<span class="bet-pts bp5">+${p.goOnPlus}</span>` : isMiss ? `<span class="bet-pts bp0">+0</span>` : '';
+      const displayEquipo = (isOwnPlayer || !!real?.equipo) ? (bet.equipo || '–') : (bet.equipo ? '?' : '–');
       return `<tr>
         <td>${matchLabel} — avanza (${p.goOnPlus}pts)</td>
-        <td class="${cls}">${bet.equipo || '–'}${isHit ? ' <span class="hit-icon">✓</span>' : isMiss ? ' <span class="hit-icon">✗</span>' : ''}</td>
+        <td class="${cls}">${displayEquipo}${isHit ? ' <span class="hit-icon">✓</span>' : isMiss ? ' <span class="hit-icon">✗</span>' : ''}</td>
         <td>${real?.equipo || '?'}</td>
         <td>${pts}</td>
       </tr>`;
