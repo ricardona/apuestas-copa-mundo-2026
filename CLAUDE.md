@@ -152,8 +152,6 @@ CREATE TABLE player_bets (
 
 ## Deployment
 
-**Frontend** — push to `main` triggers GitHub Actions: `npm ci && npm run build` → GitHub Pages.
-
 **Backend** — manual:
 ```bash
 wrangler deploy --name polla-mundial
@@ -183,6 +181,7 @@ Status values: `"finalizado"` | `"pendiente"` | `"siguiente"` (upcoming, shown i
 
 ## Important Conventions
 
+- **Naming convention:** All identifiers (variables, functions, classes, files, CSS classes) must be in English. UI-facing strings (labels, placeholders, messages) remain in Spanish.
 - **Match status:** Always check `result.status === 'finalizado'` before scoring.
 - **Player name normalization:** `normalizePlayerName()` in `scoring.ts` handles case/whitespace for Colombia squad matching.
 - **Component isolation:** Each component reads from global `state` and writes to its own DOM container. No inter-component communication.
