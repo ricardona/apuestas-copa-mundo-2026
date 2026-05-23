@@ -25,102 +25,71 @@ const TOP4_LABELS: Record<keyof PlusBet['top4'], string> = {
   cuarto: 'Cuarto'
 };
 
+type GetToken = () => Promise<string | null>;
+
 type EditorData = {
   player: string;
   bets: Bet[];
   plus: PlusBet;
   basePath: string;
+  updatedAt: string | null;
 };
 
 let editor: EditorData | null = null;
+let getTokenFn: GetToken | null = null;
 
-export function buildMisApuestas(basePath = './data') {
+export function buildMisApuestas(basePath = './data', getToken?: GetToken) {
+  getTokenFn = getToken ?? null;
   const container = document.getElementById('mis-apuestas-content');
   if (!container) return;
-  renderStart(container, basePath);
-}
 
-function renderStart(container: HTMLElement, basePath: string) {
-  const playerOptions = state.PLAYERS.map(p => `<option value="${esc(p)}">${esc(p)}</option>`).join('');
-  container.innerHTML = `
-    <div class="mis-shell">
-      ${homeButton()}
-      <div class="mis-hero">
-        <div>
-          <div class="section-label">Editar mis apuestas</div>
-          <h2>Mis Apuestas</h2>
-          <p>Selecciona tu participante para abrir el editor con los datos publicados.</p>
-        </div>
-      </div>
-      <div class="mis-card">
-        <label class="mis-field">
-          <span>Participante existente</span>
-          <select id="mis-player-select">
-            <option value="">Seleccionar jugador</option>
-            ${playerOptions}
-          </select>
-        </label>
-        <label class="mis-field">
-          <span>Nuevo participante</span>
-          <input id="mis-player-new" type="text" placeholder="tu-nombre" />
-        </label>
-        <div class="mis-actions">
-          <button class="mis-primary" id="mis-start">Abrir editor</button>
-          <span class="mis-note" id="mis-start-note">Se cargarán las apuestas disponibles en la aplicación.</span>
-        </div>
-      </div>
-    </div>`;
-
-  container.querySelector('.mis-home')?.addEventListener('click', goHome);
-  container.querySelector('#mis-start')?.addEventListener('click', () => startEditor(container, basePath));
-}
-
-async function startEditor(container: HTMLElement, basePath: string) {
-  const selected = (container.querySelector('#mis-player-select') as HTMLSelectElement | null)?.value.trim() ?? '';
-  const typed = (container.querySelector('#mis-player-new') as HTMLInputElement | null)?.value.trim() ?? '';
-  const player = typed || selected;
-  const note = container.querySelector('#mis-start-note');
-
-  if (!player) {
-    if (note) note.textContent = 'Escribe o selecciona un participante.';
+  const currentPlayer = state.CURRENT_PLAYER;
+  if (!currentPlayer) {
+    renderNotIdentified(container);
     return;
   }
 
+  loadAndRenderEditor(container, basePath, currentPlayer);
+}
+
+async function loadAndRenderEditor(container: HTMLElement, basePath: string, player: string) {
+  container.innerHTML = '<div class="mis-loading">Cargando apuestas…</div>';
+
   try {
-    const [bets, plus] = await Promise.all([
-      loadBets(player, basePath),
-      loadPlus(player, basePath)
-    ]);
-    editor = { player, bets: normalizeBets(bets), plus: normalizePlus(plus), basePath };
+    const token = await getTokenFn?.();
+    const res = await fetch('/api/bets/me', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+
+    if (!res.ok) throw new Error(`${res.status}`);
+
+    const data = await res.json() as { bets: Bet[]; plus_bets: PlusBet | null; updated_at: string | null };
+
+    editor = {
+      player,
+      bets: normalizeBets(data.bets ?? []),
+      plus: normalizePlus(data.plus_bets ?? {}),
+      basePath,
+      updatedAt: data.updated_at,
+    };
     renderEditor(container);
-  } catch (error) {
-    if (note) note.textContent = error instanceof Error ? error.message : 'No se pudieron cargar las apuestas.';
-  }
-}
-
-async function loadBets(player: string, basePath: string): Promise<Bet[]> {
-  if (state.BETS[player]) return structuredClone(state.BETS[player]);
-  const res = await fetch(`${basePath}/bets/${encodeURIComponent(player)}.json`);
-  return fetchJsonOrDefault(res, defaultBets());
-}
-
-async function loadPlus(player: string, basePath: string): Promise<PlusBet> {
-  if (state.PLUS_BETS[player]) return structuredClone(state.PLUS_BETS[player]);
-  const res = await fetch(`${basePath}/bets/${encodeURIComponent(player)}.plus.json`);
-  return fetchJsonOrDefault(res, defaultPlus());
-}
-
-async function fetchJsonOrDefault<T>(res: Response, fallback: T): Promise<T> {
-  if (!res.ok) return fallback;
-
-  const contentType = res.headers.get('content-type') ?? '';
-  if (!contentType.includes('application/json')) return fallback;
-
-  try {
-    return await res.json() as T;
   } catch {
-    return fallback;
+    container.innerHTML = '<div class="mis-shell"><div class="mis-hero"><p style="color:var(--red)">Error al cargar apuestas. Recarga la página.</p></div></div>';
   }
+}
+
+function renderNotIdentified(container: HTMLElement) {
+  container.innerHTML = `
+    <div class="mis-shell">
+      <div class="mis-hero">
+        <div>
+          <div class="section-label">Mis Apuestas</div>
+          <h2>Participante no identificado</h2>
+          <p>Tu usuario de Clerk no coincide con ningún participante registrado.<br>
+          Pide al administrador que configure tu nombre de usuario en Clerk para que coincida con tu nombre en la lista de participantes.</p>
+        </div>
+      </div>
+    </div>`;
 }
 
 function renderEditor(container: HTMLElement) {
@@ -369,10 +338,6 @@ function ensureBet(matchId: number) {
   return bet;
 }
 
-function defaultBets(): Bet[] {
-  return state.RESULTS.map(match => ({ matchId: match.id, gL: 0, gV: 0 }));
-}
-
 function defaultPlus(): PlusBet {
   return {
     convocatoriaColombia: [],
@@ -428,11 +393,9 @@ function goHome() {
 
 function resetEditor(container: HTMLElement) {
   if (!editor) return;
-  const confirmed = window.confirm('Se perderán los cambios que no hayas descargado. ¿Quieres reiniciar y escoger otro participante?');
+  const confirmed = window.confirm('Se perderán los cambios no guardados. ¿Confirmas?');
   if (!confirmed) return;
-  const basePath = editor.basePath;
-  editor = null;
-  renderStart(container, basePath);
+  loadAndRenderEditor(container, editor.basePath, editor.player);
 }
 
 function downloadBets() {
@@ -451,8 +414,7 @@ async function saveBets(container: HTMLElement) {
   const statusEl = container.querySelector('#mis-save-status');
   const btn = container.querySelector('#mis-save') as HTMLButtonElement | null;
 
-  const clerk = (window as Window & { Clerk?: { session?: { getToken: () => Promise<string | null> } } }).Clerk;
-  const token = await clerk?.session?.getToken();
+  const token = await getTokenFn?.();
   if (!token) {
     if (statusEl) statusEl.textContent = 'Debes iniciar sesión para guardar.';
     return;
@@ -465,9 +427,19 @@ async function saveBets(container: HTMLElement) {
     const res = await fetch('/api/bets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ bets: editor.bets, plus_bets: editor.plus }),
+      body: JSON.stringify({ bets: editor.bets, plus_bets: editor.plus, updated_at: editor.updatedAt }),
     });
+
+    if (res.status === 409) {
+      if (statusEl) statusEl.textContent = 'Conflicto: alguien guardó cambios más recientes. Recargando…';
+      setTimeout(() => { if (editor) loadAndRenderEditor(container, editor.basePath, editor.player); }, 1500);
+      return;
+    }
+
     if (!res.ok) throw new Error(`${res.status}`);
+
+    const result = await res.json() as { ok: boolean; updated_at?: string | null };
+    if (result.updated_at) editor.updatedAt = result.updated_at;
     if (statusEl) statusEl.textContent = 'Guardado correctamente.';
   } catch {
     if (statusEl) statusEl.textContent = 'Error al guardar. Intenta de nuevo.';
@@ -477,22 +449,15 @@ async function saveBets(container: HTMLElement) {
 }
 
 function downloadJson(filename: string, data: unknown) {
-  // Simplificamos el type a 'application/json' puro
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
-  
   link.href = url;
-  link.download = filename.endsWith('.json') ? filename : `${filename}.json`; // Asegura la extensión
-  
-  // Medida de seguridad extra para el navegador
-  link.rel = 'noopener'; 
-  
+  link.download = filename.endsWith('.json') ? filename : `${filename}.json`;
+  link.rel = 'noopener';
   document.body.appendChild(link);
   link.click();
   link.remove();
-  
-  // 5 segundos es perfecto, aseguramos que se limpie
   window.setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 

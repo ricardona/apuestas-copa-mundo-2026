@@ -1,5 +1,5 @@
 import { createClerkClient } from '@clerk/backend';
-import { handleGetBets, handlePostBets } from './bets';
+import { handleGetBets, handleGetMyBets, handlePostBets } from './bets';
 
 interface Env {
   mundial2026db: D1Database;
@@ -43,6 +43,11 @@ export default {
 
       const { userId } = authState.toAuth();
       const { pathname } = new URL(request.url);
+
+      if (pathname === '/api/bets/me') {
+        if (request.method === 'GET') return handleGetMyBets(request, env, userId);
+        return new Response('Method Not Allowed', { status: 405 });
+      }
 
       if (pathname === '/api/bets') {
         if (request.method === 'GET') return handleGetBets(request, env);

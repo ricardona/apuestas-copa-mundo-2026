@@ -17,7 +17,7 @@ import { initTabs } from './tabs';
  *   data/players.json. Stored in state.CURRENT_PLAYER for use by components
  *   such as mis-apuestas to pre-select the logged-in player.
  */
-export async function startApp(currentPlayer?: string) {
+export async function startApp(currentPlayer?: string, getToken?: () => Promise<string | null>) {
   state.CURRENT_PLAYER = currentPlayer ?? null;
 
   try {
@@ -59,7 +59,7 @@ export async function startApp(currentPlayer?: string) {
     buildMatches();
     buildPlus();
     buildStats();
-    buildMisApuestas(basePath);
+    buildMisApuestas(basePath, getToken);
     initTabs();
 
     const loaderEl = document.getElementById('global-loader');

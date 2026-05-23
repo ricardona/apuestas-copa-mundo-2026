@@ -80,7 +80,7 @@ const AuthenticatedApp: React.FC = () => {
     console.info('User authenticated:', user.id);
     syncUser(user, getToken); // fire-and-forget; never blocks app startup
     const identifier = resolvePlayerIdentifier(user);
-    startApp(identifier);
+    startApp(identifier, getToken);
   }, [user?.id]); // re-initialise only if the logged-in identity actually changes
 
   return <ClerkBar />;

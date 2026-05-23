@@ -42,9 +42,37 @@ export async function handleGetBets(_request: Request, env: Env): Promise<Respon
   }
 }
 
+export async function handleGetMyBets(_request: Request, env: Env, userId: string): Promise<Response> {
+  try {
+    const row = await env.mundial2026db
+      .prepare(`SELECT bets, plus_bets, updated_at FROM player_bets WHERE player_id = ?1`)
+      .bind(userId)
+      .first<{ bets: string; plus_bets: string | null; updated_at: string | null }>();
+
+    return json({
+      bets: row?.bets ? JSON.parse(row.bets) : [],
+      plus_bets: row?.plus_bets ? JSON.parse(row.plus_bets) : null,
+      updated_at: row?.updated_at ?? null,
+    });
+  } catch (err) {
+    console.error('GET /api/bets/me:', err);
+    return json({ error: 'Internal server error' }, 500);
+  }
+}
+
 export async function handlePostBets(request: Request, env: Env, userId: string): Promise<Response> {
   try {
-    const body = (await request.json()) as { bets?: unknown; plus_bets?: unknown };
+    const body = (await request.json()) as { bets?: unknown; plus_bets?: unknown; updated_at?: string };
+
+    if (body.updated_at) {
+      const current = await env.mundial2026db
+        .prepare(`SELECT updated_at FROM player_bets WHERE player_id = ?1`)
+        .bind(userId)
+        .first<{ updated_at: string }>();
+      if (current && current.updated_at > body.updated_at) {
+        return json({ error: 'conflict' }, 409);
+      }
+    }
 
     await env.mundial2026db
       .prepare(
@@ -62,7 +90,12 @@ export async function handlePostBets(request: Request, env: Env, userId: string)
       )
       .run();
 
-    return json({ ok: true });
+    const saved = await env.mundial2026db
+      .prepare(`SELECT updated_at FROM player_bets WHERE player_id = ?1`)
+      .bind(userId)
+      .first<{ updated_at: string }>();
+
+    return json({ ok: true, updated_at: saved?.updated_at ?? null });
   } catch (err) {
     console.error('POST /api/bets:', err);
     return json({ error: 'Internal server error', details: err instanceof Error ? err.message : String(err) }, 500);
