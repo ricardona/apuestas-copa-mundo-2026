@@ -15,6 +15,13 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
+export async function handleGetPlayers(_request: Request, env: Env): Promise<Response> {
+  const rows = await env.mundial2026db
+    .prepare(`SELECT username FROM players ORDER BY username`)
+    .all<{ username: string }>();
+  return json({ participantes: rows.results.map(r => r.username) });
+}
+
 export async function handleGetBets(_request: Request, env: Env): Promise<Response> {
   try {
     const rows = await env.mundial2026db

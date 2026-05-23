@@ -25,13 +25,14 @@ export async function startApp(currentPlayer?: string, getToken?: () => Promise<
     const dataFolder = urlParams.get('data') || (urlParams.has('test') ? 'test_data' : 'data');
     const basePath = `./${dataFolder}`;
 
-    const [playersRes, resultsRes, settingsRes] = await Promise.all([
-      fetch(`${basePath}/players.json`),
+    const [resultsRes, settingsRes, playersRes] = await Promise.all([
       fetch(`${basePath}/results.json`),
-      fetch(`${basePath}/settings.json`)
+      fetch(`${basePath}/settings.json`),
+      fetch('/api/players'),
     ]);
 
-    const playersData = await playersRes.json();
+    if (!playersRes.ok) throw new Error('No se pudieron cargar los jugadores.');
+    const playersData = await playersRes.json() as { participantes: string[] };
     state.PLAYERS = playersData.participantes;
     state.RESULTS = await resultsRes.json();
     if (settingsRes.ok) state.SETTINGS = await settingsRes.json();
