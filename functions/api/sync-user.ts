@@ -1,8 +1,8 @@
 import { createClerkClient } from '@clerk/backend';
 
 interface Env {
-  DB: D1Database;
-  CLERK_SECRET_KEY: string;
+  mundial2026db: D1Database;
+  VITE_CLERK_PUBLISHABLE_KEY: string;
 }
 
 interface SyncUserBody {
@@ -30,7 +30,7 @@ export const onRequestOptions: PagesFunction = async () =>
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
-    const clerk = createClerkClient({ secretKey: env.CLERK_SECRET_KEY });
+    const clerk = createClerkClient({ secretKey: env.VITE_CLERK_PUBLISHABLE_KEY });
     const state = await clerk.authenticateRequest(request);
 
     if (!state.isAuthenticated) {

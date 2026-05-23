@@ -10,7 +10,10 @@ export async function syncUser(
   getToken: () => Promise<string | null>,
 ): Promise<void> {
   const token = await getToken();
-  if (!token) return;
+  if (!token) {
+    console.warn('No token available for syncing user data');
+    return;
+  } 
 
   const email = user.primaryEmailAddress?.emailAddress ?? '';
   const username = user.username ?? email.split('@')[0] ?? user.id;

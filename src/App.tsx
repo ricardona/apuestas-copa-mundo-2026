@@ -77,7 +77,7 @@ const AuthenticatedApp: React.FC = () => {
     // Guard: run once, and only when Clerk has resolved the user object.
     if (initialized.current || !user) return;
     initialized.current = true;
-
+    console.info('User authenticated:', user.id);
     syncUser(user, getToken); // fire-and-forget; never blocks app startup
     const identifier = resolvePlayerIdentifier(user);
     startApp(identifier);
