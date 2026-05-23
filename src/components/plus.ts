@@ -41,12 +41,14 @@ export function buildPlus() {
         <span class="player-cell">${avatar(name, 20)} ${name}</span>
         <span>${summary}</span>
       </summary>
-      ${convocatoria.length ? `<div class="plus-table-wrap">
-        <table class="plus-table convocatoria-table">
-          <thead><tr><th>Jugador apostado</th><th>Pts</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>` : '<div class="detail-empty">No registró convocatoria.</div>'}
+      ${!convocatoriaEvaluada
+        ? ''
+        : (convocatoria.length ? `<div class="plus-table-wrap">
+          <table class="plus-table convocatoria-table">
+            <thead><tr><th>Jugador apostado</th><th>Pts</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>` : '<div class="detail-empty">No registró convocatoria.</div>')}
     </details>`;
   }).join('');
 

@@ -59,15 +59,17 @@ export function buildPlayerDetail(name: string): string {
         <td>${convocatoriaEvaluada ? pts : ''}</td>
       </tr>`;
     }).join('');
-    const convocatoriaHtml = convocatoria.length
+    const convocatoriaHtml = convocatoriaEvaluada
       ? `<details class="detail-collapsible">
-          <summary>Convocatoria Colombia: ${!convocatoriaValida ? 'lista inválida, deben ser 26 jugadores' : convocatoriaEvaluada ? `${puntosConvocatoria}/26 aciertos · +${puntosConvocatoria} pts` : 'pendiente de lista oficial'}</summary>
+          <summary>Convocatoria Colombia: ${!convocatoriaValida ? 'lista inválida, deben ser 26 jugadores' : `${puntosConvocatoria}/26 aciertos · +${puntosConvocatoria} pts`}</summary>
           <table class="detail-plus-table detail-convocatoria-table">
             <thead><tr><th>Jugador apostado</th><th>Pts</th></tr></thead>
             <tbody>${convocatoriaRows}</tbody>
           </table>
         </details>`
-      : '';
+      : (convocatoria.length
+        ? `<div class="detail-empty">Convocatoria registrada — visible al publicarse la lista oficial.</div>`
+        : '');
 
     const top4Rows = [
       { label: `Campeón (${p.firstPlus}pts)`, pred: plus.top4.campeon, real: state.PLUS_RESULTS?.top4.campeon, pts: p.firstPlus },
