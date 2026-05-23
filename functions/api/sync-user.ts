@@ -72,7 +72,7 @@ export default {
       return json({ ok: true });
     } catch (err) {
       console.error('sync-user:', err);
-      return json({ error: 'Internal server error' }, 500);
+      return json({ error: 'Internal server error', details: err instanceof Error ? err.message : String(err) }, 500);
     }
   },
 };
