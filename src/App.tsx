@@ -7,7 +7,7 @@ import {
   useAuth,
   useUser,
 } from '@clerk/clerk-react';
-import InstruccionesModal from './components/InstruccionesModal';
+import InstructionsModal from './components/InstructionsModal';
 
 type UserResource = NonNullable<ReturnType<typeof useUser>['user']>;
 import { startApp } from './main';
@@ -110,7 +110,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <InstruccionesModal isOpen={instrOpen} onClose={() => setInstrOpen(false)} />
+      <InstructionsModal isOpen={instrOpen} onClose={() => setInstrOpen(false)} />
       <SignedOut>
         <LandingPage onOpenInstrucciones={() => setInstrOpen(true)} />
       </SignedOut>

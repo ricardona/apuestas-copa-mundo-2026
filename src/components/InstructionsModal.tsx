@@ -5,7 +5,7 @@ interface Props {
   onClose: () => void;
 }
 
-const InstruccionesModal: React.FC<Props> = ({ isOpen, onClose }) => (
+const InstructionsModal: React.FC<Props> = ({ isOpen, onClose }) => (
   <div
     className={`modal-overlay${isOpen ? ' open' : ''}`}
     style={{ zIndex: 4000 }}
@@ -82,4 +82,4 @@ const InstruccionesModal: React.FC<Props> = ({ isOpen, onClose }) => (
   </div>
 );
 
-export default InstruccionesModal;
+export default InstructionsModal;
