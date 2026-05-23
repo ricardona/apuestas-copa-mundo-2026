@@ -1,4 +1,5 @@
 import { createClerkClient } from '@clerk/backend';
+import { handleGetBets, handlePostBets } from './bets';
 
 interface Env {
   mundial2026db: D1Database;
@@ -29,6 +30,13 @@ function json(data: unknown, status = 200): Response {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname === '/api/bets') {
+      if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
+      if (request.method === 'GET') return handleGetBets(request, env);
+      if (request.method === 'POST') return handlePostBets(request, env);
+      return new Response('Method Not Allowed', { status: 405 });
+    }
 
     if (url.pathname !== '/api/sync-user') {
       return new Response('Not Found', { status: 404 });

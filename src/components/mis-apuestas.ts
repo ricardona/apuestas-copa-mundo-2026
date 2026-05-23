@@ -144,6 +144,8 @@ function renderEditor(container: HTMLElement) {
           <button class="mis-reset" id="mis-reset" type="button">Reiniciar</button>
           <button class="mis-download" id="mis-download-bets" type="button">Descargar partidos</button>
           <button class="mis-download" id="mis-download-plus" type="button">Descargar plus</button>
+          <button class="mis-save" id="mis-save" type="button">Guardar apuestas</button>
+          <span class="mis-save-status" id="mis-save-status"></span>
         </div>
       </div>
       <div class="mis-tabs" role="tablist">
@@ -164,6 +166,7 @@ function renderEditor(container: HTMLElement) {
   container.querySelector('#mis-reset')?.addEventListener('click', () => resetEditor(container));
   container.querySelector('#mis-download-bets')?.addEventListener('click', downloadBets);
   container.querySelector('#mis-download-plus')?.addEventListener('click', downloadPlus);
+  container.querySelector('#mis-save')?.addEventListener('click', () => saveBets(container));
   container.querySelectorAll('.mis-subtab').forEach(btn => {
     btn.addEventListener('click', () => {
       const panel = (btn as HTMLElement).dataset.panel;
@@ -440,6 +443,37 @@ function downloadBets() {
 function downloadPlus() {
   if (!editor) return;
   downloadJson(`${editor.player}.plus.json`, editor.plus);
+}
+
+async function saveBets(container: HTMLElement) {
+  if (!editor) return;
+
+  const statusEl = container.querySelector('#mis-save-status');
+  const btn = container.querySelector('#mis-save') as HTMLButtonElement | null;
+
+  const clerk = (window as Window & { Clerk?: { session?: { getToken: () => Promise<string | null> } } }).Clerk;
+  const token = await clerk?.session?.getToken();
+  if (!token) {
+    if (statusEl) statusEl.textContent = 'Debes iniciar sesión para guardar.';
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+  if (statusEl) statusEl.textContent = 'Guardando…';
+
+  try {
+    const res = await fetch('/api/bets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ bets: editor.bets, plus_bets: editor.plus }),
+    });
+    if (!res.ok) throw new Error(`${res.status}`);
+    if (statusEl) statusEl.textContent = 'Guardado correctamente.';
+  } catch {
+    if (statusEl) statusEl.textContent = 'Error al guardar. Intenta de nuevo.';
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 }
 
 function downloadJson(filename: string, data: unknown) {

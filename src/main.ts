@@ -36,24 +36,12 @@ export async function startApp(currentPlayer?: string) {
     state.RESULTS = await resultsRes.json();
     if (settingsRes.ok) state.SETTINGS = await settingsRes.json();
 
-    // Load bets + plus bets in parallel
-    await Promise.all(state.PLAYERS.map(async name => {
-      try {
-        const res = await fetch(`${basePath}/bets/${name}.json`);
-        if (!res.ok) throw new Error();
-        state.BETS[name] = await res.json();
-      } catch {
-        console.warn(`No se pudo cargar apuesta de ${name}`);
-        state.BETS[name] = [];
-      }
-
-      try {
-        const res = await fetch(`${basePath}/bets/${name}.plus.json`);
-        if (res.ok) state.PLUS_BETS[name] = await res.json();
-      } catch {
-        console.warn(`No se pudo cargar plus de ${name}`);
-      }
-    }));
+    // Load bets from DB (one fast request)
+    const betsRes = await fetch('/api/bets');
+    if (!betsRes.ok) throw new Error('No se pudieron cargar las apuestas.');
+    const betsData = await betsRes.json() as { bets?: Record<string, unknown>; plus?: Record<string, unknown> };
+    state.BETS = (betsData.bets ?? {}) as typeof state.BETS;
+    state.PLUS_BETS = (betsData.plus ?? {}) as typeof state.PLUS_BETS;
 
     // Load plus results (stored in results.json as separate key, or a dedicated file)
     try {
