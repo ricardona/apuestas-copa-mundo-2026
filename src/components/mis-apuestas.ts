@@ -111,9 +111,7 @@ function renderEditor(container: HTMLElement) {
         </div>
         <div class="mis-editor-actions">
           <button class="mis-reset" id="mis-reset" type="button">Reiniciar</button>
-          <button class="mis-download" id="mis-download-bets" type="button">Descargar partidos</button>
-          <button class="mis-download" id="mis-download-plus" type="button">Descargar plus</button>
-          <button class="mis-save" id="mis-save" type="button">Guardar apuestas</button>
+          <button class="mis-primary" id="mis-save" type="button">Guardar apuestas</button>
           <span class="mis-save-status" id="mis-save-status"></span>
         </div>
       </div>
@@ -133,8 +131,7 @@ function renderEditor(container: HTMLElement) {
 
   container.querySelector('.mis-home')?.addEventListener('click', goHome);
   container.querySelector('#mis-reset')?.addEventListener('click', () => resetEditor(container));
-  container.querySelector('#mis-download-bets')?.addEventListener('click', downloadBets);
-  container.querySelector('#mis-download-plus')?.addEventListener('click', downloadPlus);
+
   container.querySelector('#mis-save')?.addEventListener('click', () => saveBets(container));
   container.querySelectorAll('.mis-subtab').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -398,15 +395,6 @@ function resetEditor(container: HTMLElement) {
   loadAndRenderEditor(container, editor.basePath, editor.player);
 }
 
-function downloadBets() {
-  if (!editor) return;
-  downloadJson(`${editor.player}.json`, editor.bets);
-}
-
-function downloadPlus() {
-  if (!editor) return;
-  downloadJson(`${editor.player}.plus.json`, editor.plus);
-}
 
 async function saveBets(container: HTMLElement) {
   if (!editor) return;
@@ -448,18 +436,6 @@ async function saveBets(container: HTMLElement) {
   }
 }
 
-function downloadJson(filename: string, data: unknown) {
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename.endsWith('.json') ? filename : `${filename}.json`;
-  link.rel = 'noopener';
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  window.setTimeout(() => URL.revokeObjectURL(url), 5000);
-}
 
 function esc(value: string | number) {
   return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char] ?? char);

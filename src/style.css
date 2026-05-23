@@ -296,7 +296,7 @@ pre.plus-example code { background: none; padding: 0; font-size: 11.5px; color: 
 .mis-select-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
 .mis-actions, .mis-editor-head, .mis-editor-actions { display: flex; align-items: center; gap: 12px; justify-content: space-between; flex-wrap: wrap; }
 .mis-editor-actions { justify-content: flex-end; }
-.mis-primary, .mis-download, .mis-home, .mis-reset {
+.mis-primary, .mis-home, .mis-reset {
   border: 1px solid var(--border);
   border-radius: 8px;
   font-family: var(--font);
@@ -304,10 +304,10 @@ pre.plus-example code { background: none; padding: 0; font-size: 11.5px; color: 
   cursor: pointer;
   transition: transform .15s, border-color .15s, background .15s;
 }
-.mis-primary, .mis-download { background: linear-gradient(135deg, var(--gold), var(--green)); color: #111; padding: 11px 16px; }
+.mis-primary { background: linear-gradient(135deg, var(--gold), var(--green)); color: #111; padding: 11px 16px; }
 .mis-home, .mis-reset { background: var(--surface2); color: var(--text); padding: 9px 13px; }
 .mis-reset { color: #ffb4b4; }
-.mis-primary:hover, .mis-download:hover, .mis-home:hover, .mis-reset:hover { transform: translateY(-1px); border-color: rgba(245,197,24,0.55); }
+.mis-primary:hover, .mis-home:hover, .mis-reset:hover { transform: translateY(-1px); border-color: rgba(245,197,24,0.55); }
 .mis-note, .mis-status { color: var(--muted); font-size: 13px; }
 .mis-editor-head { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
 .mis-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
