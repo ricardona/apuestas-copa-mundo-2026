@@ -23,6 +23,9 @@ export const state: {
   SETTINGS: {
     puntos: { score: 3, result: 1, groupPlus: 2, firstPlus: 8, secondPlus: 5, thirdPlus: 4, fourthPlus: 3, goOnPlus: 2 },
     multiplicadores: { N: 1, E: 2, X: 3 },
-    tiposPartido: { N: 'Normal', E: 'Especial', X: 'Super Especial' }
+    tiposPartido: { N: 'Normal', E: 'Especial', X: 'Super Especial' },
+    mostrarConvocados: true,
+    mostrarCuadrodeHonor: true,
+    mostrarPosicionesGrupos: true
   }
 };

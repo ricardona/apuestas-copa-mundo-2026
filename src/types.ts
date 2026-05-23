@@ -6,7 +6,7 @@ export interface Result {
   visita: string;
   gL: number;
   gV: number;
-  status: 'finalizado' | 'pendiente';
+  status: 'finalizado' | 'pendiente' | 'siguiente';
   fase?: string;
   grupo?: string;
   tipo?: 'N' | 'E' | 'X';
@@ -44,6 +44,9 @@ export interface Settings {
   };
   multiplicadores: Record<string, number>;
   tiposPartido: Record<string, string>;
+  mostrarConvocados: boolean;
+  mostrarCuadrodeHonor: boolean;
+  mostrarPosicionesGrupos: boolean;
 }
 
 export interface PlusResults {

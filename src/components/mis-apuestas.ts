@@ -101,12 +101,18 @@ function renderNotIdentified(container: HTMLElement) {
 
 function renderEditor(container: HTMLElement) {
   if (!editor) return;
-  const pending = state.RESULTS.filter(match => match.status !== 'finalizado');
+  const pending = state.RESULTS.filter(match => match.status === 'siguiente');
   const hiddenCount = state.RESULTS.length - pending.length;
   const tournamentStarted = state.RESULTS.some(match => match.status === 'finalizado');
-  const showConvocatoria = !tournamentStarted;
+  const s = state.SETTINGS;
+  const showConvocatoria = !tournamentStarted && s.mostrarConvocados;
+  const showTop4 = s.mostrarCuadrodeHonor;
+  const showGrupos = s.mostrarPosicionesGrupos;
   const top4Locked = tournamentStarted;
-  const firstPanel = showConvocatoria ? 'convocatoria' : 'top4';
+  const firstPanel = showConvocatoria ? 'convocatoria'
+    : showTop4 ? 'top4'
+    : showGrupos ? 'grupos'
+    : 'partidos';
 
   container.innerHTML = `
     <div class="mis-shell">
@@ -124,15 +130,15 @@ function renderEditor(container: HTMLElement) {
       </div>
       <div class="mis-tabs" role="tablist">
         ${showConvocatoria ? `<button class="mis-subtab ${firstPanel === 'convocatoria' ? 'active' : ''}" data-panel="convocatoria">Convocatoria</button>` : ''}
-        <button class="mis-subtab ${firstPanel === 'top4' ? 'active' : ''}" data-panel="top4">Top 4</button>
-        <button class="mis-subtab" data-panel="grupos">Grupos</button>
-        <button class="mis-subtab" data-panel="partidos">Partidos</button>
+        ${showTop4 ? `<button class="mis-subtab ${firstPanel === 'top4' ? 'active' : ''}" data-panel="top4">Top 4</button>` : ''}
+        ${showGrupos ? `<button class="mis-subtab ${firstPanel === 'grupos' ? 'active' : ''}" data-panel="grupos">Grupos</button>` : ''}
+        <button class="mis-subtab ${firstPanel === 'partidos' ? 'active' : ''}" data-panel="partidos">Partidos</button>
         <button class="mis-subtab" data-panel="goon">Eliminatorias</button>
       </div>
       ${showConvocatoria ? `<div class="mis-panel ${firstPanel === 'convocatoria' ? 'active' : ''}" id="mis-panel-convocatoria">${renderConvocatoria()}</div>` : ''}
-      <div class="mis-panel ${firstPanel === 'top4' ? 'active' : ''}" id="mis-panel-top4">${renderTop4(top4Locked)}</div>
-      <div class="mis-panel" id="mis-panel-grupos">${renderGroups()}</div>
-      <div class="mis-panel" id="mis-panel-partidos">${renderMatches(pending, hiddenCount)}</div>
+      ${showTop4 ? `<div class="mis-panel ${firstPanel === 'top4' ? 'active' : ''}" id="mis-panel-top4">${renderTop4(top4Locked)}</div>` : ''}
+      ${showGrupos ? `<div class="mis-panel ${firstPanel === 'grupos' ? 'active' : ''}" id="mis-panel-grupos">${renderGroups()}</div>` : ''}
+      <div class="mis-panel ${firstPanel === 'partidos' ? 'active' : ''}" id="mis-panel-partidos">${renderMatches(pending, hiddenCount)}</div>
       <div class="mis-panel" id="mis-panel-goon">${renderGoOn()}</div>
     </div>`;
 
@@ -212,7 +218,7 @@ function renderTop4(locked: boolean) {
 }
 
 function renderGoOn() {
-  const matches = state.RESULTS.filter(match => match.fase && match.fase !== 'Grupos');
+  const matches = state.RESULTS.filter(match => match.fase && match.fase !== 'Grupos' && match.status === 'siguiente');
   const rows = matches.map(match => {
     const value = editor?.plus.goOn.find(item => item.matchId === match.id)?.equipo ?? '';
     const teams = [match.local, match.visita].filter(team => !/^Clasificado|^Ganador|^Perdedor/.test(team));
