@@ -3,17 +3,24 @@ import type { Bet, PlusBet, Result } from '../types';
 import { activateTab } from '../tabs';
 
 const COLOMBIA_PRESELECCIONADOS = [
-  'Álvaro Montero', 'Camilo Vargas', 'David Ospina', 'Kevin Mier', 'Andrés Mosquera Marmolejo',
-  'Carlos Cuesta', 'Cristian Borja', 'Daniel Muñoz', 'Dávinson Sánchez', 'Déiver Machado',
-  'Jhon Lucumí', 'Johan Mojica', 'Juan David Cabal', 'Santiago Arias', 'Yerry Mina',
-  'Andrés Román', 'Jhon Janer Lucumí', 'Kevin Mantilla', 'Willier Ditta', 'Yerson Mosquera',
-  'James Rodríguez', 'Jefferson Lerma', 'Jhon Arias', 'Jorge Carrascal', 'Juan Fernando Quintero',
-  'Juan Guillermo Cuadrado', 'Kevin Castaño', 'Matheus Uribe', 'Nelson Deossa', 'Richard Ríos',
-  'Sebastián Gómez', 'Wílmar Barrios', 'Yáser Asprilla', 'Gustavo Puerta', 'Jorman Campuzano',
-  'Jhon Córdoba', 'Jhon Jáder Durán', 'Luis Díaz', 'Luis Sinisterra', 'Rafael Santos Borré',
-  'Cucho Hernández', 'Duván Zapata', 'Jaminton Campaz', 'Johan Carbonero', 'Juan Camilo Hernández',
-  'Juan Camilo Portilla', 'Juan David Mosquera', 'Kevin Serna', 'Mateo Cassierra', 'Óscar Cortés',
-  'Roger Martínez', 'Santiago Moreno', 'Yaser Asprilla', 'Edwin Cardona', 'Miguel Borja'
+  // --- ARQUEROS (6) ---
+  'Kevin Mier', 'Alvaro Montero', 'Andrés Mosquera Marmolejo', 'David Ospina', 'Aldaír Quintana', 'Camilo Vargas',
+
+  // --- DEFENSAS (17) ---
+  'Álvaro Angulo', 'Santiago Arias', 'Cristian Borja', 'Juan David Cabal', 'Carlos Cuesta', 'Willer Ditta', 
+  'Junior Hernández', 'Jhon Lucumí', 'Deiver Machado', 'Yerry Mina', 'Johan Mojica', 'Yerson Mosquera', 
+  'Daniel Muñoz', 'Edier Ocampo', 'Andrés Román', 'Johan Romaña', 'Davinson Sánchez',
+
+  // --- MEDIOCAMPISTAS (18) ---
+  'Jhon Arias', 'Yaser Asprilla', 'Jordan Barrera', 'Wilmar Barrios', 'Jorge Carrascal', 'Kevin Castaño', 
+  'Juan Guillermo Cuadrado', 'Nelson Deossa', 'Sebastián Gómez', 'Jefferson Lerma', 'Juan Camilo Portilla', 
+  'Gustavo Puerta', 'Juan Fernando Quintero', 'Juan Manuel Rengifo', 'Johan Rojas', 'Jhon Solís', 
+  'Richard Ríos', 'James Rodríguez',
+
+  // --- DELANTEROS (14) ---
+  'Rafael Santos Borré', 'Jaminton Campaz', 'Johan Carbonero', 'Edwuin Cetré', 'Jhon Córdoba', 'Jhon Durán', 
+  'Andrés Gómez', 'Juan Camilo Hernández', 'Stiven Mendoza', 'Luis Suárez', 'Sebastián Villa', 'Neiser Villarreal', 
+  'Kevin Viveros', 'Luis Díaz'
 ];
 
 const GROUPS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
