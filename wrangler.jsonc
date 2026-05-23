@@ -8,7 +8,7 @@
     "run_worker_first": ["/api/*"]
   },
   "vars": {
-    "CLERK_PUBLISHABLE_KEY": "pk_test_c3Rlcmxpbmctc2N1bHBpbi02My5jbGVyay5hY2NvdW50cy5kZXYk"
+    "CLERK_PUBLISHABLE_KEY": "pk_live_Y2xlcmsucmljYXJkb25hLndvcmtlcnMuZGV2JA"
   },
   "d1_databases": [
     {
