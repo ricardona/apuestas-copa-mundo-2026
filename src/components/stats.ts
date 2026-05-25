@@ -10,14 +10,13 @@ export function buildStats() {
   if (!chartCanvas || !statsGrid) return;
 
   const matches = state.RESULTS.filter(r => r.status === 'finalizado').sort((a,b) => a.id - b.id);
-  const hasConvocatoria = state.COLOMBIA_FINAL?.jugadoresOficiales.length === 26;
-  if (matches.length === 0 && !hasConvocatoria) {
+  if (matches.length === 0) {
     statsGrid.innerHTML = '<div style="color:#888;">No hay suficientes datos aún.</div>';
     return;
   }
 
   const maxId = matches[matches.length - 1]?.id ?? -1;
-  const labels = hasConvocatoria ? ['Base', ...matches.map(m => `P${m.id}`)] : matches.map(m => `P${m.id}`);
+  const labels = matches.map(m => `P${m.id}`);
 
   // Determine the ID of the last finalized group match so we know when to add group points
   const finalizedGroupMatches = matches.filter(m => m.fase === 'Grupos');
@@ -53,7 +52,6 @@ export function buildStats() {
     }
 
     const data: number[] = [];
-    if (hasConvocatoria) data.push(convocatoriaPoints);
 
     let exacts = 0;
     let tend = 0;
@@ -127,14 +125,14 @@ export function buildStats() {
         knockoutPts += (cumulativeGoOn + top4Points);
       }
 
-      let stepTotal = convocatoriaPoints + cumulativeMatch + cumulativeGoOn + cumulativeGroup + cumulativeTop4;
+      let stepTotal = cumulativeMatch + cumulativeGoOn + cumulativeGroup + cumulativeTop4;
       data.push(stepTotal);
     });
 
     return { 
       player, data, exacts, tend, comodinPts, maxStreak, miss, 
       convocatoriaPoints,
-      plusPts: convocatoriaPoints + cumulativeGoOn + cumulativeGroup + cumulativeTop4, 
+      plusPts: cumulativeGoOn + cumulativeGroup + cumulativeTop4,
       total: data[data.length-1],
       tiesBet, transitions, matchPts: cumulativeMatch,
       arranqueScore: groupsPts - knockoutPts,

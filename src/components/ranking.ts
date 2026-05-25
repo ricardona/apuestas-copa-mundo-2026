@@ -150,7 +150,7 @@ export function buildPlayerDetail(name: string): string {
 
 export function buildRanking() {
   const stats = state.PLAYERS.map(getStats).sort((a, b) =>
-    b.pts - a.pts || (b.ptsConvocatoria + b.ptsPlus) - (a.ptsConvocatoria + a.ptsPlus)
+    b.pts - a.pts || b.ptsPlus - a.ptsPlus
   );
   const posClass = (i: number) => i === 0 ? 'g' : i === 1 ? 's' : i === 2 ? 'b' : '';
 
@@ -170,7 +170,7 @@ export function buildRanking() {
         </td>
         <td class="r"><span class="pts-big">${p.pts}</span></td>
         <td class="r"><span class="badge be" title="Pts partidos">${p.ptsMatch}</span></td>
-        <td class="r"><span class="badge bt" title="Pts convocatoria + plus">${p.ptsConvocatoria + p.ptsPlus > 0 ? '+' + (p.ptsConvocatoria + p.ptsPlus) : p.ptsConvocatoria + p.ptsPlus}</span></td>
+        <td class="r"><span class="badge bt" title="Pts plus">${p.ptsPlus > 0 ? '+' + p.ptsPlus : p.ptsPlus}</span></td>
         <td class="r"><span class="badge bx">${p.miss}</span> <span class="row-chevron">▾</span></td>
       </tr>
       <tr class="detail-row" data-for="${p.name}">

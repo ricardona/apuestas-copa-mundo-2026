@@ -98,5 +98,5 @@ export function getStats(name: string): PlayerStats {
   });
 
   const ptsPlus = calcPlusScore(name);
-  return { name, pts: ptsConvocatoria + ptsMatch + ptsPlus, ptsMatch, ptsPlus, ptsConvocatoria, tend, miss, streak };
+  return { name, pts: ptsMatch + ptsPlus, ptsMatch, ptsPlus, ptsConvocatoria, tend, miss, streak };
 }
