@@ -19,7 +19,7 @@
     "E": "Especial",
     "X": "Super Especial"
   },
-  "mostrarConvocados": true,
+  "mostrarConvocados": false,
   "mostrarCuadrodeHonor": true,
   "mostrarPosicionesGrupos": false
 }
