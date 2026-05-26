@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  SignInButton,
   SignedIn,
   SignedOut,
   UserButton,
@@ -8,6 +7,7 @@ import {
   useUser,
 } from '@clerk/clerk-react';
 import InstructionsModal from './components/InstructionsModal';
+import LandingPage from './components/LandingPage';
 
 type UserResource = NonNullable<ReturnType<typeof useUser>['user']>;
 import { startApp } from './main';
@@ -33,30 +33,6 @@ function resolvePlayerIdentifier(user: UserResource): string | undefined {
   if (email) return email.split('@')[0];
   return undefined;
 }
-
-// ─── Landing (signed-out) ─────────────────────────────────────────────────────
-
-interface LandingPageProps {
-  onOpenInstrucciones: () => void;
-}
-
-const LandingPage: React.FC<LandingPageProps> = ({ onOpenInstrucciones }) => (
-  <div className="auth-overlay">
-    <div className="auth-card">
-      <div className="auth-card__icon">⚽</div>
-      <h1 className="auth-card__title">Polla Mundialista 2026</h1>
-      <p className="auth-card__subtitle">
-        Sigue las posiciones, apuestas y estadísticas de tu grupo.
-      </p>
-      <SignInButton mode="modal">
-        <button className="auth-card__btn">Iniciar sesión</button>
-      </SignInButton>
-      <button className="auth-card__instrucciones" onClick={onOpenInstrucciones}>
-        Instrucciones
-      </button>
-    </div>
-  </div>
-);
 
 // ─── Header bar (signed-in) ───────────────────────────────────────────────────
 
