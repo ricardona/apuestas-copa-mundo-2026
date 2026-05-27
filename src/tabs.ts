@@ -24,9 +24,8 @@ export function activateTab(target: string, updateHash = false) {
   document.querySelectorAll('.tab, .header-action-link[data-target], .logo-home[data-target]').forEach(t => t.classList.remove('active'));
 
   const tabEl = document.getElementById('tab-' + target);
-  const btnEl = document.querySelector(`.tab[data-target="${target}"], .header-action-link[data-target="${target}"], .logo-home[data-target="${target}"]`);
   if (tabEl) tabEl.classList.add('active');
-  if (btnEl) btnEl.classList.add('active');
+  document.querySelectorAll(`.tab[data-target="${target}"], .header-action-link[data-target="${target}"], .logo-home[data-target="${target}"]`).forEach(el => el.classList.add('active'));
 
   if (updateHash && window.location.hash !== `#/${target}`) {
     window.location.hash = `#/${target}`;
