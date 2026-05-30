@@ -55,7 +55,7 @@ export default {
       }
 
       if (pathname === '/api/bets') {
-        if (request.method === 'GET') return handleGetBets(request, env);
+        if (request.method === 'GET') return handleGetBets(request, env, userId);
         if (request.method === 'POST') return handlePostBets(request, env, userId);
         return new Response('Method Not Allowed', { status: 405 });
       }

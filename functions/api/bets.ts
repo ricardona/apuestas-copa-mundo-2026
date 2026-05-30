@@ -1,5 +1,56 @@
+import type { Bet, PlusBet } from '../../src/types';
+import resultsData from '../../data/results.json';
+import settingsData from '../../data/settings.json';
+
 interface Env {
   mundial2026db: D1Database;
+}
+
+// ─── Anti-copy filtering ────────────────────────────────────────────────────
+// Bets that are still editable (their betting window is open) must not be sent
+// to other players, otherwise the raw values leak in the /api/bets JSON and can
+// be copied. We reveal a prediction only once it is locked:
+//   · match score → match is 'finalizado'
+//   · Plus phase  → its mostrar* flag is false (betting for that phase closed)
+
+const FINALIZED_MATCH_IDS = new Set<number>(
+  (resultsData as Array<{ id: number; status: string }>)
+    .filter(r => r.status === 'finalizado')
+    .map(r => r.id),
+);
+
+const flags = settingsData as {
+  mostrarConvocados?: boolean;
+  mostrarCuadrodeHonor?: boolean;
+  mostrarPosicionesGrupos?: boolean;
+};
+const CONVOCATORIA_OPEN = flags.mostrarConvocados === true;
+const CUADRO_HONOR_OPEN = flags.mostrarCuadrodeHonor === true;
+const POSICIONES_GRUPOS_OPEN = flags.mostrarPosicionesGrupos === true;
+
+/** Mask score predictions for matches that are not yet finalized (still copyable). */
+function sanitizeMatchBets(bets: Bet[]): Bet[] {
+  return bets.map(b =>
+    FINALIZED_MATCH_IDS.has(b.matchId) ? b : { matchId: b.matchId, gL: 0, gV: 0 },
+  );
+}
+
+/** Strip Plus predictions whose betting window is still open (still copyable). */
+function sanitizePlus(plus: PlusBet): PlusBet {
+  const groups = plus.posicionesGrupos ?? {};
+  const emptyGroups: Record<string, string[]> = {};
+  for (const grp of Object.keys(groups)) emptyGroups[grp] = ['', '', '', ''];
+
+  return {
+    convocatoriaColombia: CONVOCATORIA_OPEN ? [] : (plus.convocatoriaColombia ?? []),
+    top4: CUADRO_HONOR_OPEN
+      ? { campeon: '', subcampeon: '', tercero: '', cuarto: '' }
+      : (plus.top4 ?? { campeon: '', subcampeon: '', tercero: '', cuarto: '' }),
+    posicionesGrupos: POSICIONES_GRUPOS_OPEN ? emptyGroups : groups,
+    goOn: Array.isArray(plus.goOn)
+      ? plus.goOn.filter(g => FINALIZED_MATCH_IDS.has(g.matchId))
+      : [],
+  };
 }
 
 const CORS = {
@@ -26,23 +77,36 @@ export async function handleGetPlayers(_request: Request, env: Env): Promise<Res
   return json({ participantes: rows.results.map(r => r.username), avatars });
 }
 
-export async function handleGetBets(_request: Request, env: Env): Promise<Response> {
+export async function handleGetBets(_request: Request, env: Env, userId: string): Promise<Response> {
   try {
     const rows = await env.mundial2026db
       .prepare(
-        `SELECT p.username, pb.bets, pb.plus_bets
+        `SELECT p.id, p.username, pb.bets, pb.plus_bets
          FROM player_bets pb
          INNER JOIN players p ON p.id = pb.player_id`,
       )
-      .all<{ username: string; bets: string; plus_bets: string | null }>();
+      .all<{ id: string; username: string; bets: string; plus_bets: string | null }>();
 
     const bets: Record<string, unknown> = {};
     const plus: Record<string, unknown> = {};
 
     for (const row of rows.results) {
-      try { bets[row.username] = JSON.parse(row.bets); } catch { bets[row.username] = []; }
+      // The requesting user always sees their own bets in full; everyone else's
+      // open (still-editable) predictions are filtered out to prevent copying.
+      const reveal = row.id === userId;
+
+      let parsedBets: Bet[] = [];
+      try {
+        const value = JSON.parse(row.bets);
+        if (Array.isArray(value)) parsedBets = value;
+      } catch { /* keep [] */ }
+      bets[row.username] = reveal ? parsedBets : sanitizeMatchBets(parsedBets);
+
       if (row.plus_bets) {
-        try { plus[row.username] = JSON.parse(row.plus_bets); } catch { /* skip */ }
+        try {
+          const parsedPlus = JSON.parse(row.plus_bets) as PlusBet;
+          plus[row.username] = reveal ? parsedPlus : sanitizePlus(parsedPlus);
+        } catch { /* skip */ }
       }
     }
 
