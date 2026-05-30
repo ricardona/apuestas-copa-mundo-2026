@@ -12,6 +12,18 @@ interface Env {
 // be copied. We reveal a prediction only once it is locked:
 //   · match score → match is 'finalizado'
 //   · Plus phase  → its mostrar* flag is false (betting for that phase closed)
+//
+// While a prediction is hidden we don't drop it: we replace its value with a
+// sentinel so the frontend still distinguishes "already submitted (hidden)"
+// from "not submitted yet". The frontend renders any non-empty hidden value as
+// '?' and an empty one as '–', so a filled-in field stays visible as '?'.
+
+const HIDDEN = '?'; // sentinel for a submitted-but-locked prediction value
+
+/** Empty string stays empty (not submitted); any value becomes the sentinel. */
+function maskValue(value: string): string {
+  return value ? HIDDEN : '';
+}
 
 const FINALIZED_MATCH_IDS = new Set<number>(
   (resultsData as Array<{ id: number; status: string }>)
@@ -35,20 +47,34 @@ function sanitizeMatchBets(bets: Bet[]): Bet[] {
   );
 }
 
-/** Strip Plus predictions whose betting window is still open (still copyable). */
+/** Mask Plus predictions whose betting window is still open (still copyable),
+ *  keeping the submitted/not-submitted signal via the HIDDEN sentinel. */
 function sanitizePlus(plus: PlusBet): PlusBet {
+  const top4 = plus.top4 ?? { campeon: '', subcampeon: '', tercero: '', cuarto: '' };
   const groups = plus.posicionesGrupos ?? {};
-  const emptyGroups: Record<string, string[]> = {};
-  for (const grp of Object.keys(groups)) emptyGroups[grp] = ['', '', '', ''];
+  const convocatoria = plus.convocatoriaColombia ?? [];
 
   return {
-    convocatoriaColombia: CONVOCATORIA_OPEN ? [] : (plus.convocatoriaColombia ?? []),
+    convocatoriaColombia: CONVOCATORIA_OPEN ? convocatoria.map(maskValue) : convocatoria,
     top4: CUADRO_HONOR_OPEN
-      ? { campeon: '', subcampeon: '', tercero: '', cuarto: '' }
-      : (plus.top4 ?? { campeon: '', subcampeon: '', tercero: '', cuarto: '' }),
-    posicionesGrupos: POSICIONES_GRUPOS_OPEN ? emptyGroups : groups,
+      ? {
+          campeon: maskValue(top4.campeon),
+          subcampeon: maskValue(top4.subcampeon),
+          tercero: maskValue(top4.tercero),
+          cuarto: maskValue(top4.cuarto),
+        }
+      : top4,
+    posicionesGrupos: POSICIONES_GRUPOS_OPEN
+      ? Object.fromEntries(
+          Object.entries(groups).map(([grp, positions]) => [grp, (positions ?? []).map(maskValue)]),
+        )
+      : groups,
+    // goOn locks per match: reveal finalized matches, mask the rest (keeps the
+    // "predicted" signal without leaking which team they chose).
     goOn: Array.isArray(plus.goOn)
-      ? plus.goOn.filter(g => FINALIZED_MATCH_IDS.has(g.matchId))
+      ? plus.goOn.map(g =>
+          FINALIZED_MATCH_IDS.has(g.matchId) ? g : { matchId: g.matchId, equipo: maskValue(g.equipo) },
+        )
       : [],
   };
 }
