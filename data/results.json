@@ -2,38 +2,17 @@
   {
     "id": 1,
     "local": "México",
-    "visita": "Corea del Sur",
+    "visita": "Sudáfrica",
     "gL": 0,
     "gV": 0,
-    "status": "pendiente",
+    "status": "siguiente",
     "fase": "Grupos",
     "grupo": "A",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-11T19:00:00Z"
   },
   {
     "id": 2,
-    "local": "Sudáfrica",
-    "visita": "República Checa",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "A",
-    "tipo": "N"
-  },
-  {
-    "id": 3,
-    "local": "México",
-    "visita": "Sudáfrica",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "A",
-    "tipo": "N"
-  },
-  {
-    "id": 4,
     "local": "República Checa",
     "visita": "Corea del Sur",
     "gL": 0,
@@ -41,76 +20,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "A",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-12T02:00:00Z"
   },
   {
-    "id": 5,
-    "local": "República Checa",
-    "visita": "México",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "A",
-    "tipo": "N"
-  },
-  {
-    "id": 6,
-    "local": "Corea del Sur",
-    "visita": "Sudáfrica",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "A",
-    "tipo": "N"
-  },
-  {
-    "id": 7,
-    "local": "Canadá",
-    "visita": "Suiza",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "B",
-    "tipo": "N"
-  },
-  {
-    "id": 8,
-    "local": "Qatar",
-    "visita": "Bosnia y H.",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "B",
-    "tipo": "N"
-  },
-  {
-    "id": 9,
-    "local": "Canadá",
-    "visita": "Qatar",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "B",
-    "tipo": "N"
-  },
-  {
-    "id": 10,
-    "local": "Bosnia y H.",
-    "visita": "Suiza",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "B",
-    "tipo": "N"
-  },
-  {
-    "id": 11,
+    "id": 3,
     "local": "Bosnia y H.",
     "visita": "Canadá",
     "gL": 0,
@@ -118,10 +32,23 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "B",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-12T19:00:00Z"
   },
   {
-    "id": 12,
+    "id": 4,
+    "local": "Estados Unidos",
+    "visita": "Paraguay",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "D",
+    "tipo": "N",
+    "fecha": "2026-06-13T01:00:00Z"
+  },
+  {
+    "id": 5,
     "local": "Suiza",
     "visita": "Qatar",
     "gL": 0,
@@ -129,10 +56,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "B",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-13T19:00:00Z"
   },
   {
-    "id": 13,
+    "id": 6,
     "local": "Brasil",
     "visita": "Marruecos",
     "gL": 0,
@@ -140,10 +68,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "C",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-13T22:00:00Z"
   },
   {
-    "id": 14,
+    "id": 7,
     "local": "Escocia",
     "visita": "Haití",
     "gL": 0,
@@ -151,65 +80,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "C",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-14T01:00:00Z"
   },
   {
-    "id": 15,
-    "local": "Brasil",
-    "visita": "Escocia",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "C",
-    "tipo": "N"
-  },
-  {
-    "id": 16,
-    "local": "Haití",
-    "visita": "Marruecos",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "C",
-    "tipo": "N"
-  },
-  {
-    "id": 17,
-    "local": "Haití",
-    "visita": "Brasil",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "C",
-    "tipo": "N"
-  },
-  {
-    "id": 18,
-    "local": "Marruecos",
-    "visita": "Escocia",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "C",
-    "tipo": "N"
-  },
-  {
-    "id": 19,
-    "local": "Estados Unidos",
-    "visita": "Paraguay",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "D",
-    "tipo": "N"
-  },
-  {
-    "id": 20,
+    "id": 8,
     "local": "Australia",
     "visita": "Turquía",
     "gL": 0,
@@ -217,98 +92,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "D",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-14T04:00:00Z"
   },
   {
-    "id": 21,
-    "local": "Estados Unidos",
-    "visita": "Australia",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "D",
-    "tipo": "N"
-  },
-  {
-    "id": 22,
-    "local": "Turquía",
-    "visita": "Paraguay",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "D",
-    "tipo": "N"
-  },
-  {
-    "id": 23,
-    "local": "Turquía",
-    "visita": "Estados Unidos",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "D",
-    "tipo": "N"
-  },
-  {
-    "id": 24,
-    "local": "Paraguay",
-    "visita": "Australia",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "D",
-    "tipo": "N"
-  },
-  {
-    "id": 25,
-    "local": "Alemania",
-    "visita": "Ecuador",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "E",
-    "tipo": "N"
-  },
-  {
-    "id": 26,
-    "local": "Costa de Marfil",
-    "visita": "Curazao",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "E",
-    "tipo": "N"
-  },
-  {
-    "id": 27,
-    "local": "Alemania",
-    "visita": "Costa de Marfil",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "E",
-    "tipo": "N"
-  },
-  {
-    "id": 28,
-    "local": "Curazao",
-    "visita": "Ecuador",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "E",
-    "tipo": "N"
-  },
-  {
-    "id": 29,
+    "id": 9,
     "local": "Curazao",
     "visita": "Alemania",
     "gL": 0,
@@ -316,10 +104,23 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "E",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-14T17:00:00Z"
   },
   {
-    "id": 30,
+    "id": 10,
+    "local": "Países Bajos",
+    "visita": "Japón",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "F",
+    "tipo": "N",
+    "fecha": "2026-06-14T20:00:00Z"
+  },
+  {
+    "id": 11,
     "local": "Ecuador",
     "visita": "Costa de Marfil",
     "gL": 0,
@@ -327,21 +128,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "E",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-14T23:00:00Z"
   },
   {
-    "id": 31,
-    "local": "Países Bajos",
-    "visita": "Japón",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "F",
-    "tipo": "N"
-  },
-  {
-    "id": 32,
+    "id": 12,
     "local": "Túnez",
     "visita": "Suecia",
     "gL": 0,
@@ -349,32 +140,251 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "F",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-15T02:00:00Z"
+  },
+  {
+    "id": 13,
+    "local": "Cabo Verde",
+    "visita": "España",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H",
+    "tipo": "N",
+    "fecha": "2026-06-15T16:00:00Z"
+  },
+  {
+    "id": 14,
+    "local": "Bélgica",
+    "visita": "Egipto",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "G",
+    "tipo": "N",
+    "fecha": "2026-06-15T19:00:00Z"
+  },
+  {
+    "id": 15,
+    "local": "Uruguay",
+    "visita": "Arabia Saudita",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H",
+    "tipo": "N",
+    "fecha": "2026-06-15T22:00:00Z"
+  },
+  {
+    "id": 16,
+    "local": "Nueva Zelanda",
+    "visita": "Irán",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "G",
+    "tipo": "N",
+    "fecha": "2026-06-16T01:00:00Z"
+  },
+  {
+    "id": 17,
+    "local": "Francia",
+    "visita": "Senegal",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "I",
+    "tipo": "N",
+    "fecha": "2026-06-16T19:00:00Z"
+  },
+  {
+    "id": 18,
+    "local": "Noruega",
+    "visita": "Irak",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "I",
+    "tipo": "N",
+    "fecha": "2026-06-16T22:00:00Z"
+  },
+  {
+    "id": 19,
+    "local": "Argentina",
+    "visita": "Argelia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "J",
+    "tipo": "N",
+    "fecha": "2026-06-17T01:00:00Z"
+  },
+  {
+    "id": 20,
+    "local": "Jordania",
+    "visita": "Austria",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "J",
+    "tipo": "N",
+    "fecha": "2026-06-17T04:00:00Z"
+  },
+  {
+    "id": 21,
+    "local": "RD Congo",
+    "visita": "Portugal",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "K",
+    "tipo": "N",
+    "fecha": "2026-06-17T17:00:00Z"
+  },
+  {
+    "id": 22,
+    "local": "Inglaterra",
+    "visita": "Croacia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "L",
+    "tipo": "N",
+    "fecha": "2026-06-17T20:00:00Z"
+  },
+  {
+    "id": 23,
+    "local": "Ghana",
+    "visita": "Panamá",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "L",
+    "tipo": "N",
+    "fecha": "2026-06-17T23:00:00Z"
+  },
+  {
+    "id": 24,
+    "local": "Colombia",
+    "visita": "Uzbekistán",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "K",
+    "tipo": "N",
+    "fecha": "2026-06-18T02:00:00Z"
+  },
+  {
+    "id": 25,
+    "local": "Sudáfrica",
+    "visita": "República Checa",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "A",
+    "tipo": "N",
+    "fecha": "2026-06-18T16:00:00Z"
+  },
+  {
+    "id": 26,
+    "local": "Bosnia y H.",
+    "visita": "Suiza",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "B",
+    "tipo": "N",
+    "fecha": "2026-06-18T19:00:00Z"
+  },
+  {
+    "id": 27,
+    "local": "Canadá",
+    "visita": "Qatar",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "B",
+    "tipo": "N",
+    "fecha": "2026-06-18T22:00:00Z"
+  },
+  {
+    "id": 28,
+    "local": "México",
+    "visita": "Corea del Sur",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "A",
+    "tipo": "N",
+    "fecha": "2026-06-19T01:00:00Z"
+  },
+  {
+    "id": 29,
+    "local": "Estados Unidos",
+    "visita": "Australia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "D",
+    "tipo": "N",
+    "fecha": "2026-06-19T19:00:00Z"
+  },
+  {
+    "id": 30,
+    "local": "Marruecos",
+    "visita": "Escocia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "C",
+    "tipo": "N",
+    "fecha": "2026-06-19T22:00:00Z"
+  },
+  {
+    "id": 31,
+    "local": "Haití",
+    "visita": "Brasil",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "C",
+    "tipo": "N",
+    "fecha": "2026-06-20T00:30:00Z"
+  },
+  {
+    "id": 32,
+    "local": "Turquía",
+    "visita": "Paraguay",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "D",
+    "tipo": "N",
+    "fecha": "2026-06-20T03:00:00Z"
   },
   {
     "id": 33,
-    "local": "Países Bajos",
-    "visita": "Túnez",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "F",
-    "tipo": "N"
-  },
-  {
-    "id": 34,
-    "local": "Suecia",
-    "visita": "Japón",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "F",
-    "tipo": "N"
-  },
-  {
-    "id": 35,
     "local": "Suecia",
     "visita": "Países Bajos",
     "gL": 0,
@@ -382,7 +392,32 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "F",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-20T17:00:00Z"
+  },
+  {
+    "id": 34,
+    "local": "Alemania",
+    "visita": "Costa de Marfil",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "E",
+    "tipo": "N",
+    "fecha": "2026-06-20T20:00:00Z"
+  },
+  {
+    "id": 35,
+    "local": "Curazao",
+    "visita": "Ecuador",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "E",
+    "tipo": "N",
+    "fecha": "2026-06-21T00:00:00Z"
   },
   {
     "id": 36,
@@ -393,10 +428,23 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "F",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-21T04:00:00Z"
   },
   {
     "id": 37,
+    "local": "España",
+    "visita": "Arabia Saudita",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H",
+    "tipo": "N",
+    "fecha": "2026-06-21T16:00:00Z"
+  },
+  {
+    "id": 38,
     "local": "Bélgica",
     "visita": "Irán",
     "gL": 0,
@@ -404,10 +452,23 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "G",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-21T19:00:00Z"
   },
   {
-    "id": 38,
+    "id": 39,
+    "local": "Cabo Verde",
+    "visita": "Uruguay",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H",
+    "tipo": "N",
+    "fecha": "2026-06-21T22:00:00Z"
+  },
+  {
+    "id": 40,
     "local": "Egipto",
     "visita": "Nueva Zelanda",
     "gL": 0,
@@ -415,164 +476,23 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "G",
-    "tipo": "N"
-  },
-  {
-    "id": 39,
-    "local": "Bélgica",
-    "visita": "Egipto",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "G",
-    "tipo": "N"
-  },
-  {
-    "id": 40,
-    "local": "Nueva Zelanda",
-    "visita": "Irán",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "G",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-22T01:00:00Z"
   },
   {
     "id": 41,
-    "local": "Nueva Zelanda",
-    "visita": "Bélgica",
+    "local": "Argentina",
+    "visita": "Austria",
     "gL": 0,
     "gV": 0,
     "status": "pendiente",
     "fase": "Grupos",
-    "grupo": "G",
-    "tipo": "N"
+    "grupo": "J",
+    "tipo": "N",
+    "fecha": "2026-06-22T17:00:00Z"
   },
   {
     "id": 42,
-    "local": "Irán",
-    "visita": "Egipto",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "G",
-    "tipo": "N"
-  },
-  {
-    "id": 43,
-    "local": "España",
-    "visita": "Uruguay",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "H",
-    "tipo": "N"
-  },
-  {
-    "id": 44,
-    "local": "Arabia Saudita",
-    "visita": "Cabo Verde",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "H",
-    "tipo": "N"
-  },
-  {
-    "id": 45,
-    "local": "España",
-    "visita": "Arabia Saudita",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "H",
-    "tipo": "N"
-  },
-  {
-    "id": 46,
-    "local": "Cabo Verde",
-    "visita": "Uruguay",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "H",
-    "tipo": "N"
-  },
-  {
-    "id": 47,
-    "local": "Cabo Verde",
-    "visita": "España",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "H",
-    "tipo": "N"
-  },
-  {
-    "id": 48,
-    "local": "Uruguay",
-    "visita": "Arabia Saudita",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "H",
-    "tipo": "N"
-  },
-  {
-    "id": 49,
-    "local": "Francia",
-    "visita": "Senegal",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "I",
-    "tipo": "N"
-  },
-  {
-    "id": 50,
-    "local": "Noruega",
-    "visita": "Irak",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "I",
-    "tipo": "N"
-  },
-  {
-    "id": 51,
-    "local": "Francia",
-    "visita": "Noruega",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "I",
-    "tipo": "N"
-  },
-  {
-    "id": 52,
-    "local": "Irak",
-    "visita": "Senegal",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "I",
-    "tipo": "N"
-  },
-  {
-    "id": 53,
     "local": "Irak",
     "visita": "Francia",
     "gL": 0,
@@ -580,10 +500,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "I",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-22T21:00:00Z"
   },
   {
-    "id": 54,
+    "id": 43,
     "local": "Senegal",
     "visita": "Noruega",
     "gL": 0,
@@ -591,21 +512,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "I",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-23T00:00:00Z"
   },
   {
-    "id": 55,
-    "local": "Argentina",
-    "visita": "Austria",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "J",
-    "tipo": "N"
-  },
-  {
-    "id": 56,
+    "id": 44,
     "local": "Argelia",
     "visita": "Jordania",
     "gL": 0,
@@ -613,76 +524,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "J",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-23T03:00:00Z"
   },
   {
-    "id": 57,
-    "local": "Argentina",
-    "visita": "Argelia",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "J",
-    "tipo": "N"
-  },
-  {
-    "id": 58,
-    "local": "Jordania",
-    "visita": "Austria",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "J",
-    "tipo": "N"
-  },
-  {
-    "id": 59,
-    "local": "Jordania",
-    "visita": "Argentina",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "J",
-    "tipo": "N"
-  },
-  {
-    "id": 60,
-    "local": "Austria",
-    "visita": "Argelia",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "J",
-    "tipo": "N"
-  },
-  {
-    "id": 61,
-    "local": "Portugal",
-    "visita": "Colombia",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "K",
-    "tipo": "N"
-  },
-  {
-    "id": 62,
-    "local": "Uzbekistán",
-    "visita": "RD Congo",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "K",
-    "tipo": "N"
-  },
-  {
-    "id": 63,
+    "id": 45,
     "local": "Portugal",
     "visita": "Uzbekistán",
     "gL": 0,
@@ -690,65 +536,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "K",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-23T17:00:00Z"
   },
   {
-    "id": 64,
-    "local": "RD Congo",
-    "visita": "Colombia",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "K",
-    "tipo": "N"
-  },
-  {
-    "id": 65,
-    "local": "RD Congo",
-    "visita": "Portugal",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "K",
-    "tipo": "N"
-  },
-  {
-    "id": 66,
-    "local": "Colombia",
-    "visita": "Uzbekistán",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "K",
-    "tipo": "N"
-  },
-  {
-    "id": 67,
-    "local": "Inglaterra",
-    "visita": "Croacia",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "L",
-    "tipo": "N"
-  },
-  {
-    "id": 68,
-    "local": "Ghana",
-    "visita": "Panamá",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Grupos",
-    "grupo": "L",
-    "tipo": "N"
-  },
-  {
-    "id": 69,
+    "id": 46,
     "local": "Inglaterra",
     "visita": "Ghana",
     "gL": 0,
@@ -756,10 +548,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "L",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-23T20:00:00Z"
   },
   {
-    "id": 70,
+    "id": 47,
     "local": "Panamá",
     "visita": "Croacia",
     "gL": 0,
@@ -767,10 +560,239 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "L",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-23T23:00:00Z"
   },
   {
-    "id": 71,
+    "id": 48,
+    "local": "RD Congo",
+    "visita": "Colombia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "K",
+    "tipo": "N",
+    "fecha": "2026-06-24T02:00:00Z"
+  },
+  {
+    "id": 49,
+    "local": "Canadá",
+    "visita": "Suiza",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "B",
+    "tipo": "N",
+    "fecha": "2026-06-24T19:00:00Z"
+  },
+  {
+    "id": 50,
+    "local": "Qatar",
+    "visita": "Bosnia y H.",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "B",
+    "tipo": "N",
+    "fecha": "2026-06-24T19:00:00Z"
+  },
+  {
+    "id": 51,
+    "local": "Haití",
+    "visita": "Marruecos",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "C",
+    "tipo": "N",
+    "fecha": "2026-06-24T22:00:00Z"
+  },
+  {
+    "id": 52,
+    "local": "Brasil",
+    "visita": "Escocia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "C",
+    "tipo": "N",
+    "fecha": "2026-06-24T22:00:00Z"
+  },
+  {
+    "id": 53,
+    "local": "Corea del Sur",
+    "visita": "Sudáfrica",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "A",
+    "tipo": "N",
+    "fecha": "2026-06-25T01:00:00Z"
+  },
+  {
+    "id": 54,
+    "local": "República Checa",
+    "visita": "México",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "A",
+    "tipo": "N",
+    "fecha": "2026-06-25T01:00:00Z"
+  },
+  {
+    "id": 55,
+    "local": "Costa de Marfil",
+    "visita": "Curazao",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "E",
+    "tipo": "N",
+    "fecha": "2026-06-25T20:00:00Z"
+  },
+  {
+    "id": 56,
+    "local": "Alemania",
+    "visita": "Ecuador",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "E",
+    "tipo": "N",
+    "fecha": "2026-06-25T20:00:00Z"
+  },
+  {
+    "id": 57,
+    "local": "Suecia",
+    "visita": "Japón",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "F",
+    "tipo": "N",
+    "fecha": "2026-06-25T23:00:00Z"
+  },
+  {
+    "id": 58,
+    "local": "Países Bajos",
+    "visita": "Túnez",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "F",
+    "tipo": "N",
+    "fecha": "2026-06-25T23:00:00Z"
+  },
+  {
+    "id": 59,
+    "local": "Paraguay",
+    "visita": "Australia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "D",
+    "tipo": "N",
+    "fecha": "2026-06-26T02:00:00Z"
+  },
+  {
+    "id": 60,
+    "local": "Turquía",
+    "visita": "Estados Unidos",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "D",
+    "tipo": "N",
+    "fecha": "2026-06-26T02:00:00Z"
+  },
+  {
+    "id": 61,
+    "local": "Francia",
+    "visita": "Noruega",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "I",
+    "tipo": "N",
+    "fecha": "2026-06-26T19:00:00Z"
+  },
+  {
+    "id": 62,
+    "local": "Irak",
+    "visita": "Senegal",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "I",
+    "tipo": "N",
+    "fecha": "2026-06-26T19:00:00Z"
+  },
+  {
+    "id": 63,
+    "local": "España",
+    "visita": "Uruguay",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H",
+    "tipo": "N",
+    "fecha": "2026-06-27T00:00:00Z"
+  },
+  {
+    "id": 64,
+    "local": "Arabia Saudita",
+    "visita": "Cabo Verde",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "H",
+    "tipo": "N",
+    "fecha": "2026-06-27T00:00:00Z"
+  },
+  {
+    "id": 65,
+    "local": "Irán",
+    "visita": "Egipto",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "G",
+    "tipo": "N",
+    "fecha": "2026-06-27T03:00:00Z"
+  },
+  {
+    "id": 66,
+    "local": "Nueva Zelanda",
+    "visita": "Bélgica",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "G",
+    "tipo": "N",
+    "fecha": "2026-06-27T03:00:00Z"
+  },
+  {
+    "id": 67,
     "local": "Panamá",
     "visita": "Inglaterra",
     "gL": 0,
@@ -778,10 +800,11 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "L",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-27T21:00:00Z"
   },
   {
-    "id": 72,
+    "id": 68,
     "local": "Croacia",
     "visita": "Ghana",
     "gL": 0,
@@ -789,7 +812,56 @@
     "status": "pendiente",
     "fase": "Grupos",
     "grupo": "L",
-    "tipo": "N"
+    "tipo": "N",
+    "fecha": "2026-06-27T21:00:00Z"
+  },
+  {
+    "id": 69,
+    "local": "Portugal",
+    "visita": "Colombia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "K",
+    "tipo": "N",
+    "fecha": "2026-06-27T23:30:00Z"
+  },
+  {
+    "id": 70,
+    "local": "Uzbekistán",
+    "visita": "RD Congo",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "K",
+    "tipo": "N",
+    "fecha": "2026-06-27T23:30:00Z"
+  },
+  {
+    "id": 71,
+    "local": "Jordania",
+    "visita": "Argentina",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "J",
+    "tipo": "N",
+    "fecha": "2026-06-28T02:00:00Z"
+  },
+  {
+    "id": 72,
+    "local": "Austria",
+    "visita": "Argelia",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Grupos",
+    "grupo": "J",
+    "tipo": "N",
+    "fecha": "2026-06-28T02:00:00Z"
   },
   {
     "id": 73,
@@ -799,57 +871,63 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Dieciseisavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-06-28T19:00:00Z"
   },
   {
     "id": 74,
-    "local": "Clasificado 3",
-    "visita": "Clasificado 4",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Dieciseisavos de final",
-    "tipo": "E"
-  },
-  {
-    "id": 75,
-    "local": "Clasificado 5",
-    "visita": "Clasificado 6",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Dieciseisavos de final",
-    "tipo": "E"
-  },
-  {
-    "id": 76,
     "local": "Clasificado 7",
     "visita": "Clasificado 8",
     "gL": 0,
     "gV": 0,
     "status": "pendiente",
     "fase": "Dieciseisavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-06-29T17:00:00Z"
   },
   {
-    "id": 77,
-    "local": "Clasificado 9",
-    "visita": "Clasificado 10",
+    "id": 75,
+    "local": "Clasificado 3",
+    "visita": "Clasificado 4",
     "gL": 0,
     "gV": 0,
     "status": "pendiente",
     "fase": "Dieciseisavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-06-29T20:30:00Z"
   },
   {
-    "id": 78,
+    "id": 76,
+    "local": "Clasificado 5",
+    "visita": "Clasificado 6",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final",
+    "tipo": "N",
+    "fecha": "2026-06-30T01:00:00Z"
+  },
+  {
+    "id": 77,
     "local": "Clasificado 11",
     "visita": "Clasificado 12",
     "gL": 0,
     "gV": 0,
     "status": "pendiente",
     "fase": "Dieciseisavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-06-30T17:00:00Z"
+  },
+  {
+    "id": 78,
+    "local": "Clasificado 9",
+    "visita": "Clasificado 10",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final",
+    "tipo": "N",
+    "fecha": "2026-06-30T21:00:00Z"
   },
   {
     "id": 79,
@@ -859,7 +937,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Dieciseisavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-01T01:00:00Z"
   },
   {
     "id": 80,
@@ -869,47 +948,52 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Dieciseisavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-01T16:00:00Z"
   },
   {
     "id": 81,
-    "local": "Clasificado 17",
-    "visita": "Clasificado 18",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Dieciseisavos de final",
-    "tipo": "E"
-  },
-  {
-    "id": 82,
     "local": "Clasificado 19",
     "visita": "Clasificado 20",
     "gL": 0,
     "gV": 0,
     "status": "pendiente",
     "fase": "Dieciseisavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-01T20:00:00Z"
   },
   {
-    "id": 83,
-    "local": "Clasificado 21",
-    "visita": "Clasificado 22",
+    "id": 82,
+    "local": "Clasificado 17",
+    "visita": "Clasificado 18",
     "gL": 0,
     "gV": 0,
     "status": "pendiente",
     "fase": "Dieciseisavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-02T00:00:00Z"
   },
   {
-    "id": 84,
+    "id": 83,
     "local": "Clasificado 23",
     "visita": "Clasificado 24",
     "gL": 0,
     "gV": 0,
     "status": "pendiente",
     "fase": "Dieciseisavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-02T19:00:00Z"
+  },
+  {
+    "id": 84,
+    "local": "Clasificado 21",
+    "visita": "Clasificado 22",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final",
+    "tipo": "N",
+    "fecha": "2026-07-02T23:00:00Z"
   },
   {
     "id": 85,
@@ -919,57 +1003,63 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Dieciseisavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-03T03:00:00Z"
   },
   {
     "id": 86,
-    "local": "Clasificado 27",
-    "visita": "Clasificado 28",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Dieciseisavos de final",
-    "tipo": "E"
-  },
-  {
-    "id": 87,
-    "local": "Clasificado 29",
-    "visita": "Clasificado 30",
-    "gL": 0,
-    "gV": 0,
-    "status": "pendiente",
-    "fase": "Dieciseisavos de final",
-    "tipo": "E"
-  },
-  {
-    "id": 88,
     "local": "Clasificado 31",
     "visita": "Clasificado 32",
     "gL": 0,
     "gV": 0,
     "status": "pendiente",
     "fase": "Dieciseisavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-03T18:00:00Z"
   },
   {
-    "id": 89,
-    "local": "Ganador 16avos 1",
-    "visita": "Ganador 16avos 2",
+    "id": 87,
+    "local": "Clasificado 27",
+    "visita": "Clasificado 28",
     "gL": 0,
     "gV": 0,
     "status": "pendiente",
-    "fase": "Octavos de final",
-    "tipo": "E"
+    "fase": "Dieciseisavos de final",
+    "tipo": "N",
+    "fecha": "2026-07-03T22:00:00Z"
   },
   {
-    "id": 90,
+    "id": 88,
+    "local": "Clasificado 29",
+    "visita": "Clasificado 30",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Dieciseisavos de final",
+    "tipo": "N",
+    "fecha": "2026-07-04T01:30:00Z"
+  },
+  {
+    "id": 89,
     "local": "Ganador 16avos 3",
     "visita": "Ganador 16avos 4",
     "gL": 0,
     "gV": 0,
     "status": "pendiente",
     "fase": "Octavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-04T17:00:00Z"
+  },
+  {
+    "id": 90,
+    "local": "Ganador 16avos 1",
+    "visita": "Ganador 16avos 2",
+    "gL": 0,
+    "gV": 0,
+    "status": "pendiente",
+    "fase": "Octavos de final",
+    "tipo": "N",
+    "fecha": "2026-07-04T21:00:00Z"
   },
   {
     "id": 91,
@@ -979,7 +1069,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Octavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-05T20:00:00Z"
   },
   {
     "id": 92,
@@ -989,7 +1080,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Octavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-06T00:00:00Z"
   },
   {
     "id": 93,
@@ -999,7 +1091,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Octavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-06T19:00:00Z"
   },
   {
     "id": 94,
@@ -1009,7 +1102,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Octavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-07T00:00:00Z"
   },
   {
     "id": 95,
@@ -1019,7 +1113,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Octavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-07T16:00:00Z"
   },
   {
     "id": 96,
@@ -1029,7 +1124,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Octavos de final",
-    "tipo": "E"
+    "tipo": "N",
+    "fecha": "2026-07-07T20:00:00Z"
   },
   {
     "id": 97,
@@ -1039,7 +1135,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Cuartos de final",
-    "tipo": "X"
+    "tipo": "N",
+    "fecha": "2026-07-09T20:00:00Z"
   },
   {
     "id": 98,
@@ -1049,7 +1146,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Cuartos de final",
-    "tipo": "X"
+    "tipo": "N",
+    "fecha": "2026-07-10T19:00:00Z"
   },
   {
     "id": 99,
@@ -1059,7 +1157,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Cuartos de final",
-    "tipo": "X"
+    "tipo": "N",
+    "fecha": "2026-07-11T21:00:00Z"
   },
   {
     "id": 100,
@@ -1069,7 +1168,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Cuartos de final",
-    "tipo": "X"
+    "tipo": "N",
+    "fecha": "2026-07-12T01:00:00Z"
   },
   {
     "id": 101,
@@ -1079,7 +1179,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Semifinales",
-    "tipo": "X"
+    "tipo": "N",
+    "fecha": "2026-07-14T19:00:00Z"
   },
   {
     "id": 102,
@@ -1089,7 +1190,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Semifinales",
-    "tipo": "X"
+    "tipo": "N",
+    "fecha": "2026-07-15T19:00:00Z"
   },
   {
     "id": 103,
@@ -1099,7 +1201,8 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Tercer Puesto",
-    "tipo": "X"
+    "tipo": "N",
+    "fecha": "2026-07-18T21:00:00Z"
   },
   {
     "id": 104,
@@ -1109,6 +1212,7 @@
     "gV": 0,
     "status": "pendiente",
     "fase": "Final",
-    "tipo": "X"
+    "tipo": "N",
+    "fecha": "2026-07-19T19:00:00Z"
   }
 ]

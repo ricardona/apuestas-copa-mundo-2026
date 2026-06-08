@@ -9,7 +9,8 @@ export interface Result {
   status: 'finalizado' | 'pendiente' | 'siguiente';
   fase?: string;
   grupo?: string;
-  tipo?: 'N' | 'E' | 'X';
+  tipo?: 'N' | 'E' | 'X'; // N: normal, E: special, X: extra special
+  fecha?: string; // ISO 8601 kickoff in UTC/GMT (e.g. "2026-06-11T19:00:00Z")
 }
 
 export interface Bet {
