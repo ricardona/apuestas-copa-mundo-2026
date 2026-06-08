@@ -19,6 +19,31 @@ export function buildMatches() {
   const listEl = document.getElementById('matches-list');
   if (!listEl) return;
 
+  const formatMatchDate = (fecha?: string): string => {
+    if (!fecha) return '';
+    const d = new Date(fecha);
+    const fmt = new Intl.DateTimeFormat('es-CO', {
+      weekday: 'short', day: 'numeric', month: 'short',
+      hour: '2-digit', minute: '2-digit', hour12: false,
+      timeZone: 'America/Bogota'
+    });
+    const parts = fmt.formatToParts(d);
+    const get = (t: string) => parts.find(p => p.type === t)?.value ?? '';
+    return `${get('weekday')} ${get('day')} ${get('month')} · ${get('hour')}:${get('minute')}`;
+  };
+
+  const formatCountdown = (fecha?: string, status?: string): string => {
+    if (status === 'finalizado' || !fecha) return '';
+    const diffMs = new Date(fecha).getTime() - Date.now();
+    if (diffMs <= 0) return '';
+    const days = Math.floor(diffMs / 86400000);
+    if (days >= 1) return `${days} ${days === 1 ? 'día' : 'días'}`;
+    const hours = Math.floor(diffMs / 3600000);
+    const mins = Math.floor((diffMs % 3600000) / 60000);
+    if (hours >= 1) return `${hours}h ${mins}m`;
+    return `${Math.max(1, mins)} min`;
+  };
+
   const tipoLabel = (tipo?: string) => {
     if (!tipo || tipo === 'N') return '';
     const label = state.SETTINGS.tiposPartido[tipo] || tipo;
@@ -28,6 +53,8 @@ export function buildMatches() {
 
   const renderMatchCard = (r: typeof state.RESULTS[number]) => {
     const bets = byMatch[r.id] || [];
+    const dateStr = formatMatchDate(r.fecha);
+    const countdown = formatCountdown(r.fecha, r.status);
     const scoreHtml = r.status === 'finalizado'
       ? `<span class="score-digit">${r.gL}</span><span class="score-sep">–</span><span class="score-digit">${r.gV}</span>`
       : `<span class="score-digit" style="color:#444">?</span><span class="score-sep">–</span><span class="score-digit" style="color:#444">?</span>`;
@@ -52,9 +79,12 @@ export function buildMatches() {
 
     return `<div class="match-card">
       <div class="match-top">
-        <span class="match-num">Partido ${r.id}</span>
-        ${tipoLabel(r.tipo)}
-        <span class="status ${r.status === 'finalizado' ? 'fin' : 'pen'}">${r.status}</span>
+        <span class="match-num">Partido ${r.id}${dateStr ? ` · ${dateStr}` : ''}</span>
+        <div class="match-top-right">
+          ${countdown ? `<span class="match-countdown">${countdown}</span>` : ''}
+          ${tipoLabel(r.tipo)}
+          <span class="status ${r.status === 'finalizado' ? 'fin' : 'pen'}">${r.status}</span>
+        </div>
       </div>
       <div class="score-row">
         <div class="team-name">${r.local}</div>

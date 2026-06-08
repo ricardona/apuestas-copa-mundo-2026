@@ -165,6 +165,8 @@ img.avatar { object-fit: cover; display: inline-block; }
 .match-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; }
 .match-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
 .match-num { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+.match-top-right { display: flex; align-items: center; gap: 6px; }
+.match-countdown { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; background: rgba(255,193,7,0.15); color: #ffc107; letter-spacing: 0.04em; }
 .status { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em; }
 .status.fin { background: rgba(76,175,125,0.15); color: #4caf7d; }
 .status.pen { background: rgba(255,165,0,0.12); color: #ffaa33; }
