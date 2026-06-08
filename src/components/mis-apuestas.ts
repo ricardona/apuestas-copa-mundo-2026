@@ -1,6 +1,7 @@
 import { state } from '../state';
 import type { Bet, PlusBet, Result } from '../types';
 import { activateTab } from '../tabs';
+import { buildMatches } from './matches';
 
 const COLOMBIA_PRESELECCIONADOS = [
   // --- ARQUEROS (6) ---
@@ -441,6 +442,10 @@ async function saveBets(container: HTMLElement) {
 
     const result = await res.json() as { ok: boolean; updated_at?: string | null };
     if (result.updated_at) editor.updatedAt = result.updated_at;
+    if (state.CURRENT_PLAYER) {
+      state.BETS[state.CURRENT_PLAYER] = [...editor.bets];
+    }
+    buildMatches();
     if (statusEl) statusEl.textContent = 'Guardado correctamente.';
   } catch {
     if (statusEl) statusEl.textContent = 'Error al guardar. Intenta de nuevo.';

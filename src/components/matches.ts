@@ -65,7 +65,7 @@ export function buildMatches() {
       const finalPts = raw !== null ? raw.pts * mult : null;
       const ptsStr = finalPts === null ? '–' : `+${finalPts}`;
       const ptsC = raw === null ? 'bp0' : raw.type === 'score' ? 'bp5' : raw.type === 'result' ? 'bp3' : 'bp0';
-      const showBet = r.status === 'finalizado';
+      const showBet = r.status === 'finalizado' || b.player === state.CURRENT_PLAYER;
       const betScoreTxt = showBet ? `${b.gL} – ${b.gV}` : `? – ?`;
 
       return `<div class="bet-row">
