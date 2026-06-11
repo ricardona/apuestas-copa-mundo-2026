@@ -6,7 +6,7 @@ export interface Result {
   visita: string;
   gL: number;
   gV: number;
-  status: 'finalizado' | 'pendiente' | 'siguiente';
+  status: 'finalizado' | 'jugando' | 'pendiente' | 'siguiente';
   fase?: string;
   grupo?: string;
   tipo?: 'N' | 'E' | 'X'; // N: normal, E: special, X: extra special

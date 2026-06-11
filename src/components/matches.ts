@@ -33,7 +33,7 @@ export function buildMatches() {
   };
 
   const formatCountdown = (fecha?: string, status?: string): string => {
-    if (status === 'finalizado' || !fecha) return '';
+    if (status === 'finalizado' || status === 'jugando' || !fecha) return '';
     const diffMs = new Date(fecha).getTime() - Date.now();
     if (diffMs <= 0) return '';
     const days = Math.floor(diffMs / 86400000);
@@ -65,7 +65,7 @@ export function buildMatches() {
       const finalPts = raw !== null ? raw.pts * mult : null;
       const ptsStr = finalPts === null ? '–' : `+${finalPts}`;
       const ptsC = raw === null ? 'bp0' : raw.type === 'score' ? 'bp5' : raw.type === 'result' ? 'bp3' : 'bp0';
-      const showBet = r.status === 'finalizado' || b.player === state.CURRENT_PLAYER;
+      const showBet = r.status === 'finalizado' || r.status === 'jugando' || b.player === state.CURRENT_PLAYER;
       const betScoreTxt = showBet ? `${b.gL} – ${b.gV}` : `? – ?`;
 
       return `<div class="bet-row">
@@ -83,7 +83,7 @@ export function buildMatches() {
         <div class="match-top-right">
           ${countdown ? `<span class="match-countdown">${countdown}</span>` : ''}
           ${tipoLabel(r.tipo)}
-          <span class="status ${r.status === 'finalizado' ? 'fin' : 'pen'}">${r.status}</span>
+          <span class="status ${r.status === 'finalizado' ? 'fin' : r.status === 'jugando' ? 'jug' : 'pen'}">${r.status === 'jugando' ? 'EN VIVO' : r.status}</span>
         </div>
       </div>
       <div class="score-row">
@@ -116,9 +116,10 @@ export function buildMatches() {
     const isOpen = index === 0 ? 'open' : '';
     const fMatches = fases[faseName] || [];
     const fFin = fMatches.filter(m => m.status === 'finalizado').length;
+    const fLive = fMatches.filter(m => m.status === 'jugando').length;
     let fStatusStr = '';
     if (fMatches.length > 0) {
-      if (fFin === 0) fStatusStr = 'no iniciado';
+      if (fFin === 0 && fLive === 0) fStatusStr = 'no iniciado';
       else if (fFin === fMatches.length) fStatusStr = 'finalizado';
       else fStatusStr = 'en desarrollo';
     }
@@ -138,9 +139,10 @@ export function buildMatches() {
         const isGroupOpen = gIndex === 0 ? 'open' : '';
         const gMatches = groups[gName] || [];
         const gFin = gMatches.filter(m => m.status === 'finalizado').length;
+        const gLive = gMatches.filter(m => m.status === 'jugando').length;
         let gStatusStr = '';
         if (gMatches.length > 0) {
-          if (gFin === 0) gStatusStr = 'no iniciado';
+          if (gFin === 0 && gLive === 0) gStatusStr = 'no iniciado';
           else if (gFin === gMatches.length) gStatusStr = 'finalizado';
           else gStatusStr = 'en desarrollo';
         }

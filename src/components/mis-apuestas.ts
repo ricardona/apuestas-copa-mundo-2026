@@ -104,7 +104,9 @@ function renderEditor(container: HTMLElement) {
   if (!editor) return;
   const pending = state.RESULTS.filter(match => match.status === 'siguiente');
   const hiddenCount = state.RESULTS.length - pending.length;
-  const tournamentStarted = state.RESULTS.some(match => match.status === 'finalizado');
+  const tournamentStarted = state.RESULTS.some(
+    match => match.status === 'finalizado' || match.status === 'jugando'
+  );
   const s = state.SETTINGS;
   const showConvocatoria = !tournamentStarted && s.mostrarConvocados;
   const showTop4 = s.mostrarCuadrodeHonor;
