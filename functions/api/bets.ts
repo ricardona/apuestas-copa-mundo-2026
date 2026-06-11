@@ -27,7 +27,7 @@ function maskValue(value: string): string {
 
 const FINALIZED_MATCH_IDS = new Set<number>(
   (resultsData as Array<{ id: number; status: string }>)
-    .filter(r => r.status === 'finalizado')
+    .filter(r => r.status === 'finalizado' || r.status === 'jugando')
     .map(r => r.id),
 );
 
