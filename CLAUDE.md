@@ -6,9 +6,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 npm install
-npm run dev        # Vite dev server → http://localhost:5173
+npm run dev        # Vite dev server → http://localhost:5173 (frontend only, no /api/*)
 npm run build      # tsc type-check then Vite build → dist/
 npm run preview    # Preview production build
+```
+
+Full local stack (Worker + D1 + assets) — required to exercise `/api/*`:
+```bash
+npm run build && npx wrangler dev    # → http://localhost:8787
+```
+Do **not** use `wrangler pages dev` — this is a Workers + Assets project with a single entry point, not Pages Functions; it will fail with "No routes found". Local secrets (`CLERK_SECRET_KEY`) go in `.dev.vars`.
+
+Apply/modify the D1 schema:
+```bash
+npx wrangler d1 execute mundial2026db --file=sql/schema.sql --local    # local dev
+npx wrangler d1 execute mundial2026db --file=sql/schema.sql --remote   # production
 ```
 
 There are no automated tests (`npm test` exits 1). Verification is manual via the dev server.
@@ -19,17 +31,27 @@ There are no automated tests (`npm test` exits 1). Verification is manual via th
 
 ### Key Concept
 
-Bets are stored in D1 (`player_bets` table) and locked by tournament logic — once a match status changes from `siguiente` to `finalizado`, the frontend hides and preserves those scores. The dashboard recalculates all scores on every page load from data fetched via API.
+Bets are stored in D1 (`player_bets` table) and locked by tournament logic via the match status lifecycle: `pendiente` (future) → `siguiente` (open for betting, shown in editor) → `jugando` (live, locked, shown as "EN VIVO") → `finalizado` (scored). The dashboard recalculates all scores on every page load from data fetched via API.
+
+### Anti-Copy Masking (`functions/api/bets.ts`)
+
+`GET /api/bets` returns every player's bets, but predictions that are still editable are **masked server-side** so they can't be copied from the JSON. The requesting user always sees their own bets in full; for everyone else:
+
+- Match scores are replaced with `{ gL: 0, gV: 0 }` unless the match is `finalizado` or `jugando`.
+- Plus predictions (convocatoria, top4, posicionesGrupos) are masked with the `'?'` sentinel while their `mostrar*` flag is `true` (betting window open). Empty stays empty, so the frontend can still render "submitted (`?`)" vs "not submitted (`–`)".
+- `goOn` picks are masked per match the same way.
+
+**Critical gotcha:** `bets.ts` imports `data/results.json` and `data/settings.json` at build time. Changing a match status or a `mostrar*` flag only takes effect in the API masking after `npm run build && npx wrangler deploy` — editing the JSON alone is not enough.
 
 ## Architecture
 
 ### Tech Stack
 
-- **Frontend:** React 19 + Vite 8 + vanilla TypeScript (only `App.tsx`/`main.tsx` use React/JSX; all game-logic components are plain TS DOM builders)
+- **Frontend:** React 19 + Vite 8 + vanilla TypeScript (React/JSX only in the auth shell: `App.tsx`, `main.tsx`, `components/LandingPage.tsx`, `components/InstructionsModal.tsx`; all game-logic components are plain TS DOM builders)
 - **Styling:** Vanilla CSS — dark theme, semantic color variables in `:root`, BEM naming for component styles
 - **Authentication:** Clerk (OAuth + JWT)
 - **Backend:** Cloudflare Worker (single `functions/api/sync-user.ts` entry point) + D1 SQLite
-- **Deployment:** Cloudfare (frontend) + (Workers) + D1 db
+- **Deployment:** Cloudflare Workers + Assets (single deploy serves both API and SPA) + D1
 
 ### Directory Structure
 
@@ -46,6 +68,8 @@ src/
   tabs.ts              # Hash-based tab routing
   style.css
   components/
+    LandingPage.tsx    # Signed-out landing (React)
+    InstructionsModal.tsx  # Rules modal, opened via window.openInstrucciones (React)
     ranking.ts         # Leaderboard + player detail popups → #ranking-body
     matches.ts         # Match history and bet cards → #matches-list
     plus.ts            # Group standings, top4, knockout bets → #plus-content
@@ -56,7 +80,7 @@ src/
 functions/
   api/
     sync-user.ts       # Cloudflare Worker entry: routes all /api/* requests
-    bets.ts            # Handler functions for players/bets endpoints
+    bets.ts            # Handlers for players/bets endpoints + anti-copy masking
 
 sql/
   schema.sql           # D1 schema: players + player_bets tables
@@ -67,8 +91,8 @@ data/
   plus_results.json    # Actual top4/group standings (optional)
   colombia_final.json  # Official Colombia squad (optional)
 
-test_data/             # Parallel data/ structure; loaded via ?test or ?data=test_data
 wrangler.jsonc         # Worker config: D1 binding, SPA asset serving, run_worker_first
+.dev.vars              # Local Worker secrets (CLERK_SECRET_KEY) — not committed
 ```
 
 ### Data Flow
@@ -89,7 +113,8 @@ wrangler.jsonc         # Worker config: D1 binding, SPA asset serving, run_worke
 3. **Bet Editing** (`mis-apuestas.ts`):
    - Loads current user's bets from `GET /api/bets/me` (JWT-authenticated)
    - Saves to `POST /api/bets` with `updated_at` for optimistic conflict detection (409 on stale write)
-   - Display flags in `Settings` control which panels appear: `mostrarConvocados`, `mostrarCuadrodeHonor`, `mostrarPosicionesGrupos`
+   - Editor lists only matches with status `siguiente`; `finalizado`/`jugando` matches are locked
+   - The `mostrar*` flags in `Settings` mean "betting window open for that Plus phase": `true` shows the editing panel (and the API masks those bets from other players); `false` closes betting (and the API reveals them)
    - Top4 panel is locked once any match is `finalizado`
 
 4. **Routing**: `tabs.ts` handles hash-based routing (`#/ranking`, `#/partidos`, `#/plus`, `#/estadisticas`, `#/mis-apuestas`) — plain DOM, no framework router.
@@ -152,20 +177,22 @@ CREATE TABLE player_bets (
 
 ## Deployment
 
-**Backend** — manual:
+Manual, single command (deploys Worker + `dist/` assets):
 ```bash
-wrangler deploy --name polla-mundial
+npm run build && npx wrangler deploy
 ```
-Worker config: `run_worker_first: ["/api/*"]`, assets served as SPA, D1 binding `mundial2026db`.
+Worker config (`wrangler.jsonc`): name `polla-mundial`, `run_worker_first: ["/api/*"]`, assets served as SPA, D1 binding `mundial2026db`. Production secrets (`CLERK_SECRET_KEY`) are set in the Cloudflare dashboard.
+
+Remember: any edit to `data/results.json` or `data/settings.json` requires a build + deploy, both for the static assets and for the masking logic baked into the Worker.
 
 ## Data File Formats
 
 `data/results.json` — match results (static):
 ```json
-[{ "id": 1, "local": "Argentina", "visita": "Brasil", "gL": 2, "gV": 1, "status": "finalizado", "fase": "Grupos", "grupo": "A", "tipo": "N" }]
+[{ "id": 1, "local": "Argentina", "visita": "Brasil", "gL": 2, "gV": 1, "status": "finalizado", "fase": "Grupos", "grupo": "A", "tipo": "N", "fecha": "2026-06-11T19:00:00Z" }]
 ```
 
-Status values: `"finalizado"` | `"pendiente"` | `"siguiente"` (upcoming, shown in editor).
+Status values: `"pendiente"` (future) | `"siguiente"` (open for betting, shown in editor) | `"jugando"` (live — bets locked and revealed, rendered "EN VIVO") | `"finalizado"` (scored). `fecha` is the ISO 8601 kickoff time in UTC, optional.
 
 `data/settings.json`:
 ```json
@@ -186,8 +213,9 @@ Status values: `"finalizado"` | `"pendiente"` | `"siguiente"` (upcoming, shown i
 - **Player name normalization:** `normalizePlayerName()` in `scoring.ts` handles case/whitespace for Colombia squad matching.
 - **Component isolation:** Each component reads from global `state` and writes to its own DOM container. No inter-component communication.
 - **Error resilience:** Missing optional data (plus_results, colombia_final) defaults to `null`; app never crashes on fetch failure.
-- **Test data:** `?test` or `?data=test_data` in URL loads from `test_data/` instead of `data/` for static files.
+- **Test data:** `?test` or `?data=<folder>` in the URL switches the static-data folder (e.g. `?data=test_data`). No `test_data/` folder currently exists in the repo — create one mirroring `data/` if needed. This only affects static files, not the API (which bakes in `data/` at build time).
 - **XSS hygiene:** All user-visible strings go through `esc()` in `mis-apuestas.ts` before insertion into innerHTML.
+- **Hidden-bet rendering:** Masked Plus values arrive from the API as the `'?'` sentinel; the frontend shows `?` for "submitted but hidden" and `–` for "not submitted". Don't treat `'?'` as a real prediction.
 
 ## Scoring Achievements (`stats.ts`)
 
