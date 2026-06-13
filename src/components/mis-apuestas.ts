@@ -2,6 +2,7 @@ import { state } from '../state';
 import type { Bet, PlusBet, Result } from '../types';
 import { activateTab } from '../tabs';
 import { buildMatches } from './matches';
+import { formatMatchDate, formatCountdown, tipoLabel } from '../match-display';
 
 const COLOMBIA_PRESELECCIONADOS = [
   // --- ARQUEROS (6) ---
@@ -165,13 +166,19 @@ function renderEditor(container: HTMLElement) {
 function renderMatches(matches: Result[], hiddenCount: number) {
   const rows = matches.map(match => {
     const bet = ensureBet(match.id);
+    const dateStr = formatMatchDate(match.fecha);
+    const countdown = formatCountdown(match.fecha, match.status);
     return `<div class="mis-match-row">
       <div class="mis-match-info">
         <span class="mis-match-id">#${match.id}</span>
         <strong>${esc(match.local)}</strong>
         <span>vs</span>
         <strong>${esc(match.visita)}</strong>
-        <small>${esc(match.fase ?? '')}${match.grupo ? ` · Grupo ${esc(match.grupo)}` : ''}</small>
+        <small>${esc(match.fase ?? '')}${match.grupo ? ` · Grupo ${esc(match.grupo)}` : ''}${dateStr ? ` · ${dateStr}` : ''}</small>
+        <div class="mis-match-badges">
+          ${countdown ? `<span class="match-countdown">${countdown}</span>` : ''}
+          ${tipoLabel(match.tipo)}
+        </div>
       </div>
       <div class="mis-score-inputs">
         <input type="number" min="0" max="30" value="${bet.gL}" data-bet="${match.id}" data-side="gL" aria-label="Goles ${esc(match.local)}" />
