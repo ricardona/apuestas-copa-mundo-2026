@@ -111,9 +111,18 @@ export function buildMatches() {
     return ia - ib;
   });
 
+  const jugandoMatch = state.RESULTS.find(r => r.status === 'jugando');
+  const nextPendiente = state.RESULTS
+    .filter(r => (r.status === 'pendiente' || r.status === 'siguiente') && r.fecha)
+    .sort((a, b) => new Date(a.fecha!).getTime() - new Date(b.fecha!).getTime())[0]
+    ?? state.RESULTS.find(r => r.status === 'pendiente' || r.status === 'siguiente');
+  const priorityMatch = jugandoMatch ?? nextPendiente ?? null;
+  const priorityFase = priorityMatch?.fase ?? null;
+  const priorityGroup = priorityMatch?.grupo ?? null;
+
   let html = '';
-  sortedFases.forEach((faseName, index) => {
-    const isOpen = index === 0 ? 'open' : '';
+  sortedFases.forEach((faseName) => {
+    const isOpen = faseName === priorityFase ? 'open' : '';
     const fMatches = fases[faseName] || [];
     const fFin = fMatches.filter(m => m.status === 'finalizado').length;
     const fLive = fMatches.filter(m => m.status === 'jugando').length;
@@ -135,8 +144,8 @@ export function buildMatches() {
         groups[g].push(r);
       });
 
-      Object.keys(groups).sort().forEach((gName, gIndex) => {
-        const isGroupOpen = gIndex === 0 ? 'open' : '';
+      Object.keys(groups).sort().forEach((gName) => {
+        const isGroupOpen = gName === priorityGroup ? 'open' : '';
         const gMatches = groups[gName] || [];
         const gFin = gMatches.filter(m => m.status === 'finalizado').length;
         const gLive = gMatches.filter(m => m.status === 'jugando').length;
