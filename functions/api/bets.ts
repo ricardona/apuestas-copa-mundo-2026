@@ -165,14 +165,43 @@ export async function handlePostBets(request: Request, env: Env, userId: string)
   try {
     const body = (await request.json()) as { bets?: unknown; plus_bets?: unknown; updated_at?: string };
 
-    if (body.updated_at) {
-      const current = await env.mundial2026db
-        .prepare(`SELECT updated_at FROM player_bets WHERE player_id = ?1`)
-        .bind(userId)
-        .first<{ updated_at: string }>();
-      if (current && current.updated_at > body.updated_at) {
-        return json({ error: 'conflict' }, 409);
+    const current = await env.mundial2026db
+      .prepare(`SELECT updated_at, bets, plus_bets FROM player_bets WHERE player_id = ?1`)
+      .bind(userId)
+      .first<{ updated_at: string; bets: string; plus_bets: string | null }>();
+
+    if (body.updated_at && current && current.updated_at > body.updated_at) {
+      return json({ error: 'conflict' }, 409);
+    }
+
+    // Merge match bets: keep stored values for locked matches, apply submitted only for editable ones.
+    const storedBets: Bet[] = (() => {
+      try { return JSON.parse(current?.bets ?? '[]'); } catch { return []; }
+    })();
+    const mergedByMatch = new Map<number, Bet>(storedBets.map(b => [b.matchId, b]));
+    const submittedBets = Array.isArray(body.bets) ? (body.bets as Bet[]) : [];
+    for (const bet of submittedBets) {
+      if (!FINALIZED_MATCH_IDS.has(bet.matchId)) mergedByMatch.set(bet.matchId, bet);
+    }
+    const mergedBets = [...mergedByMatch.values()];
+
+    // Merge goOn picks: per-match locking mirrors match bet locking.
+    const storedPlus: PlusBet | null = (() => {
+      try { return current?.plus_bets ? JSON.parse(current.plus_bets) : null; } catch { return null; }
+    })();
+    const submittedPlus = body.plus_bets as PlusBet | null | undefined;
+    let finalPlus: PlusBet | null | undefined = submittedPlus;
+    if (submittedPlus && storedPlus) {
+      const storedGoOnMap = new Map((storedPlus.goOn ?? []).map(g => [g.matchId, g]));
+      const mergedGoOn = (submittedPlus.goOn ?? []).map(g =>
+        FINALIZED_MATCH_IDS.has(g.matchId) ? (storedGoOnMap.get(g.matchId) ?? g) : g,
+      );
+      for (const [matchId, g] of storedGoOnMap) {
+        if (FINALIZED_MATCH_IDS.has(matchId) && !mergedGoOn.find(m => m.matchId === matchId)) {
+          mergedGoOn.push(g);
+        }
       }
+      finalPlus = { ...submittedPlus, goOn: mergedGoOn };
     }
 
     await env.mundial2026db
@@ -186,8 +215,8 @@ export async function handlePostBets(request: Request, env: Env, userId: string)
       )
       .bind(
         userId,
-        JSON.stringify(body.bets ?? []),
-        body.plus_bets != null ? JSON.stringify(body.plus_bets) : null,
+        JSON.stringify(mergedBets),
+        finalPlus != null ? JSON.stringify(finalPlus) : null,
       )
       .run();
 
