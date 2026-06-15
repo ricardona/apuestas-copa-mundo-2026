@@ -116,6 +116,7 @@ wrangler.jsonc         # Worker config: D1 binding, SPA asset serving, run_worke
    - Editor lists only matches with status `siguiente`; `finalizado`/`jugando` matches are locked
    - The `mostrar*` flags in `Settings` mean "betting window open for that Plus phase": `true` shows the editing panel (and the API masks those bets from other players); `false` closes betting (and the API reveals them)
    - Top4 panel is locked once any match is `finalizado`
+   - **Server-side immutability (`functions/api/bets.ts → handlePostBets`):** when saving bets, the server ignores any submitted score for a match already in `FINALIZED_MATCH_IDS` (`finalizado` or `jugando`) and keeps the previously stored value instead. Only matches with status `pendiente` or `siguiente` (not in that set) can have their predictions overwritten. The same per-match lock applies to `goOn` picks.
 
 4. **Routing**: `tabs.ts` handles hash-based routing (`#/ranking`, `#/partidos`, `#/plus`, `#/estadisticas`, `#/mis-apuestas`) — plain DOM, no framework router.
 
