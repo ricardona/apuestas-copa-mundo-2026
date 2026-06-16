@@ -31,6 +31,12 @@ const FINALIZED_MATCH_IDS = new Set<number>(
     .map(r => r.id),
 );
 
+const DEFAULT_BETS: Bet[] = (resultsData as Array<{ id: number }>).map(r => ({
+  matchId: r.id,
+  gL: 0,
+  gV: 0,
+}));
+
 const flags = settingsData as {
   mostrarConvocados?: boolean;
   mostrarCuadrodeHonor?: boolean;
@@ -108,10 +114,10 @@ export async function handleGetBets(_request: Request, env: Env, userId: string)
     const rows = await env.mundial2026db
       .prepare(
         `SELECT p.id, p.username, pb.bets, pb.plus_bets
-         FROM player_bets pb
-         INNER JOIN players p ON p.id = pb.player_id`,
+         FROM players p
+         LEFT JOIN player_bets pb ON p.id = pb.player_id`,
       )
-      .all<{ id: string; username: string; bets: string; plus_bets: string | null }>();
+      .all<{ id: string; username: string; bets: string | null; plus_bets: string | null }>();
 
     const bets: Record<string, unknown> = {};
     const plus: Record<string, unknown> = {};
@@ -123,9 +129,12 @@ export async function handleGetBets(_request: Request, env: Env, userId: string)
 
       let parsedBets: Bet[] = [];
       try {
-        const value = JSON.parse(row.bets);
-        if (Array.isArray(value)) parsedBets = value;
+        if (row.bets) {
+          const value = JSON.parse(row.bets);
+          if (Array.isArray(value)) parsedBets = value;
+        }
       } catch { /* keep [] */ }
+      if (parsedBets.length === 0) parsedBets = DEFAULT_BETS;
       bets[row.username] = reveal ? parsedBets : sanitizeMatchBets(parsedBets);
 
       if (row.plus_bets) {
