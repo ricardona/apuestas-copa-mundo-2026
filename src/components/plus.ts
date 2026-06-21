@@ -75,6 +75,7 @@ export function buildPlus() {
   const liveStandings = calcularPreview ? computeGroupStandings() : null;
 
   const groups = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+  let totalGroupPts = 0;
   const groupsHtml = groups.map(grp => {
     let realPos: string[] | undefined;
     if (calcularPreview) {
@@ -83,6 +84,19 @@ export function buildPlus() {
     } else {
       realPos = state.PLUS_RESULTS?.posicionesGrupos[grp];
     }
+
+    let myGroupPts = 0;
+    if (realPos && state.CURRENT_PLAYER) {
+      const myPlus = state.PLUS_BETS[state.CURRENT_PLAYER];
+      if (myPlus) {
+        const pred = myPlus.posicionesGrupos[grp] || ['','','',''];
+        realPos.forEach((team, idx) => {
+          if (team && pred[idx] === team) myGroupPts += p.groupPlus;
+        });
+      }
+    }
+    totalGroupPts += myGroupPts;
+
     const rows = state.PLAYERS.map(name => {
       const plus = state.PLUS_BETS[name];
       if (!plus) return '';
@@ -104,8 +118,12 @@ export function buildPlus() {
       ${realPos.map(t => `<td>${t || '?'}</td>`).join('')}
     </tr>` : '';
 
+    const myPtsBadge = realPos && state.CURRENT_PLAYER
+      ? ` <span class="my-pts-badge">${myGroupPts > 0 ? `+${myGroupPts}` : '0'} pts</span>`
+      : '';
+
     return `<details class="grupo-section">
-      <summary class="grupo-title">Grupo ${grp}</summary>
+      <summary class="grupo-title">Grupo ${grp}${myPtsBadge}</summary>
       <div class="plus-table-wrap">
         <table class="plus-table">
           <thead><tr><th>Jugador</th><th>1º (${p.groupPlus}pts)</th><th>2º (${p.groupPlus}pts)</th><th>3º (${p.groupPlus}pts)</th><th>4º (${p.groupPlus}pts)</th></tr></thead>
@@ -155,7 +173,7 @@ export function buildPlus() {
     </div>
 
     <div class="plus-section">
-      <h3 class="plus-title">📊 Posiciones de Grupos${calcularPreview ? ' <span class="preview-badge">Vista previa · sin puntos en ranking</span>' : ''}</h3>
+      <h3 class="plus-title">📊 Posiciones de Grupos${calcularPreview ? ' <span class="preview-badge">Vista previa · sin puntos en ranking</span>' : ''}${state.CURRENT_PLAYER ? ` <span class="my-pts-total">Mis pts: +${totalGroupPts}</span>` : ''}</h3>
       ${groupsHtml}
     </div>
   `;
