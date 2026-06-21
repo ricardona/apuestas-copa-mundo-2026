@@ -48,6 +48,7 @@ export interface Settings {
   mostrarConvocados: boolean;
   mostrarCuadrodeHonor: boolean;
   mostrarPosicionesGrupos: boolean;
+  calcularPosicionesGrupos: boolean;
 }
 
 export interface PlusResults {

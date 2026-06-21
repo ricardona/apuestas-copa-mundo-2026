@@ -42,6 +42,41 @@ export function calcularPuntosConvocatoria(userPlusData: PlusBet | undefined, li
   return aciertos;
 }
 
+/** Derives group standings from finalizado group matches, sorted by pts → gd → gf → name */
+export function computeGroupStandings(): Record<string, string[]> {
+  const teamStats: Record<string, Record<string, { pts: number; gd: number; gf: number }>> = {};
+
+  state.RESULTS.forEach(m => {
+    if (m.fase !== 'Grupos' || !m.grupo) return;
+    const grp = m.grupo;
+    if (!teamStats[grp]) teamStats[grp] = {};
+    if (!teamStats[grp][m.local]) teamStats[grp][m.local] = { pts: 0, gd: 0, gf: 0 };
+    if (!teamStats[grp][m.visita]) teamStats[grp][m.visita] = { pts: 0, gd: 0, gf: 0 };
+
+    if (m.status === 'finalizado') {
+      const lPts = m.gL > m.gV ? 3 : m.gL === m.gV ? 1 : 0;
+      const vPts = m.gV > m.gL ? 3 : m.gV === m.gL ? 1 : 0;
+      teamStats[grp][m.local].pts += lPts;
+      teamStats[grp][m.local].gd += m.gL - m.gV;
+      teamStats[grp][m.local].gf += m.gL;
+      teamStats[grp][m.visita].pts += vPts;
+      teamStats[grp][m.visita].gd += m.gV - m.gL;
+      teamStats[grp][m.visita].gf += m.gV;
+    }
+  });
+
+  const standings: Record<string, string[]> = {};
+  Object.entries(teamStats).forEach(([grp, teams]) => {
+    standings[grp] = Object.entries(teams)
+      .sort(([nameA, a], [nameB, b]) =>
+        (b.pts - a.pts) || (b.gd - a.gd) || (b.gf - a.gf) || nameA.localeCompare(nameB, 'es')
+      )
+      .map(([name]) => name);
+  });
+
+  return standings;
+}
+
 /** Points earned from Plus predictions */
 export function calcPlusScore(name: string): number {
   const plus = state.PLUS_BETS[name];
@@ -55,14 +90,16 @@ export function calcPlusScore(name: string): number {
   if (state.PLUS_RESULTS.top4.tercero && plus.top4.tercero === state.PLUS_RESULTS.top4.tercero) total += p.thirdPlus;
   if (state.PLUS_RESULTS.top4.cuarto && plus.top4.cuarto === state.PLUS_RESULTS.top4.cuarto) total += p.fourthPlus;
 
-  // group positions
-  Object.entries(state.PLUS_RESULTS.posicionesGrupos).forEach(([grp, real]) => {
-    const pred = plus.posicionesGrupos[grp];
-    if (!pred) return;
-    real.forEach((team, idx) => {
-      if (team && pred[idx] === team) total += p.groupPlus;
+  // group positions — skipped in preview mode (calcularPosicionesGrupos: true)
+  if (!state.SETTINGS.calcularPosicionesGrupos) {
+    Object.entries(state.PLUS_RESULTS.posicionesGrupos).forEach(([grp, real]) => {
+      const pred = plus.posicionesGrupos[grp];
+      if (!pred) return;
+      real.forEach((team, idx) => {
+        if (team && pred[idx] === team) total += p.groupPlus;
+      });
     });
-  });
+  }
 
   // goOn (team advancing from knockout round)
   if (plus.goOn) {

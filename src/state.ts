@@ -28,6 +28,7 @@ export const state: {
     tiposPartido: { N: 'Normal', E: 'Especial', X: 'Super Especial' },
     mostrarConvocados: true,
     mostrarCuadrodeHonor: true,
-    mostrarPosicionesGrupos: true
+    mostrarPosicionesGrupos: true,
+    calcularPosicionesGrupos: true
   }
 };

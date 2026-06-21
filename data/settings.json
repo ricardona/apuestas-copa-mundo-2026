@@ -21,5 +21,6 @@
   },
   "mostrarConvocados": false,
   "mostrarCuadrodeHonor": false,
-  "mostrarPosicionesGrupos": false
+  "mostrarPosicionesGrupos": false,
+  "calcularPosicionesGrupos": true
 }

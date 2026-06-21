@@ -1,6 +1,6 @@
 import { state } from '../state';
 import { avatar } from '../avatar';
-import { calcularPuntosConvocatoria, normalizePlayerName } from '../scoring';
+import { calcularPuntosConvocatoria, normalizePlayerName, computeGroupStandings } from '../scoring';
 
 // ─── Plus Tab ─────────────────────────────────────────────────────────────────
 
@@ -71,9 +71,18 @@ export function buildPlus() {
   }).join('');
 
   // ── Groups section ──
+  const calcularPreview = state.SETTINGS.calcularPosicionesGrupos;
+  const liveStandings = calcularPreview ? computeGroupStandings() : null;
+
   const groups = ['A','B','C','D','E','F','G','H','I','J','K','L'];
   const groupsHtml = groups.map(grp => {
-    const realPos = state.PLUS_RESULTS?.posicionesGrupos[grp];
+    let realPos: string[] | undefined;
+    if (calcularPreview) {
+      const hasCompleted = state.RESULTS.some(m => m.grupo === grp && m.status === 'finalizado');
+      realPos = hasCompleted ? liveStandings![grp] : undefined;
+    } else {
+      realPos = state.PLUS_RESULTS?.posicionesGrupos[grp];
+    }
     const rows = state.PLAYERS.map(name => {
       const plus = state.PLUS_BETS[name];
       if (!plus) return '';
@@ -146,7 +155,7 @@ export function buildPlus() {
     </div>
 
     <div class="plus-section">
-      <h3 class="plus-title">📊 Posiciones de Grupos</h3>
+      <h3 class="plus-title">📊 Posiciones de Grupos${calcularPreview ? ' <span class="preview-badge">Vista previa · sin puntos en ranking</span>' : ''}</h3>
       ${groupsHtml}
     </div>
   `;
