@@ -47,15 +47,17 @@ export function buildMatches() {
         if (showBet && pick && pick !== '?') {
           let stateC = '';
           let mark = '';
+          let goOnPtsHtml = '';
           if (r.status === 'finalizado') {
             const real = state.PLUS_RESULTS?.goOn?.find(g => g.matchId === r.id)?.equipo;
             if (real) {
               const correct = real === pick;
               stateC = correct ? ' correct' : ' wrong';
               mark = `<span class="bet-goon-mark">${correct ? '✓' : '✗'}</span>`;
+              if (correct) goOnPtsHtml = `<span class="bet-pts bp-goon">+${state.SETTINGS.puntos.goOnPlus}</span>`;
             }
           }
-          goOnHtml = `<span class="bet-goon${stateC}" title="Avanza: ${pick}">${flag(pick, 10)}${mark}</span>`;
+          goOnHtml = `<span class="bet-goon${stateC}" title="Avanza: ${pick}">${flag(pick, 10)}${mark}</span>${goOnPtsHtml}`;
         }
       }
 

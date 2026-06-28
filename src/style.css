@@ -192,6 +192,7 @@ img.avatar { object-fit: cover; display: inline-block; }
 .bet-goon.wrong { opacity: 0.85; }
 .bet-goon.wrong .bet-goon-mark { color: #ff6b6b; }
 .bet-pts { font-family: var(--mono); font-size: 13px; font-weight: 500; min-width: 28px; text-align: right; }
+.bp-goon { color: #f5a623; min-width: unset; }
 .bp5 { color: #4caf7d; }
 .bp3 { color: #4a9eff; }
 .bp0 { color: #555; }
