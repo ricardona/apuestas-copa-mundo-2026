@@ -215,11 +215,17 @@ export function buildStats() {
   const conservador = conservadorData.str;
   const maxTies = conservadorData.val;
 
+  // Caballo de Arranque / Tortuga Ninja contrast group-stage vs. knockout
+  // performance, so they only make sense once at least one knockout match has
+  // been scored. Before then knockoutPts is 0 for everyone and the metrics
+  // degrade to "best/worst in groups", which is misleading.
+  const hasKnockoutResults = matches.some(m => m.fase !== 'Grupos');
+
   const caballoData = getMaxPlayers(p => p.arranqueScore, -Infinity);
-  const caballo = caballoData.str;
+  const caballo = hasKnockoutResults ? caballoData.str : '-';
 
   const tortugaData = getMaxPlayers(p => p.tortugaScore, -Infinity);
-  const tortuga = tortugaData.str;
+  const tortuga = hasKnockoutResults ? tortugaData.str : '-';
 
   const montanaData = getMaxPlayers(p => p.transitions);
   const montana = montanaData.str;
