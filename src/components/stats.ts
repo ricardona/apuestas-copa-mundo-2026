@@ -16,7 +16,11 @@ export function buildStats() {
   }
 
   const maxId = matches[matches.length - 1]?.id ?? -1;
-  const groupPlusChartAfterMatchId = 73;
+  // Insert the "Plus grupos" point right after the last finalized group-stage
+  // match, but only once the group standings results are available.
+  const lastGroupMatch = matches.filter(m => m.fase === 'Grupos').slice(-1)[0];
+  const groupPlusChartAfterMatchId =
+    state.PLUS_RESULTS?.posicionesGrupos ? (lastGroupMatch?.id ?? -1) : -1;
   const labels = matches.flatMap(m => (
     m.id === groupPlusChartAfterMatchId ? [`P${m.id}`, 'Plus grupos'] : [`P${m.id}`]
   ));
@@ -328,13 +332,22 @@ export function buildStats() {
     }
   };
 
+  // On narrow (mobile) screens the chart gets too crowded, so only render the
+  // last few points to keep it readable.
+  const isMobile = window.matchMedia('(max-width: 600px)').matches;
+  const maxMobilePoints = 20;
+  const sliceStart = isMobile && labels.length > maxMobilePoints
+    ? labels.length - maxMobilePoints
+    : 0;
+  const chartLabels = sliceStart > 0 ? labels.slice(sliceStart) : labels;
+
   (window as any).__pointsChart = new Chart(chartCanvas, {
     type: 'line',
     data: {
-      labels,
+      labels: chartLabels,
       datasets: pStats.map((p, i) => ({
         label: p.player,
-        data: p.data,
+        data: sliceStart > 0 ? p.data.slice(sliceStart) : p.data,
         borderColor: colors[i % colors.length],
         backgroundColor: colors[i % colors.length],
         tension: 0.2,
