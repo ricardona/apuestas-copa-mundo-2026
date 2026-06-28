@@ -179,12 +179,12 @@ function renderMatches(matches: Result[], hiddenCount: number) {
         </div>
       </div>
       <div class="mis-match-actions">
-        ${renderGoOnSelect(match)}
         <div class="mis-score-inputs">
           <input type="number" min="0" max="30" value="${bet.gL}" data-bet="${match.id}" data-side="gL" aria-label="Goles ${esc(match.local)}" />
           <span>-</span>
           <input type="number" min="0" max="30" value="${bet.gV}" data-bet="${match.id}" data-side="gV" aria-label="Goles ${esc(match.visita)}" />
         </div>
+        ${renderGoOnSelect(match)}
       </div>
     </div>`;
   }).join('');
