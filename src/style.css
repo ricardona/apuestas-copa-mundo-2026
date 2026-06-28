@@ -185,6 +185,12 @@ img.avatar { object-fit: cover; display: inline-block; }
 .bet-left { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
 .bet-right { display: flex; align-items: center; gap: 12px; }
 .bet-score-txt { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.bet-goon { display: inline-flex; align-items: center; gap: 3px; }
+.bet-goon .team-flag { margin: 0; height: 10px; }
+.bet-goon-mark { font-size: 9px; font-weight: 700; line-height: 1; }
+.bet-goon.correct .bet-goon-mark { color: #4caf7d; }
+.bet-goon.wrong { opacity: 0.85; }
+.bet-goon.wrong .bet-goon-mark { color: #ff6b6b; }
 .bet-pts { font-family: var(--mono); font-size: 13px; font-weight: 500; min-width: 28px; text-align: right; }
 .bp5 { color: #4caf7d; }
 .bp3 { color: #4a9eff; }

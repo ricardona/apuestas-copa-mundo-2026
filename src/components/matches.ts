@@ -38,10 +38,32 @@ export function buildMatches() {
       const showBet = r.status === 'finalizado' || r.status === 'jugando' || b.player === state.CURRENT_PLAYER;
       const betScoreTxt = showBet ? `${b.gL} – ${b.gV}` : `? – ?`;
 
+      // "Avanza" (goOn) marker for knockout matches: show the flag of the team the
+      // player predicted to advance. Revealed only when the bet is visible and the
+      // pick is a real team (the API masks it as '?' for still-open matches).
+      let goOnHtml = '';
+      if (r.fase && r.fase !== 'Grupos') {
+        const pick = state.PLUS_BETS[b.player]?.goOn?.find(g => g.matchId === r.id)?.equipo;
+        if (showBet && pick && pick !== '?') {
+          let stateC = '';
+          let mark = '';
+          if (r.status === 'finalizado') {
+            const real = state.PLUS_RESULTS?.goOn?.find(g => g.matchId === r.id)?.equipo;
+            if (real) {
+              const correct = real === pick;
+              stateC = correct ? ' correct' : ' wrong';
+              mark = `<span class="bet-goon-mark">${correct ? '✓' : '✗'}</span>`;
+            }
+          }
+          goOnHtml = `<span class="bet-goon${stateC}" title="Avanza: ${pick}">${flag(pick, 10)}${mark}</span>`;
+        }
+      }
+
       return `<div class="bet-row">
         <div class="bet-left">${avatar(b.player, 22, state.AVATARS[b.player])} ${b.player}</div>
         <div class="bet-right">
           <span class="bet-score-txt">${betScoreTxt}</span>
+          ${goOnHtml}
           <span class="bet-pts ${ptsC}">${ptsStr}</span>
         </div>
       </div>`;
