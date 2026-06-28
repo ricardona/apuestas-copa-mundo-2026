@@ -16,11 +16,10 @@ export function buildStats() {
   }
 
   const maxId = matches[matches.length - 1]?.id ?? -1;
-  const labels = matches.map(m => `P${m.id}`);
-
-  // Determine the ID of the last finalized group match so we know when to add group points
-  const finalizedGroupMatches = matches.filter(m => m.fase === 'Grupos');
-  const lastFinalizedGroupMatchId = finalizedGroupMatches.length > 0 ? finalizedGroupMatches[finalizedGroupMatches.length - 1].id : -1;
+  const groupPlusChartAfterMatchId = 73;
+  const labels = matches.flatMap(m => (
+    m.id === groupPlusChartAfterMatchId ? [`P${m.id}`, 'Plus grupos'] : [`P${m.id}`]
+  ));
 
   const pStats = state.PLAYERS.map(player => {
     let cumulativeMatch = 0;
@@ -115,11 +114,6 @@ export function buildStats() {
         }
       }
 
-      if (m.id === lastFinalizedGroupMatchId) {
-        cumulativeGroup += groupPoints;
-        groupsPts += groupPoints;
-      }
-      
       if (m.id === maxId) {
         cumulativeTop4 += top4Points;
         knockoutPts += (cumulativeGoOn + top4Points);
@@ -127,6 +121,13 @@ export function buildStats() {
 
       let stepTotal = cumulativeMatch + cumulativeGoOn + cumulativeGroup + cumulativeTop4;
       data.push(stepTotal);
+
+      if (m.id === groupPlusChartAfterMatchId) {
+        cumulativeGroup += groupPoints;
+        groupsPts += groupPoints;
+        stepTotal = cumulativeMatch + cumulativeGoOn + cumulativeGroup + cumulativeTop4;
+        data.push(stepTotal);
+      }
     });
 
     return { 
