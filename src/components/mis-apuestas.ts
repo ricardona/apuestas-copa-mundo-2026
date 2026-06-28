@@ -137,13 +137,11 @@ function renderEditor(container: HTMLElement) {
         ${showTop4 ? `<button class="mis-subtab ${firstPanel === 'top4' ? 'active' : ''}" data-panel="top4">Top 4</button>` : ''}
         ${showGrupos ? `<button class="mis-subtab ${firstPanel === 'grupos' ? 'active' : ''}" data-panel="grupos">Grupos</button>` : ''}
         <button class="mis-subtab ${firstPanel === 'partidos' ? 'active' : ''}" data-panel="partidos">Partidos</button>
-        <button class="mis-subtab" data-panel="goon">Eliminatorias</button>
       </div>
       ${showConvocatoria ? `<div class="mis-panel ${firstPanel === 'convocatoria' ? 'active' : ''}" id="mis-panel-convocatoria">${renderConvocatoria()}</div>` : ''}
       ${showTop4 ? `<div class="mis-panel ${firstPanel === 'top4' ? 'active' : ''}" id="mis-panel-top4">${renderTop4(top4Locked)}</div>` : ''}
       ${showGrupos ? `<div class="mis-panel ${firstPanel === 'grupos' ? 'active' : ''}" id="mis-panel-grupos">${renderGroups()}</div>` : ''}
       <div class="mis-panel ${firstPanel === 'partidos' ? 'active' : ''}" id="mis-panel-partidos">${renderMatches(pending, hiddenCount)}</div>
-      <div class="mis-panel" id="mis-panel-goon">${renderGoOn()}</div>
     </div>`;
 
   container.querySelector('.mis-home')?.addEventListener('click', goHome);
@@ -180,10 +178,13 @@ function renderMatches(matches: Result[], hiddenCount: number) {
           ${tipoLabel(match.tipo)}
         </div>
       </div>
-      <div class="mis-score-inputs">
-        <input type="number" min="0" max="30" value="${bet.gL}" data-bet="${match.id}" data-side="gL" aria-label="Goles ${esc(match.local)}" />
-        <span>-</span>
-        <input type="number" min="0" max="30" value="${bet.gV}" data-bet="${match.id}" data-side="gV" aria-label="Goles ${esc(match.visita)}" />
+      <div class="mis-match-actions">
+        ${renderGoOnSelect(match)}
+        <div class="mis-score-inputs">
+          <input type="number" min="0" max="30" value="${bet.gL}" data-bet="${match.id}" data-side="gL" aria-label="Goles ${esc(match.local)}" />
+          <span>-</span>
+          <input type="number" min="0" max="30" value="${bet.gV}" data-bet="${match.id}" data-side="gV" aria-label="Goles ${esc(match.visita)}" />
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -191,6 +192,13 @@ function renderMatches(matches: Result[], hiddenCount: number) {
   return `
     <div class="mis-status">Se muestran ${matches.length} partidos pendientes. ${hiddenCount} finalizados quedan ocultos y preservados.</div>
     <div class="mis-list">${rows || '<div class="mis-empty">No hay partidos pendientes para editar.</div>'}</div>`;
+}
+
+function renderGoOnSelect(match: Result) {
+  if (!isKnockoutMatch(match)) return '';
+  const value = editor?.plus.goOn.find(item => item.matchId === match.id)?.equipo ?? '';
+  const teams = goOnTeams(match);
+  return selectHtml(`data-goon="${match.id}"`, 'Avanza', teams, value);
 }
 
 function renderConvocatoria() {
@@ -225,23 +233,6 @@ function renderTop4(locked: boolean) {
   return `<div class="mis-select-grid top4">
     ${TOP4_KEYS.map(key => selectHtml(`data-top4="${key}"`, TOP4_LABELS[key], teams, editor?.plus.top4[key] ?? '')).join('')}
   </div>`;
-}
-
-function renderGoOn() {
-  const matches = state.RESULTS.filter(match => match.fase && match.fase !== 'Grupos' && match.status === 'siguiente');
-  const rows = matches.map(match => {
-    const value = editor?.plus.goOn.find(item => item.matchId === match.id)?.equipo ?? '';
-    const teams = [match.local, match.visita].filter(team => !/^Clasificado|^Ganador|^Perdedor/.test(team));
-    return `<div class="mis-match-row">
-      <div class="mis-match-info">
-        <span class="mis-match-id">#${match.id}</span>
-        <strong>${esc(match.local)}</strong><span>vs</span><strong>${esc(match.visita)}</strong>
-        <small>${esc(match.fase ?? '')}</small>
-      </div>
-      ${selectHtml(`data-goon="${match.id}"`, 'Avanza', teams, value)}
-    </div>`;
-  }).join('');
-  return `<div class="mis-list">${rows || '<div class="mis-empty">No hay partidos de eliminación directa.</div>'}</div>`;
 }
 
 function bindEditorInputs(container: HTMLElement) {
@@ -392,6 +383,14 @@ function groupTeams(group: string) {
 
 function allTeams() {
   return [...new Set(state.RESULTS.filter(match => match.grupo).flatMap(match => [match.local, match.visita]))].sort();
+}
+
+function isKnockoutMatch(match: Result) {
+  return !!match.fase && match.fase !== 'Grupos';
+}
+
+function goOnTeams(match: Result) {
+  return [match.local, match.visita].filter(team => !/^Clasificado|^Ganador|^Perdedor/.test(team));
 }
 
 function selectHtml(attrs: string, label: string, options: string[], value: string) {
