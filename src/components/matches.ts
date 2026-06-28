@@ -62,7 +62,7 @@ export function buildMatches() {
       }
 
       return `<div class="bet-row">
-        <div class="bet-left">${avatar(b.player, 22, state.AVATARS[b.player])} ${b.player}</div>
+        <div class="bet-left">${avatar(b.player, 22, state.AVATARS[b.player])} <span class="bet-player-name">${b.player}</span></div>
         <div class="bet-right">
           <span class="bet-score-txt">${betScoreTxt}</span>
           ${goOnHtml}
