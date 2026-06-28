@@ -1,6 +1,7 @@
 import { state } from '../state';
 import { calcularPuntosConvocatoria, calcMatchScore, getMultiplier, getStats, normalizePlayerName } from '../scoring';
 import { avatar } from '../avatar';
+import { flag } from '../flags';
 
 // ─── Ranking ──────────────────────────────────────────────────────────────────
 
@@ -35,7 +36,7 @@ export function buildPlayerDetail(name: string): string {
         : '';
       return `<div class="detail-match-item">
         ${multHtml}
-        <span class="detail-match-teams">${r.local} <span class="detail-vs">vs</span> ${r.visita}</span>
+        <span class="detail-match-teams">${flag(r.local)}${r.local} <span class="detail-vs">vs</span> ${r.visita}${flag(r.visita)}</span>
         <div class="detail-match-info">
           <span class="detail-match-bet">${bet.gL}–${bet.gV}</span>
           <span class="detail-match-arrow">→</span>
@@ -86,8 +87,8 @@ export function buildPlayerDetail(name: string): string {
       const pts = isHit ? `<span class="bet-pts bp5">+${row.pts}</span>` : isMiss ? `<span class="bet-pts bp0">+0</span>` : '';
       return `<tr>
         <td>${row.label}</td>
-        <td class="${cls}">${pred}${isHit ? ' <span class="hit-icon">✓</span>' : isMiss ? ' <span class="hit-icon">✗</span>' : ''}</td>
-        <td>${realStr}</td>
+        <td class="${cls}">${flag(pred)}${pred}${isHit ? ' <span class="hit-icon">✓</span>' : isMiss ? ' <span class="hit-icon">✗</span>' : ''}</td>
+        <td>${flag(realStr)}${realStr}</td>
         <td>${pts}</td>
       </tr>`;
     }).join('');
@@ -106,8 +107,8 @@ export function buildPlayerDetail(name: string): string {
         const pts = isHit ? `<span class="bet-pts bp5">+${p.groupPlus}</span>` : isMiss ? `<span class="bet-pts bp0">+0</span>` : '';
         return `<tr>
           <td>Grupo ${grp} — ${i + 1}º (${p.groupPlus}pts)</td>
-          <td class="${cls}">${team}${isHit ? ' <span class="hit-icon">✓</span>' : isMiss ? ' <span class="hit-icon">✗</span>' : ''}</td>
-          <td>${realTeam}</td>
+          <td class="${cls}">${flag(team)}${team}${isHit ? ' <span class="hit-icon">✓</span>' : isMiss ? ' <span class="hit-icon">✗</span>' : ''}</td>
+          <td>${flag(realTeam)}${realTeam}</td>
           <td>${pts}</td>
         </tr>`;
       });
@@ -124,8 +125,8 @@ export function buildPlayerDetail(name: string): string {
       const displayEquipo = (isOwnPlayer || !!real?.equipo) ? (bet.equipo || '–') : (bet.equipo ? '?' : '–');
       return `<tr>
         <td>${matchLabel} — avanza (${p.goOnPlus}pts)</td>
-        <td class="${cls}">${displayEquipo}${isHit ? ' <span class="hit-icon">✓</span>' : isMiss ? ' <span class="hit-icon">✗</span>' : ''}</td>
-        <td>${real?.equipo || '?'}</td>
+        <td class="${cls}">${flag(displayEquipo)}${displayEquipo}${isHit ? ' <span class="hit-icon">✓</span>' : isMiss ? ' <span class="hit-icon">✗</span>' : ''}</td>
+        <td>${flag(real?.equipo || '')}${real?.equipo || '?'}</td>
         <td>${pts}</td>
       </tr>`;
     }).join('');

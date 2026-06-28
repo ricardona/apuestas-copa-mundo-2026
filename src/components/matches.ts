@@ -2,6 +2,7 @@ import type { Bet } from '../types';
 import { state } from '../state';
 import { calcMatchScore, getMultiplier } from '../scoring';
 import { avatar } from '../avatar';
+import { flag } from '../flags';
 import { formatMatchDate, formatCountdown, tipoLabel } from '../match-display';
 
 // ─── Matches ──────────────────────────────────────────────────────────────────
@@ -56,9 +57,9 @@ export function buildMatches() {
         </div>
       </div>
       <div class="score-row">
-        <div class="team-name">${r.local}</div>
+        <div class="team-name">${flag(r.local)}${r.local}</div>
         <div class="score-display">${scoreHtml}</div>
-        <div class="team-name right">${r.visita}</div>
+        <div class="team-name right">${r.visita}${flag(r.visita)}</div>
       </div>
       ${bets.length ? `<div class="bets-section">${betsHtml}</div>` : ''}
     </div>`;

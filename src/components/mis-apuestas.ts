@@ -2,6 +2,7 @@ import { state } from '../state';
 import type { Bet, PlusBet, Result } from '../types';
 import { activateTab } from '../tabs';
 import { buildMatches } from './matches';
+import { flag } from '../flags';
 import { formatMatchDate, formatCountdown, tipoLabel } from '../match-display';
 
 const COLOMBIA_PRESELECCIONADOS = [
@@ -171,9 +172,9 @@ function renderMatches(matches: Result[], finishedCount: number) {
     return `<div class="mis-match-row">
       <div class="mis-match-info">
         <span class="mis-match-id">#${match.id}</span>
-        <strong>${esc(match.local)}</strong>
+        <strong>${flag(match.local)}${esc(match.local)}</strong>
         <span>vs</span>
-        <strong>${esc(match.visita)}</strong>
+        <strong>${flag(match.visita)}${esc(match.visita)}</strong>
         <small>${esc(match.fase ?? '')}${match.grupo ? ` · Grupo ${esc(match.grupo)}` : ''}${dateStr ? ` · ${dateStr}` : ''}</small>
         <div class="mis-match-badges">
           ${countdown ? `<span class="match-countdown">${countdown}</span>` : ''}

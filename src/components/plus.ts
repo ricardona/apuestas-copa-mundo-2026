@@ -1,5 +1,6 @@
 import { state } from '../state';
 import { avatar } from '../avatar';
+import { flag } from '../flags';
 import { calcularPuntosConvocatoria, normalizePlayerName, computeGroupStandings } from '../scoring';
 
 // ─── Plus Tab ─────────────────────────────────────────────────────────────────
@@ -108,14 +109,14 @@ export function buildPlus() {
             const team = pred[i] || '–';
             const isHit = realPos && realPos[i] && realPos[i] === pred[i];
             const isMiss = realPos && realPos[i] && !isHit;
-            return `<td class="${isHit ? 'plus-hit' : isMiss ? 'plus-miss' : ''}">${team} ${isHit ? '<span class="hit-icon">✓</span>' : ''}</td>`;
+            return `<td class="${isHit ? 'plus-hit' : isMiss ? 'plus-miss' : ''}">${flag(team)}${team} ${isHit ? '<span class="hit-icon">✓</span>' : ''}</td>`;
           }).join('')}
         </tr>`;
     }).join('');
 
     const realRow = realPos ? `<tr class="plus-real-row">
       <td><strong>Real</strong></td>
-      ${realPos.map(t => `<td>${t || '?'}</td>`).join('')}
+      ${realPos.map(t => `<td>${flag(t || '')}${t || '?'}</td>`).join('')}
     </tr>` : '';
 
     const myPtsBadge = realPos && state.CURRENT_PLAYER
@@ -161,10 +162,10 @@ export function buildPlus() {
           <tbody>
             ${state.PLUS_RESULTS?.top4.campeon ? `<tr class="plus-real-row">
               <td><strong>Real</strong></td>
-              <td>${state.PLUS_RESULTS.top4.campeon || '?'}</td>
-              <td>${state.PLUS_RESULTS.top4.subcampeon || '?'}</td>
-              <td>${state.PLUS_RESULTS.top4.tercero || '?'}</td>
-              <td>${state.PLUS_RESULTS.top4.cuarto || '?'}</td>
+              <td>${flag(state.PLUS_RESULTS.top4.campeon || '')}${state.PLUS_RESULTS.top4.campeon || '?'}</td>
+              <td>${flag(state.PLUS_RESULTS.top4.subcampeon || '')}${state.PLUS_RESULTS.top4.subcampeon || '?'}</td>
+              <td>${flag(state.PLUS_RESULTS.top4.tercero || '')}${state.PLUS_RESULTS.top4.tercero || '?'}</td>
+              <td>${flag(state.PLUS_RESULTS.top4.cuarto || '')}${state.PLUS_RESULTS.top4.cuarto || '?'}</td>
             </tr>` : ''}
             ${top4Html}
           </tbody>
@@ -192,7 +193,7 @@ export function buildPlus() {
         const isMiss = real.equipo && !isHit && team !== '–';
         return `<tr>
           <td><div class="player-cell">${avatar(name, 20, state.AVATARS[name])} ${name}</div></td>
-          <td class="${isHit ? 'plus-hit' : isMiss ? 'plus-miss' : ''}">${team} ${isHit ? '<span class="hit-icon">✓</span>' : isMiss ? '<span class="hit-icon">✗</span>' : ''}</td>
+          <td class="${isHit ? 'plus-hit' : isMiss ? 'plus-miss' : ''}">${flag(team)}${team} ${isHit ? '<span class="hit-icon">✓</span>' : isMiss ? '<span class="hit-icon">✗</span>' : ''}</td>
         </tr>`;
       }).join('');
 
@@ -200,7 +201,7 @@ export function buildPlus() {
         <div class="goOn-label">${matchLabel}</div>
         <div class="plus-table-wrap">
           <table class="plus-table">
-            <thead><tr><th>Jugador</th><th>Equipo apostado (${p.goOnPlus}pts) — Real: <strong>${real.equipo || '?'}</strong></th></tr></thead>
+            <thead><tr><th>Jugador</th><th>Equipo apostado (${p.goOnPlus}pts) — Real: <strong>${flag(real.equipo || '')}${real.equipo || '?'}</strong></th></tr></thead>
             <tbody>${rows}</tbody>
           </table>
         </div>
