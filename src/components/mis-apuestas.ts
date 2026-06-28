@@ -104,7 +104,9 @@ function renderNotIdentified(container: HTMLElement) {
 function renderEditor(container: HTMLElement) {
   if (!editor) return;
   const pending = state.RESULTS.filter(match => match.status === 'siguiente');
-  const hiddenCount = state.RESULTS.length - pending.length;
+  const finishedCount = state.RESULTS.filter(
+    match => match.status === 'finalizado' || match.status === 'jugando'
+  ).length;
   const tournamentStarted = state.RESULTS.some(
     match => match.status === 'finalizado' || match.status === 'jugando'
   );
@@ -141,7 +143,7 @@ function renderEditor(container: HTMLElement) {
       ${showConvocatoria ? `<div class="mis-panel ${firstPanel === 'convocatoria' ? 'active' : ''}" id="mis-panel-convocatoria">${renderConvocatoria()}</div>` : ''}
       ${showTop4 ? `<div class="mis-panel ${firstPanel === 'top4' ? 'active' : ''}" id="mis-panel-top4">${renderTop4(top4Locked)}</div>` : ''}
       ${showGrupos ? `<div class="mis-panel ${firstPanel === 'grupos' ? 'active' : ''}" id="mis-panel-grupos">${renderGroups()}</div>` : ''}
-      <div class="mis-panel ${firstPanel === 'partidos' ? 'active' : ''}" id="mis-panel-partidos">${renderMatches(pending, hiddenCount)}</div>
+      <div class="mis-panel ${firstPanel === 'partidos' ? 'active' : ''}" id="mis-panel-partidos">${renderMatches(pending, finishedCount)}</div>
     </div>`;
 
   container.querySelector('.mis-home')?.addEventListener('click', goHome);
@@ -161,7 +163,7 @@ function renderEditor(container: HTMLElement) {
   bindEditorInputs(container);
 }
 
-function renderMatches(matches: Result[], hiddenCount: number) {
+function renderMatches(matches: Result[], finishedCount: number) {
   const rows = matches.map(match => {
     const bet = ensureBet(match.id);
     const dateStr = formatMatchDate(match.fecha);
@@ -189,8 +191,10 @@ function renderMatches(matches: Result[], hiddenCount: number) {
     </div>`;
   }).join('');
 
+  const matchWord = matches.length === 1 ? 'partido abierto para apostar' : 'partidos abiertos para apostar';
+  const finishedWord = finishedCount === 1 ? 'finalizado queda oculto y preservado' : 'finalizados quedan ocultos y preservados';
   return `
-    <div class="mis-status">Se muestran ${matches.length} partidos pendientes. ${hiddenCount} finalizados quedan ocultos y preservados.</div>
+    <div class="mis-status">Se ${matches.length === 1 ? 'muestra' : 'muestran'} ${matches.length} ${matchWord}. ${finishedCount} ${finishedWord}.</div>
     <div class="mis-list">${rows || '<div class="mis-empty">No hay partidos pendientes para editar.</div>'}</div>`;
 }
 
