@@ -23,6 +23,10 @@
     {
       "matchId": 73,
       "equipo": "Canadá"
+    },
+    {
+      "matchId": 74,
+      "equipo": "Brasil"
     }
   ]
 }
