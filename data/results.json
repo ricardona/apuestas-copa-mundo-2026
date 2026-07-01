@@ -933,9 +933,9 @@
     "id": 79,
     "local": "México",
     "visita": "Ecuador",
-    "gL": 0,
+    "gL": 2,
     "gV": 0,
-    "status": "jugando",
+    "status": "finalizado",
     "fase": "Dieciseisavos de final",
     "tipo": "E",
     "fecha": "2026-07-01T01:00:00Z"
@@ -946,7 +946,7 @@
     "visita": "RD Congo",
     "gL": 0,
     "gV": 0,
-    "status": "pendiente",
+    "status": "siguiente",
     "fase": "Dieciseisavos de final",
     "tipo": "N",
     "fecha": "2026-07-01T16:00:00Z"
@@ -957,7 +957,7 @@
     "visita": "Senegal",
     "gL": 0,
     "gV": 0,
-    "status": "pendiente",
+    "status": "siguiente",
     "fase": "Dieciseisavos de final",
     "tipo": "N",
     "fecha": "2026-07-01T20:00:00Z"
@@ -968,7 +968,7 @@
     "visita": "Bosnia y H.",
     "gL": 0,
     "gV": 0,
-    "status": "pendiente",
+    "status": "siguiente",
     "fase": "Dieciseisavos de final",
     "tipo": "N",
     "fecha": "2026-07-02T00:00:00Z"
