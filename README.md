@@ -33,7 +33,6 @@ Aplicación web para llevar el registro de pronósticos, posiciones y estadísti
    - **Convocatoria Colombia:** Selecciona los 26 jugadores que crees que irán al Mundial
    - **Top 4:** Campeón, subcampeón, tercer y cuarto puesto
    - **Posiciones de Grupo:** Orden final de cada grupo
-   - **Partidos**: Resultado del próximo encuentro.
    - **Eliminatorias:** Equipo que avanza en cada llave
 
 5. **Guardar:** Presiona **Guardar apuestas**. Tus pronósticos quedan almacenados en Cloudflare D1.
@@ -97,12 +96,12 @@ npx wrangler d1 execute mundial2026db --command="ALTER TABLE players ADD COLUMN 
 
 ### Variables de entorno requeridas (Cloudflare Workers)
 
-| Variable            | Descripción                          |
-|---------------------|--------------------------------------|
-| `CLERK_SECRET_KEY`  | Clave secreta de Clerk (Backend API) |
-| `CLERK_PUBLISHABLE_KEY` | Clave pública de Clerk           |
+| Variable            | Dónde configurar | Descripción                          |
+|---------------------|------------------|--------------------------------------|
+| `CLERK_SECRET_KEY`  | Dashboard de Cloudflare → Settings → Variables and Secrets | Clave secreta de Clerk (Backend API) — debe guardarse como **Secret** |
+| `CLERK_PUBLISHABLE_KEY` | `wrangler.jsonc` (`vars`) | Clave pública de Clerk — ya incluida en el repositorio |
 
-Configúralas en el dashboard de Cloudflare → Workers & Pages → tu proyecto → Settings → Variables and Secrets.
+Solo `CLERK_SECRET_KEY` requiere configuración manual en el dashboard de Cloudflare; `CLERK_PUBLISHABLE_KEY` ya está definida en `wrangler.jsonc`.
 
 ---
 
