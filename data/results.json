@@ -1054,9 +1054,9 @@
     "id": 90,
     "local": "Francia",
     "visita": "Paraguay",
-    "gL": 0,
+    "gL": 1,
     "gV": 0,
-    "status": "jugando",
+    "status": "finalizado",
     "fase": "Octavos de final",
     "tipo": "E",
     "fecha": "2026-07-04T21:00:00Z"
