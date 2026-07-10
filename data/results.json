@@ -1131,9 +1131,9 @@
     "id": 97,
     "local": "Francia",
     "visita": "Marruecos",
-    "gL": 0,
+    "gL": 2,
     "gV": 0,
-    "status": "jugando",
+    "status": "finalizado",
     "fase": "Cuartos de final",
     "tipo": "E",
     "fecha": "2026-07-09T20:00:00Z"
