@@ -14,10 +14,10 @@
     "L": ["Inglaterra", "Croacia", "Ghana", "Panamá"]
   },
   "top4": {
-    "campeon": "",
-    "subcampeon": "",
-    "tercero": "",
-    "cuarto": ""
+    "campeon": "España",
+    "subcampeon": "Argentina",
+    "tercero": "Inglaterra",
+    "cuarto": "Francia"
   },
   "goOn": [
     {
@@ -146,7 +146,7 @@
     },
     {
       "matchId": 104,
-      "equipo": ""
+      "equipo": "España"
     }
   ]
 }
